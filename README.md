@@ -1,3 +1,17 @@
+#Meeting #2
+##2/5
+
+###RAS finished
+
+###Start initial game design planning
+
+###Plan for next week
+Finalize game design, game flow
+
+Figure out jobs
+
+Begin coding
+
 #Meeting #1
 ##1/29
 
