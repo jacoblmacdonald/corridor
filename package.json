@@ -2,7 +2,7 @@
   "name": "corridor",
   "version": "0.0.1",
   "description": "A neat multiplayer turn-based game.",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "make test"
   },
@@ -11,13 +11,16 @@
     "url": "git+https://github.com/jacoblmacdonald/corridor.git"
   },
   "author": "Team B6",
-  "license": "ISC",
+  "license": "UNLICENSED",
+  "private": true,
   "bugs": {
     "url": "https://github.com/jacoblmacdonald/corridor/issues"
   },
   "homepage": "https://github.com/jacoblmacdonald/corridor#readme",
   "dependencies": {
-    "compass": "^0.1.1",
+    "bcrypt": "^1.0.2",
+    "express": "^4.14.1",
+    "passport": "^0.3.2",
     "rethinkdb": "^2.3.3"
   }
 }
