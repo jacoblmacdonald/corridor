@@ -1,13 +1,14 @@
-var express = require('express');
-var app = express();
+const express = require('express');
+const app = express();
+const port = 3000;
 
-app.get('/', function (req, res) {
-   res.send('Corridors - Node + Express Setup');
-})
+app.get('/', (req, res) => {
+   res.send('corridor - Node + Express Setup');
+});
 
-var server = app.listen(3000, function () {
-   var host = server.address().address
-   var port = server.address().port
-   
-   console.log("Example app listening at http://localhost:%s", port)
-})
+app.listen(port, (err) => {
+   if(err){
+   	return console.log("Alright you got shafted by ", err);
+   }
+   console.log("corridor is up and running at http://localhost:%s", port);
+});
