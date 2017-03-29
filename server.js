@@ -1,14 +1,12 @@
-
+//Server Consts
 var SERVER_PORT = 3000;
 var LOG_CONNECTIONS_CONSOLE = true;
 
+//Modules
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
-
-
-
-
+var db = require('./api/connection');
 
 function getHomePage(request,response){
     if(LOG_CONNECTIONS_CONSOLE){
@@ -45,7 +43,6 @@ io.on('connection', function(client){
 
 http.listen(process.env.PORT|| SERVER_PORT, function(){
     console.log('Listening on port ' + SERVER_PORT);
-    console.log(http.address());
 });
 
 
