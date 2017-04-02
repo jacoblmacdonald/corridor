@@ -8,15 +8,26 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var db = require('./api/connection');
 
+
+//get functions
 function getHomePage(request,response){
     if(LOG_CONNECTIONS_CONSOLE){
         console.log('Serving::Person has connected and requested home page');
     }
-    response.sendFile(__dirname + '/Templates/login.html');
+    response.sendFile(__dirname + '/ui/login.html');
+    //if logged in, switch to matchmaking page
+}
+
+function getMatchmakingPage(request,response){
+    if(LOG_CONNECTIONS_CONSOLE){
+        console.log('Serving::Person has connected and requested home page');
+    }
+    response.sendFile(__dirname + '/ui/matchmaking.html');
 }
 
 
 app.get('/', getHomePage);
+app.get("/matchmaking", getMatchmakingPage);
 
 app.get( '/*' , function( req, res, next ) {
     //This is the current file they have requested

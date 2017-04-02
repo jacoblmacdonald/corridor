@@ -1,0 +1,197 @@
+@font-face {
+  font-family: v-large;
+  src: url("../fonts/visitor1.ttf"); }
+
+@font-face {
+  font-family: v-small;
+  src: url("../fonts/visitor2.ttf"); }
+
+.v-ultra {
+  font-family: v-large;
+  font-size: 100px; }
+
+.v-large {
+  font-family: v-large;
+  font-size: 50px; }
+
+.v-small {
+  font-family: v-small;
+  font-size: 30px; }
+
+body {
+  background-color: #111;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizelegibility;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004); }
+
+* {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0; }
+  *::-webkit-scrollbar {
+    display: none; }
+
+.login-c {
+  width: 100vw;
+  height: 100vh;
+  text-align: center; }
+  .login-c .content-c {
+    width: 505px;
+    display: inline-block;
+    height: 100%; }
+    .login-c .content-c .title-c {
+      margin-bottom: 30px;
+      margin-top: 100px;
+      width: 100%;
+      height: 100px;
+      overflow: hidden;
+      position: relative;
+      text-align: center; }
+      .login-c .content-c .title-c p {
+        position: absolute;
+        top: 100%;
+        width: 100%; }
+        .login-c .content-c .title-c p.active {
+          top: 0px; }
+    .login-c .content-c form {
+      width: 100%;
+      text-align: left; }
+      .login-c .content-c form .login-title {
+        margin-bottom: 10px; }
+      .login-c .content-c form input {
+        background-color: #111;
+        border: none;
+        border-bottom: 1px solid white;
+        color: white;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom: 20px; }
+        .login-c .content-c form input::-webkit-input-placeholder {
+          color: #444; }
+        .login-c .content-c form input::-moz-placeholder {
+          color: #444; }
+        .login-c .content-c form input:-ms-input-placeholder {
+          color: #444; }
+        .login-c .content-c form input:-moz-placeholder {
+          color: #444; }
+        .login-c .content-c form input.login-submit {
+          border: 2px solid white;
+          height: 60px; }
+        .login-c .content-c form input:focus {
+          outline: none; }
+
+.game-c {
+  width: 100vw;
+  height: 100vh;
+  text-align: center; }
+  .game-c .content-c {
+    width: 505px;
+    display: inline-block;
+    height: 100%; }
+
+.box {
+  width: 80px;
+  height: 80px;
+  border: 2px solid white;
+  position: relative; }
+  .box .box-level {
+    position: absolute;
+    bottom: -2;
+    right: -2;
+    width: 30px;
+    height: 30px;
+    border: 2px solid white; }
+    .box .box-level p {
+      line-height: calc(30px - 2px);
+      width: 29px;
+      color: white; }
+
+.screen-c {
+  text-align: center;
+  width: 100%;
+  margin-bottom: 30px;
+  border: 2px solid white; }
+  .screen-c .screen {
+    display: inline-block;
+    width: 300px;
+    height: 300px;
+    background-color: #141414; }
+
+.main-button {
+  width: 100%;
+  height: 60px;
+  border: 2px solid white;
+  margin-bottom: 10px; }
+  .main-button p {
+    color: white;
+    line-height: 60px; }
+
+.console-c {
+  width: 100%;
+  height: calc(100vh - 420px);
+  overflow: scroll; }
+  .console-c .name-row {
+    width: 100%;
+    overflow: hidden; }
+    .console-c .name-row .left {
+      color: white;
+      float: left; }
+    .console-c .name-row .right {
+      color: white;
+      float: right; }
+  .console-c .power-row {
+    width: 100%;
+    overflow: hidden; }
+    .console-c .power-row .left {
+      color: white;
+      float: left; }
+    .console-c .power-row .right {
+      color: white;
+      float: right; }
+  .console-c .build-row {
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 10px; }
+    .console-c .build-row .build-body {
+      float: left;
+      overflow: hidden; }
+      .console-c .build-row .build-body .body-col {
+        float: left;
+        width: 80px;
+        margin-right: 5px; }
+        .console-c .build-row .build-body .body-col:first-child, .console-c .build-row .build-body .body-col:last-child {
+          padding-top: calc(80px / 2); }
+        .console-c .build-row .build-body .body-col:nth-child(2) .box:first-child {
+          margin-bottom: 5px; }
+    .console-c .build-row .build-info {
+      float: right;
+      width: 250px; }
+      .console-c .build-row .build-info .class-row {
+        width: 100%;
+        overflow: hidden; }
+        .console-c .build-row .build-info .class-row .left {
+          float: left;
+          color: white; }
+        .console-c .build-row .build-info .class-row .right {
+          float: right;
+          color: white; }
+      .console-c .build-row .build-info .race-row {
+        width: 100%;
+        overflow: hidden; }
+        .console-c .build-row .build-info .race-row .left {
+          float: left;
+          color: white; }
+        .console-c .build-row .build-info .race-row .right {
+          float: right;
+          color: white; }
+  .console-c .bag-row {
+    width: 100%;
+    overflow: hidden; }
+    .console-c .bag-row .box {
+      float: left;
+      margin-right: 5px;
+      margin-bottom: 5px; }
+      .console-c .bag-row .box:nth-child(6), .console-c .bag-row .box:nth-child(12) {
+        margin-right: 0px; }

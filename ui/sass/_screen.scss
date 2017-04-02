@@ -1,0 +1,13 @@
+.screen-c {
+	text-align:center;
+	width:100%;
+	margin-bottom:$large-margin;
+	border:2px solid white;
+
+	.screen {
+		display:inline-block;
+		width:$screen-width;
+		height:$screen-width;
+		background-color: $screen-color;
+	}
+}
