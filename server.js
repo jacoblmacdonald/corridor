@@ -18,6 +18,13 @@ function getHomePage(request,response){
     //if logged in, switch to matchmaking page
 }
 
+function getSignupPage(request,response){
+    if(LOG_CONNECTIONS_CONSOLE){
+        console.log('Serving::Person has connected and requested home page');
+    }
+    response.sendFile(__dirname + '/ui/signup.html');
+}
+
 function getMatchmakingPage(request,response){
     if(LOG_CONNECTIONS_CONSOLE){
         console.log('Serving::Person has connected and requested home page');
@@ -28,6 +35,7 @@ function getMatchmakingPage(request,response){
 
 app.get('/', getHomePage);
 app.get("/matchmaking", getMatchmakingPage);
+app.get("/signup", getSignupPage);
 
 app.get( '/*' , function( req, res, next ) {
     //This is the current file they have requested

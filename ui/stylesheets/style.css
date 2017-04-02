@@ -78,7 +78,13 @@ body {
           color: #444; }
         .login-c .content-c form input.login-submit {
           border: 2px solid white;
-          height: 60px; }
+          height: 60px;
+          margin-bottom: 30px; }
+        .login-c .content-c form input.login-signup {
+          border: 2px solid white;
+          height: 40px;
+          width: 50%;
+          display: inline-block; }
         .login-c .content-c form input:focus {
           outline: none; }
 

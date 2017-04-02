@@ -66,6 +66,14 @@
 				&.login-submit {
 					border:2px solid white;
 					height:$main-button-height;
+					margin-bottom:$large-margin;
+				}
+
+				&.login-signup{
+					border:2px solid white;
+					height:$small-button-height;
+					width:50%;
+					display:inline-block;
 				}
 
 				&:focus {
