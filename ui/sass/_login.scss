@@ -8,6 +8,7 @@
 		width:$content-width;
 		display:inline-block;
 		height:100%;
+		text-align: left;
 
 		.title-c {
 			margin-bottom:$large-margin;
@@ -33,52 +34,47 @@
 			}
 		}
 
-		form {
-			width:100%;
-			text-align: left;
+		.login-title {
+			margin-bottom:$small-margin;
+		}
 
-			.login-title {
-				margin-bottom:$small-margin;
+		input {
+			background-color:$bk-color;
+			border:none;
+			border-bottom:1px solid white;
+			color:white;
+			cursor:pointer;
+			width:100%;
+			margin-bottom:$sidebar-spacing;
+
+			&::-webkit-input-placeholder {
+			 	color: $placeholder-color;
+			}
+			&::-moz-placeholder {
+			  	color: $placeholder-color;
+			}
+			&:-ms-input-placeholder {
+			  	color: $placeholder-color;
+			}
+			&:-moz-placeholder {
+			  	color: $placeholder-color;
 			}
 
-			input {
-				background-color:$bk-color;
-				border:none;
-				border-bottom:1px solid white;
-				color:white;
-				cursor:pointer;
+			&.login-submit {
+				border:2px solid white;
+				height:$main-button-height;
+				margin-bottom:$ultra-margin;
+			}
+
+			&.login-signup{
+				border:2px solid white;
+				height:$small-button-height;
 				width:100%;
-				margin-bottom:$sidebar-spacing;
+				display:inline-block;
+			}
 
-				&::-webkit-input-placeholder {
-				 	color: $placeholder-color;
-				}
-				&::-moz-placeholder {
-				  	color: $placeholder-color;
-				}
-				&:-ms-input-placeholder {
-				  	color: $placeholder-color;
-				}
-				&:-moz-placeholder {
-				  	color: $placeholder-color;
-				}
-
-				&.login-submit {
-					border:2px solid white;
-					height:$main-button-height;
-					margin-bottom:$large-margin;
-				}
-
-				&.login-signup{
-					border:2px solid white;
-					height:$small-button-height;
-					width:50%;
-					display:inline-block;
-				}
-
-				&:focus {
-					outline:none;
-				}
+			&:focus {
+				outline:none;
 			}
 		}
 	}

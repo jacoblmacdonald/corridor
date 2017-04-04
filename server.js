@@ -32,10 +32,25 @@ function getMatchmakingPage(request,response){
     response.sendFile(__dirname + '/ui/matchmaking.html');
 }
 
+function getCorridorPage(request,response){
+    if(LOG_CONNECTIONS_CONSOLE){
+        console.log('Serving::Person has connected and requested home page');
+    }
+    response.sendFile(__dirname + '/ui/corridor.html');
+}
+
+function getCreatorPage(request,response){
+    if(LOG_CONNECTIONS_CONSOLE){
+        console.log('Serving::Person has connected and requested home page');
+    }
+    response.sendFile(__dirname + '/ui/creator.html');
+}
 
 app.get('/', getHomePage);
 app.get("/matchmaking", getMatchmakingPage);
 app.get("/signup", getSignupPage);
+app.get("/corridor", getCorridorPage);
+app.get("/creator", getCreatorPage);
 
 app.get( '/*' , function( req, res, next ) {
     //This is the current file they have requested
@@ -46,9 +61,6 @@ app.get( '/*' , function( req, res, next ) {
     res.sendFile( __dirname + '/' + file );
 
 });
-
-
-
 
 //socket.io code
 

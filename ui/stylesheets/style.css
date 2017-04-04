@@ -18,6 +18,10 @@
   font-family: v-small;
   font-size: 30px; }
 
+.v-tiny {
+  font-family: v-small;
+  font-size: 20px; }
+
 body {
   background-color: #111;
   -webkit-font-smoothing: antialiased;
@@ -33,6 +37,12 @@ body {
   *::-webkit-scrollbar {
     display: none; }
 
+.version-title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: white; }
+
 .login-c {
   width: 100vw;
   height: 100vh;
@@ -40,7 +50,8 @@ body {
   .login-c .content-c {
     width: 505px;
     display: inline-block;
-    height: 100%; }
+    height: 100%;
+    text-align: left; }
     .login-c .content-c .title-c {
       margin-bottom: 30px;
       margin-top: 100px;
@@ -55,38 +66,295 @@ body {
         width: 100%; }
         .login-c .content-c .title-c p.active {
           top: 0px; }
-    .login-c .content-c form {
+    .login-c .content-c .login-title {
+      margin-bottom: 10px; }
+    .login-c .content-c input {
+      background-color: #111;
+      border: none;
+      border-bottom: 1px solid white;
+      color: white;
+      cursor: pointer;
       width: 100%;
-      text-align: left; }
-      .login-c .content-c form .login-title {
-        margin-bottom: 10px; }
-      .login-c .content-c form input {
-        background-color: #111;
-        border: none;
-        border-bottom: 1px solid white;
-        color: white;
-        cursor: pointer;
+      margin-bottom: 20px; }
+      .login-c .content-c input::-webkit-input-placeholder {
+        color: #444; }
+      .login-c .content-c input::-moz-placeholder {
+        color: #444; }
+      .login-c .content-c input:-ms-input-placeholder {
+        color: #444; }
+      .login-c .content-c input:-moz-placeholder {
+        color: #444; }
+      .login-c .content-c input.login-submit {
+        border: 2px solid white;
+        height: 60px;
+        margin-bottom: 100px; }
+      .login-c .content-c input.login-signup {
+        border: 2px solid white;
+        height: 40px;
         width: 100%;
+        display: inline-block; }
+      .login-c .content-c input:focus {
+        outline: none; }
+
+.matchmaking-c {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  position: relative; }
+  .matchmaking-c .options-c {
+    width: 400px;
+    height: 100%;
+    margin-top: 30px;
+    margin-left: 20px;
+    position: relative;
+    float: left; }
+    .matchmaking-c .options-c .sidebar-p {
+      color: white; }
+      .matchmaking-c .options-c .sidebar-p.has-margin {
         margin-bottom: 20px; }
-        .login-c .content-c form input::-webkit-input-placeholder {
+    .matchmaking-c .options-c .create-game-button {
+      height: 40px;
+      width: 100%;
+      border: 2px solid white;
+      margin-bottom: 30px;
+      text-align: center;
+      cursor: pointer; }
+      .matchmaking-c .options-c .create-game-button p {
+        color: white;
+        line-height: calc(40px - 2px); }
+      .matchmaking-c .options-c .create-game-button.active {
+        border: 2px solid #444; }
+        .matchmaking-c .options-c .create-game-button.active p {
           color: #444; }
-        .login-c .content-c form input::-moz-placeholder {
-          color: #444; }
-        .login-c .content-c form input:-ms-input-placeholder {
-          color: #444; }
-        .login-c .content-c form input:-moz-placeholder {
-          color: #444; }
-        .login-c .content-c form input.login-submit {
-          border: 2px solid white;
-          height: 60px;
-          margin-bottom: 30px; }
-        .login-c .content-c form input.login-signup {
-          border: 2px solid white;
-          height: 40px;
-          width: 50%;
-          display: inline-block; }
-        .login-c .content-c form input:focus {
-          outline: none; }
+    .matchmaking-c .options-c .creator-buttons {
+      position: absolute;
+      bottom: 20px;
+      left: 0px;
+      width: 100%; }
+      .matchmaking-c .options-c .creator-buttons .create-monster-button {
+        height: 40px;
+        width: 100%;
+        border: 2px solid white;
+        margin-bottom: 20px;
+        text-align: center;
+        cursor: pointer; }
+        .matchmaking-c .options-c .creator-buttons .create-monster-button p {
+          color: white;
+          line-height: calc(40px - 2px); }
+      .matchmaking-c .options-c .creator-buttons .create-item-button {
+        height: 40px;
+        width: 100%;
+        border: 2px solid white;
+        margin-bottom: 20px;
+        text-align: center;
+        cursor: pointer; }
+        .matchmaking-c .options-c .creator-buttons .create-item-button p {
+          color: white;
+          line-height: calc(40px - 2px); }
+    .matchmaking-c .options-c .game-info-c {
+      display: none; }
+      .matchmaking-c .options-c .game-info-c.active {
+        display: block; }
+      .matchmaking-c .options-c .game-info-c .game-host {
+        color: white;
+        margin-bottom: 30px;
+        opacity: 0; }
+        .matchmaking-c .options-c .game-info-c .game-host.active {
+          opacity: 1; }
+      .matchmaking-c .options-c .game-info-c .game-player {
+        color: #444;
+        margin-bottom: 10px;
+        opacity: 0; }
+        .matchmaking-c .options-c .game-info-c .game-player.joined {
+          color: white; }
+        .matchmaking-c .options-c .game-info-c .game-player.active {
+          opacity: 1; }
+      .matchmaking-c .options-c .game-info-c .start-game-button {
+        height: 40px;
+        width: 100%;
+        border: 2px solid white;
+        margin-top: 30px;
+        text-align: center;
+        cursor: pointer;
+        opacity: 0; }
+        .matchmaking-c .options-c .game-info-c .start-game-button p {
+          color: white;
+          line-height: calc(40px - 2px); }
+        .matchmaking-c .options-c .game-info-c .start-game-button.active {
+          opacity: 1; }
+  .matchmaking-c .players-c {
+    width: 400px;
+    height: 100%;
+    margin-top: 30px;
+    margin-left: 40px;
+    position: relative;
+    float: left; }
+    .matchmaking-c .players-c .players-c-title {
+      margin-bottom: 30px; }
+      .matchmaking-c .players-c .players-c-title p {
+        color: white; }
+    .matchmaking-c .players-c .all-players {
+      width: 100%;
+      height: calc(100% - 100px);
+      overflow: scroll; }
+      .matchmaking-c .players-c .all-players .player {
+        width: 100%;
+        margin-bottom: 10px;
+        opacity: 0; }
+        .matchmaking-c .players-c .all-players .player p {
+          color: white; }
+          .matchmaking-c .players-c .all-players .player p .join {
+            background-color: red;
+            padding-left: 5px;
+            padding-right: 5px;
+            display: none; }
+            .matchmaking-c .players-c .all-players .player p .join.active {
+              display: inline-block; }
+        .matchmaking-c .players-c .all-players .player.active {
+          opacity: 1; }
+
+.creator-content-c {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  min-width: 2000px; }
+
+.sidebar-c {
+  float: left;
+  width: 300px;
+  height: 100%;
+  margin-right: 40px;
+  margin-left: 20px; }
+  .sidebar-c .sidebar-top {
+    height: calc(100% - ((2 * 50px) + (2 * 20px))); }
+  .sidebar-c .submit-button {
+    height: 50px;
+    width: 100%;
+    border: 2px solid white;
+    margin-bottom: 20px;
+    text-align: center;
+    cursor: pointer; }
+    .sidebar-c .submit-button p {
+      color: white;
+      line-height: calc(50px - 2px); }
+  .sidebar-c .load-button {
+    height: 50px;
+    width: 100%;
+    border: 2px solid white;
+    margin-bottom: 20px;
+    text-align: center;
+    cursor: pointer; }
+    .sidebar-c .load-button p {
+      color: white;
+      line-height: calc(50px - 2px); }
+  .sidebar-c input {
+    background-color: #111;
+    border: none;
+    border-bottom: 1px solid white;
+    color: white;
+    cursor: pointer;
+    margin-bottom: 20px; }
+    .sidebar-c input::-webkit-input-placeholder {
+      color: #444; }
+    .sidebar-c input::-moz-placeholder {
+      color: #444; }
+    .sidebar-c input:-ms-input-placeholder {
+      color: #444; }
+    .sidebar-c input:-moz-placeholder {
+      color: #444; }
+  .sidebar-c .sidebar-title {
+    color: white;
+    margin-bottom: 20px; }
+  .sidebar-c .sidebar-p {
+    color: white; }
+  .sidebar-c .type-input {
+    margin-top: 10px;
+    margin-bottom: 20px; }
+    .sidebar-c .type-input p {
+      display: inline-block;
+      margin-left: 10px;
+      color: white; }
+    .sidebar-c .type-input input[type="radio"] {
+      display: none; }
+    .sidebar-c .type-input .radio {
+      margin-bottom: 10px;
+      overflow: hidden;
+      cursor: pointer; }
+      .sidebar-c .type-input .radio .checkbox {
+        float: left;
+        width: 14px;
+        height: 14px;
+        border: 2px solid #444;
+        background-color: #111; }
+      .sidebar-c .type-input .radio p {
+        float: left;
+        line-height: 15px;
+        color: #444; }
+      .sidebar-c .type-input .radio.active .checkbox, .sidebar-c .type-input .radio:hover .checkbox {
+        border-color: white;
+        background-color: white; }
+      .sidebar-c .type-input .radio.active p, .sidebar-c .type-input .radio:hover p {
+        color: white; }
+  .sidebar-c .color-selector {
+    width: 100%;
+    padding-top: 10px;
+    border-top: 2px solid white; }
+    .sidebar-c .color-selector .color {
+      cursor: pointer; }
+    .sidebar-c .color-selector .eraser {
+      color: #444;
+      cursor: pointer; }
+    .sidebar-c .color-selector .eraser:hover, .sidebar-c .color-selector .eraser.active {
+      color: white; }
+
+.creator-c {
+  float: left;
+  padding: 40px;
+  margin-right: 20px; }
+  .creator-c .creator {
+    width: 500px;
+    height: 500px;
+    background-color: #141414;
+    overflow: hidden; }
+    .creator-c .creator .cell {
+      float: left;
+      cursor: pointer; }
+  .creator-c p {
+    color: white; }
+
+.creator-screen-c {
+  float: left;
+  padding: 40px; }
+  .creator-screen-c p {
+    color: white; }
+  .creator-screen-c .screen {
+    width: 300px;
+    height: 300px;
+    background-color: #141414;
+    margin-bottom: 40px; }
+    .creator-screen-c .screen .screen-cell {
+      float: left;
+      pointer-events: none; }
+  .creator-screen-c .box {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    background-color: #141414; }
+    .creator-screen-c .box .box-level {
+      position: absolute;
+      bottom: -2;
+      right: -2;
+      width: 30px;
+      height: 30px;
+      border: 2px solid white;
+      text-align: center; }
+      .creator-screen-c .box .box-level p {
+        line-height: calc(30px - 2px);
+        width: 29px;
+        color: white; }
+    .creator-screen-c .box .box-cell {
+      float: left;
+      pointer-events: none; }
 
 .game-c {
   width: 100vw;

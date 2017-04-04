@@ -1,3 +1,10 @@
+.creator-content-c {
+	width:100vw;
+	height:100vh;
+	overflow:hidden;
+	min-width:2000px;
+}
+
 .sidebar-c {
 	float:left;
 	width:$sidebar-width;
@@ -7,11 +14,11 @@
 	margin-left:$content-margin-small;
 
 	.sidebar-top {
-		height:calc(100% - ((2 * #{$button-height}) + (2 * #{$content-margin-small})));
+		height:calc(100% - ((2 * #{$creator-button-height}) + (2 * #{$content-margin-small})));
 	}
 
 	.submit-button {
-		height:$button-height;
+		height:$creator-button-height;
 		width:100%;
 		border:2px solid white;
 		margin-bottom: $content-margin-small;
@@ -20,12 +27,12 @@
 
 		p {
 			color:white;
-			line-height: calc(#{$button-height} - 2px);
+			line-height: calc(#{$creator-button-height} - 2px);
 		}
 	}
 
 	.load-button {
-		height:$button-height;
+		height:$creator-button-height;
 		width:100%;
 		border:2px solid white;
 		margin-bottom: $content-margin-small;
@@ -34,7 +41,7 @@
 
 		p {
 			color:white;
-			line-height: calc(#{$button-height} - 2px);
+			line-height: calc(#{$creator-button-height} - 2px);
 		}
 	}
 
