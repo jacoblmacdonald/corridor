@@ -7,7 +7,7 @@ var http = require('http').Server(app);
 var server = require('socket.io')(http);
 var db = require('./api/defaultUser');
 
-var classes = require("./classes");
+var classes = require("./game/classes");
 var User = classes.User;
 var Player = classes.Player;
 var Game = classes.Game;
@@ -102,22 +102,33 @@ server.on("connection", function(client) {
 	//Join a game
 	//message: { name, gameId }
 	client.on("join", function(message) {
-		Game.findGame(message.gameId).players.push(new Player(this, message.name));
+		var game = Game.findGame(message.gameId);
+        game.players.push(new Player(this, message.name));
+
+        //Tell user who's in the game
+        client.emit("joined", { usernames : [ game.players.map(function(player) { return player.name; }) ]});
 	});
 
 	//Create a game
 	//message: { name }
 	client.on("create", function(message) {
-		var game = games.push(new Game(server, client));
-		game.players.push(new Player(this, new User(message.name)));
-		server.emit("created", { id : game.id });
+        console.log("created!");
+		var index = games.push(new Game(server, client)) - 1;
+		games[index].players.push(new Player(this, new User(message.name)));
+
+        //Tell all users that a new game has been created
+		server.emit("created", { gameId : games[index].id, host : message.name });
 	});
+
+    //Start a game
+    //message: { gameId }
+    client.on("start", function(message) {
+
+    });
 });
 
 http.listen(process.env.PORT || SERVER_PORT, function() {
 	console.log("listening on " + SERVER_PORT);
 });
-
-game.setup(0, server);
 
 module.exports = server;
