@@ -37,6 +37,9 @@ body {
   *::-webkit-scrollbar {
     display: none; }
 
+a:link {
+  text-decoration: none; }
+
 .version-title {
   position: absolute;
   top: 0;
@@ -224,7 +227,53 @@ body {
   width: 300px;
   height: 100%;
   margin-right: 40px;
-  margin-left: 20px; }
+  margin-left: 20px;
+  /*
+	.type-input {
+		margin-top:10px;
+
+		p {
+			display:inline-block;
+			margin-left:10px;
+			color:white;
+		}
+
+		input[type="radio"] {
+ 			display:none;
+		}
+
+		.radio {
+			margin-bottom:10px;
+			overflow:hidden;
+			cursor:pointer;
+
+			.checkbox {
+				float:left;
+				width:14px;
+				height:14px;
+				border:2px solid $placeholder-color;
+				background-color:$bk-color;
+			}
+
+			p {
+				float:left;
+				line-height:15px;
+				color:$placeholder-color;
+			}
+
+			&.active, &:hover {
+
+				.checkbox {
+					border-color:white;
+					background-color:white;
+				}
+
+				p {
+					color:white;
+				}
+			}
+		}
+	}*/ }
   .sidebar-c .sidebar-top {
     height: calc(100% - ((2 * 50px) + (2 * 20px))); }
   .sidebar-c .submit-button {
@@ -267,34 +316,43 @@ body {
     margin-bottom: 20px; }
   .sidebar-c .sidebar-p {
     color: white; }
-  .sidebar-c .type-input {
-    margin-top: 10px;
+  .sidebar-c .radio-container {
+    width: 100%;
+    overflow: hidden;
     margin-bottom: 20px; }
-    .sidebar-c .type-input p {
-      display: inline-block;
-      margin-left: 10px;
-      color: white; }
-    .sidebar-c .type-input input[type="radio"] {
-      display: none; }
-    .sidebar-c .type-input .radio {
-      margin-bottom: 10px;
-      overflow: hidden;
-      cursor: pointer; }
-      .sidebar-c .type-input .radio .checkbox {
-        float: left;
-        width: 14px;
-        height: 14px;
-        border: 2px solid #444;
-        background-color: #111; }
-      .sidebar-c .type-input .radio p {
-        float: left;
-        line-height: 15px;
-        color: #444; }
-      .sidebar-c .type-input .radio.active .checkbox, .sidebar-c .type-input .radio:hover .checkbox {
-        border-color: white;
-        background-color: white; }
-      .sidebar-c .type-input .radio.active p, .sidebar-c .type-input .radio:hover p {
+    .sidebar-c .radio-container .type-c {
+      float: left;
+      width: 50%; }
+    .sidebar-c .radio-container .range-c {
+      float: left;
+      width: 50%; }
+    .sidebar-c .radio-container .type-input, .sidebar-c .radio-container .range-input {
+      margin-top: 10px; }
+      .sidebar-c .radio-container .type-input p, .sidebar-c .radio-container .range-input p {
+        display: inline-block;
+        margin-left: 10px;
         color: white; }
+      .sidebar-c .radio-container .type-input input[type="radio"], .sidebar-c .radio-container .range-input input[type="radio"] {
+        display: none; }
+      .sidebar-c .radio-container .type-input .radio, .sidebar-c .radio-container .range-input .radio {
+        margin-bottom: 10px;
+        overflow: hidden;
+        cursor: pointer; }
+        .sidebar-c .radio-container .type-input .radio .checkbox, .sidebar-c .radio-container .range-input .radio .checkbox {
+          float: left;
+          width: 14px;
+          height: 14px;
+          border: 2px solid #444;
+          background-color: #111; }
+        .sidebar-c .radio-container .type-input .radio p, .sidebar-c .radio-container .range-input .radio p {
+          float: left;
+          line-height: 15px;
+          color: #444; }
+        .sidebar-c .radio-container .type-input .radio.active .checkbox, .sidebar-c .radio-container .type-input .radio:hover .checkbox, .sidebar-c .radio-container .range-input .radio.active .checkbox, .sidebar-c .radio-container .range-input .radio:hover .checkbox {
+          border-color: white;
+          background-color: white; }
+        .sidebar-c .radio-container .type-input .radio.active p, .sidebar-c .radio-container .type-input .radio:hover p, .sidebar-c .radio-container .range-input .radio.active p, .sidebar-c .radio-container .range-input .radio:hover p {
+          color: white; }
   .sidebar-c .color-selector {
     width: 100%;
     padding-top: 10px;

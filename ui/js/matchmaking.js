@@ -12,6 +12,11 @@ $(window).on("load", function() {
 		}
 	});
 
+	$(".start-game-button").click(function() {
+		//figure out who has joined the game and start it
+		window.location.href = "/corridor";
+	});
+
 	showActivePlayers();
 });
 

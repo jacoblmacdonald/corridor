@@ -3,7 +3,9 @@
 // //////////////////////////////////////////
 
 var itemType = "";
-var types = ["monster","weapon","item"];
+var itemRange = "";
+var types = ["otu","1 hand","2 hand", "head", "armor"];
+var ranges = ["low","med","high", "wild"];
 var colors = [
 "#FF0000", "#FF9900", "#FFCC00", "#FFFF00", "#B2FF00", "#66FF00", "#33FF70", "#00FFE1", "#0088F0", "#0011FF", "#7534ff"];
 var bkColor = "#111";
@@ -18,13 +20,15 @@ var object = [];
 
 $(window).on("load", function() {
 	populateTypes();
+	populateRanges();
 	populateColors();
 	populateCells();
 	populateScreen();
 	populateIcon();
 	buttonHovers();
 
-	$(".radio").click(function() {updateRadio($(this));});
+	$(".r-type").click(function() {updateType($(this));});
+	$(".r-range").click(function() {updateRange($(this));});
 	$(".color").click(function() {updateColor($(this));});
 	$(".eraser").click(function() {updateEraser();});
 	$(".cell").mousemove(function(e) {
@@ -44,6 +48,7 @@ $(window).on("load", function() {
 function printUpdate() {
 	console.log("=======");
 	console.log("item type: " + itemType);
+	console.log("item range: " + itemRange);
 	console.log("active color: " + activeColor);
 }
 
@@ -53,9 +58,16 @@ function printUpdate() {
 
 function populateTypes() {
 	for (var i = 0; i < types.length; i++) {
-		$(".type-input").append("<div class='radio' data-type='"+types[i]+"'><div class='checkbox'></div><p class='v-small'>"+types[i]+"</p></div>");
+		$(".type-input").append("<div class='radio r-type' data-type='"+types[i]+"'><div class='checkbox'></div><p class='v-small'>"+types[i]+"</p></div>");
 	}
-	updateRadio($(".radio[data-type='"+types[0]+"']"))
+	updateType($(".r-type[data-type='"+types[0]+"']"))
+}
+
+function populateRanges() {
+	for (var i = 0; i < ranges.length; i++) {
+		$(".range-input").append("<div class='radio r-range' data-type='"+ranges[i]+"'><div class='checkbox'></div><p class='v-small'>"+ranges[i]+"</p></div>");
+	}
+	updateRange($(".r-range[data-type='"+ranges[0]+"']"))
 }
 
 function populateColors() {
@@ -93,18 +105,34 @@ function updateLevel(text) {
 	$("input[name=level]").val(text);
 }
 
-function updateRadio(e) {
-	$(".radio").removeClass("active");
+function updateType(e) {
+	$(".r-type").removeClass("active");
 	e.addClass("active");
 	itemType = e.data("type");
 
 	printUpdate();
 }
 
-function updateRadioByText(text) {
-	$(".radio").removeClass("active");
-	$(".radio[data-type='"+text+"']").addClass("active");
-	iitemType = text;
+function updateTypeByText(text) {
+	$(".r-type").removeClass("active");
+	$(".r-type[data-type='"+text+"']").addClass("active");
+	itemType = text;
+
+	printUpdate();
+}
+
+function updateRange(e) {
+	$(".r-range").removeClass("active");
+	e.addClass("active");
+	itemRange = e.data("type");
+
+	printUpdate();
+}
+
+function updateRangeByText(text) {
+	$(".r-range").removeClass("active");
+	$(".r-range[data-type='"+text+"']").addClass("active");
+	itemRange = text;
 
 	printUpdate();
 }
@@ -277,7 +305,7 @@ function loadObject() {
 		if (lines[i] == "name:") {
 			updateName(lines[++i]);
 		} else if (lines[i] == "type:") {
-			updateRadioByText(lines[++i]);
+			updateTypeByText(lines[++i]);
 		} else if (lines[i] == "object:") {
 			updateCreator(lines[++i]);
 		} else if (lines[i] == "level:") {

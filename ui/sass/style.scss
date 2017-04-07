@@ -94,6 +94,12 @@ body {
   	}
 }
 
+a {
+	&:link {
+		text-decoration: none;
+	}
+}
+
 .version-title {
 	position:absolute;
 	top:0;
