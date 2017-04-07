@@ -37,29 +37,47 @@ function beginTitleAnimation() {
 // L O G I N
 // ///////////////////////////////////////
 
-function processLogin() {
-	var username = $(".input-username").val();
-	var password = $(".input-password").val();
-	console.log("attempting login with");
-	console.log("username: "+username);
-	console.log("password: "+password);
-	console.log("\n");
-
-	//Do checks for correct information (ie no blank fields)
-	//Send to node, if success:
-	window.location.href = "/matchmaking";
-}
-
-// ////////////////////
-// S I G N U P
-// ///////////////////////////////////////
-
 function clearErrors() {
 	$(".email-t .error").html("");
 	$(".user-t .error").html("");
 	$(".pass-t .error").html("");
 	$(".pass2-t .error").html("");
 }
+
+function processLogin() {
+	clearErrors();
+	var username = $(".input-username").val();
+	var password = $(".input-password").val();
+	var c = true;
+
+	if (username == "") {
+		$(".user-t .error").html(" username cannot be blank");
+		c = false;
+	}
+
+	if (password == "") {
+		$(".pass-t .error").html(" password cannot be blank");
+		c = false;
+	}
+
+	if (c == true) {
+		console.log("attempting login with");
+		console.log("username: "+username);
+		console.log("password: "+password);
+		console.log("\n");
+
+		//Do checks for correct information (ie no blank fields)
+		//Send to node, if success:
+		window.location.href = "/matchmaking";
+	}
+	
+}
+
+// ////////////////////
+// S I G N U P
+// ///////////////////////////////////////
+
+
 
 function processSignup() {
 	clearErrors();
