@@ -15,8 +15,6 @@ var log = globalFunctions.log;
 
 var server = require("../server");
 
-var game = new Game();
-
 function playRound() {
 	switch(game.state) {
 	case GameState.SETUP:

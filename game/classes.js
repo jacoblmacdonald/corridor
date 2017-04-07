@@ -31,38 +31,41 @@ const ItemType = {
 	ARMOR : 4
 };
 
+const maxPlayers = 2;
+
 //////////////////////////////////////////////
 // GENERAL GAME CLASSES
 //////////////////////////////////////////////
 
 class User {
 
-	constructor(id, name) {
-		this.id = id;
+	constructor(name) {
 		this.name = name;
 	}
 }
 
 class Player {
 
-	constructor(client, user) {
+	constructor(client, username) {
 		this.client = client;
-		this.user = user;
-
+		
+		this.user = new User(username);
 		this.level = 1;
 	}
 }
 
+//Game static variables
+var gameIndex = 0;
+
 class Game {
 
-	setup(id, server) {
-		this.id = id;
+	constructor(server) {
 		this.server = server;
 
-		this.state = GameState.SETUP;
+		this.id = gameIndex++;
 		this.players = [ ];
+		this.state = GameState.SETUP;
 		this.currentPlayer = 0;
-		this.maxPlayers = 2;
 	}
 
 	send(message, client) {
@@ -74,7 +77,7 @@ class Game {
 	receive(message, client) {
 		switch(this.state) {
 		case GameState.SETUP:
-			this.players.push(new Player(client, new User(message.id, message.name)));
+			this.players.push(new Player(client, new User(message.name)));
 			if(this.isFull()) {
 				this.send("Game starting!");
 				this.state = GameState.PLAYING;
@@ -105,6 +108,14 @@ class Game {
 
 		//Round
 		return Math.round(value);
+	}
+
+	static findGame(games, id) {
+		for(var i = 0; i < games.length; i++) {
+			if(games[i].id == id) {
+				return games[i];
+			}
+		}
 	}
 }
 
