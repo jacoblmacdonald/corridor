@@ -2,7 +2,6 @@
 	width:100vw;
 	height:100vh;
 	text-align:center;
-	//background-color:green;
 
 	.content-c {
 		width:$content-width;
@@ -36,6 +35,11 @@
 
 		.login-title {
 			margin-bottom:$small-margin;
+			color:white;
+
+			.error {
+				color:red;
+			}
 		}
 
 		input {
@@ -61,6 +65,12 @@
 			}
 
 			&.login-submit {
+				border:2px solid white;
+				height:$main-button-height;
+				margin-bottom:$ultra-margin;
+			}
+
+			&.signup-submit {
 				border:2px solid white;
 				height:$main-button-height;
 				margin-bottom:$ultra-margin;

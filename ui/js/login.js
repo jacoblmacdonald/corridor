@@ -14,6 +14,10 @@ $(window).on("load", function() {
 	$(".login-submit").click(function() {
 		processLogin();
 	});
+
+	$(".signup-submit").click(function() {
+		processSignup();
+	});
 });
 
 // ////////////////////
@@ -44,4 +48,55 @@ function processLogin() {
 	//Do checks for correct information (ie no blank fields)
 	//Send to node, if success:
 	window.location.href = "/matchmaking";
+}
+
+// ////////////////////
+// S I G N U P
+// ///////////////////////////////////////
+
+function clearErrors() {
+	$(".email-t .error").html("");
+	$(".user-t .error").html("");
+	$(".pass-t .error").html("");
+	$(".pass2-t .error").html("");
+}
+
+function processSignup() {
+	clearErrors();
+	var username = $(".signup-username").val();
+	var email = $(".signup-email").val();
+	var pass1 = $(".signup-password").val();
+	var pass2 = $(".signup-password2").val();
+	var c = true;
+	if (username == "") {
+		$(".user-t .error").html(" username cannot be blank");
+		c = false;
+	}
+
+	if (email == "") {
+		$(".email-t .error").html(" email cannot be blank");
+		c = false;
+	}
+
+	if (pass1.length < 8) {
+		$(".pass-t .error").html(" password must be at least 8 characters");
+		c = false;
+	}
+
+	if (pass1 != pass2) {
+		$(".pass2-t .error").html(" password does not match");
+		c = false;
+	}
+
+	if (c == true) {
+		console.log("attempting signup with");
+		console.log("username: "+username);
+		console.log("email: "+email);
+		console.log("password: "+pass1);
+		console.log("\n");
+
+		//Do checks for correct information (ie no blank fields)
+		//Send to node, if success:
+		window.location.href = "/matchmaking";
+	}
 }

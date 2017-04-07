@@ -70,7 +70,10 @@ a:link {
         .login-c .content-c .title-c p.active {
           top: 0px; }
     .login-c .content-c .login-title {
-      margin-bottom: 10px; }
+      margin-bottom: 10px;
+      color: white; }
+      .login-c .content-c .login-title .error {
+        color: red; }
     .login-c .content-c input {
       background-color: #111;
       border: none;
@@ -88,6 +91,10 @@ a:link {
       .login-c .content-c input:-moz-placeholder {
         color: #444; }
       .login-c .content-c input.login-submit {
+        border: 2px solid white;
+        height: 60px;
+        margin-bottom: 100px; }
+      .login-c .content-c input.signup-submit {
         border: 2px solid white;
         height: 60px;
         margin-bottom: 100px; }
