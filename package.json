@@ -21,6 +21,7 @@
     "bcrypt": "^1.0.2",
     "express": "^4.14.1",
     "passport": "^0.3.2",
-    "rethinkdb": "^2.3.3"
+    "rethinkdb": "^2.3.3",
+    "socket.io": "^1.7.3"
   }
 }
