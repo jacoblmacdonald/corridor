@@ -62,20 +62,21 @@ class Game {
 		this.state = GameState.SETUP;
 		this.players = [ ];
 		this.currentPlayer = 0;
-		this.maxPlayers = 20;
+		this.maxPlayers = 2;
 	}
 
 	send(message, client) {
-		console.log("Sending: " + message + " to: " + client.id);
-		this.server.emit("message", { message : message });//TODO
+		var receiving = client || this.server;
+		console.log("Sending: " + message + " to: " + (receiving.id || "All"));
+		receiving.emit("message", { message : message });
 	};
 
 	receive(message, client) {
 		switch(this.state) {
 		case GameState.SETUP:
 			this.players.push(new Player(client, new User(message.id, message.name)));
-			if(!this.isFull()) {
-				this.send("Game starting!", client);
+			if(this.isFull()) {
+				this.send("Game starting!");
 				this.state = GameState.PLAYING;
 			}
 			break;
