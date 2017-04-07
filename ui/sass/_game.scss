@@ -1,0 +1,33 @@
+.game-c {
+	width:100vw;
+	height:100vh;
+	text-align:center;
+
+	.content-c {
+		width:$content-width;
+		display:inline-block;
+		height:100%;
+	}
+}
+
+.box {
+	width:$box-width;
+	height:$box-width;
+	border:2px solid white;
+	position:relative;
+
+	.box-level {
+		position:absolute;
+		bottom:-2;
+		right:-2;
+		width:$box-level-width;
+		height:$box-level-width;
+		border:2px solid white;
+
+		p {
+			line-height:calc(#{$box-level-width} - 2px);
+			width:29px;
+			color:white;
+		}
+	}
+}

@@ -1,0 +1,91 @@
+.login-c {
+	width:100vw;
+	height:100vh;
+	text-align:center;
+
+	.content-c {
+		width:$content-width;
+		display:inline-block;
+		height:100%;
+		text-align: left;
+
+		.title-c {
+			margin-bottom:$large-margin;
+			//color:white;
+			margin-top:$ultra-margin;
+			width:100%;
+			height:100px;
+			overflow: hidden;
+			position:relative;
+			text-align: center;
+			//display:none;
+
+			p {
+				position:absolute;
+				top:100%;
+				//transition:top 0.5s;
+				width:100%;
+
+				&.active {
+					top:0px;
+
+				}
+			}
+		}
+
+		.login-title {
+			margin-bottom:$small-margin;
+			color:white;
+
+			.error {
+				color:red;
+			}
+		}
+
+		input {
+			background-color:$bk-color;
+			border:none;
+			border-bottom:1px solid white;
+			color:white;
+			cursor:pointer;
+			width:100%;
+			margin-bottom:$sidebar-spacing;
+
+			&::-webkit-input-placeholder {
+			 	color: $placeholder-color;
+			}
+			&::-moz-placeholder {
+			  	color: $placeholder-color;
+			}
+			&:-ms-input-placeholder {
+			  	color: $placeholder-color;
+			}
+			&:-moz-placeholder {
+			  	color: $placeholder-color;
+			}
+
+			&.login-submit {
+				border:2px solid white;
+				height:$main-button-height;
+				margin-bottom:$ultra-margin;
+			}
+
+			&.signup-submit {
+				border:2px solid white;
+				height:$main-button-height;
+				margin-bottom:$ultra-margin;
+			}
+
+			&.login-signup{
+				border:2px solid white;
+				height:$small-button-height;
+				width:100%;
+				display:inline-block;
+			}
+
+			&:focus {
+				outline:none;
+			}
+		}
+	}
+}

@@ -4,7 +4,9 @@
   "description": "A neat multiplayer turn-based game.",
   "main": "app.js",
   "scripts": {
-    "test": "make test"
+    "test": "make test",
+    "build-sass": "node-sass --include-path scss ui/sass/style.scss   ui/stylesheets/style.css",
+    "watch-css": "nodemon -e scss -x \"npm run build-sass\""
   },
   "repository": {
     "type": "git",
@@ -23,5 +25,9 @@
     "passport": "^0.3.2",
     "rethinkdb": "^2.3.3",
     "socket.io": "^1.7.3"
+  },
+  "devDependencies": {
+    "node-sass": "^4.5.2",
+    "nodemon": "^1.11.0"
   }
 }
