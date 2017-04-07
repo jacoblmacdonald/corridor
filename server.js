@@ -1,13 +1,25 @@
-//Server Consts
-var SERVER_PORT = 3000;
+const express = require("express");
+const app = express();
+const SERVER_PORT = 3000;
 var LOG_CONNECTIONS_CONSOLE = true;
 
-//Modules
-var app = require('express')();
-var http = require('http').createServer(app);
-var io = require('socket.io')(http);
+var http = require('http').Server(app);
+var server = require('socket.io')(http);
 var db = require('./api/defaultUser');
 
+var classes = require("./classes");
+var User = classes.User;
+var Player = classes.Player;
+var Game = classes.Game;
+var Sprite = classes.Sprite;
+var Effect = classes.Effect;
+var Item = classes.Item;
+var Monster = classes.Monster;
+var Job = classes.Job;
+var GameState = classes.GameState;
+var ItemType = classes.ItemType;
+
+var games = [ ];
 
 //get functions
 function getHomePage(request,response){
@@ -53,12 +65,20 @@ function getMonsterCreatorPage(request,response){
     response.sendFile(__dirname + '/ui/monster-creator.html');
 }
 
+function getGamePage(request,response){
+    if(LOG_CONNECTIONS_CONSOLE){
+        console.log('Serving::Person has connected and requested home page');
+    }
+    response.sendFile(__dirname + '/game.html');
+}
+
 app.get('/', getHomePage);
 app.get("/matchmaking", getMatchmakingPage);
 app.get("/signup", getSignupPage);
 app.get("/corridor", getCorridorPage);
 app.get("/item-creator", getItemCreatorPage);
 app.get("/monster-creator", getMonsterCreatorPage);
+app.get("/game", getGamePage);
 
 app.get( '/*' , function( req, res, next ) {
     //This is the current file they have requested
@@ -70,18 +90,34 @@ app.get( '/*' , function( req, res, next ) {
 
 });
 
-//socket.io code
+server.on("connection", function(client) {
+	console.log(client.id + " connected");
+	client.emit("connected");
 
-io.on('connection', function(client){
+	//Do something (in game)
+	client.on("action", function(message) {
+		game.receive(message, client);
+	});
 
-    client.emit('connected', {message: 'HEY YOU CONNECTED!'});
+	//Join a game
+	//message: { name, gameId }
+	client.on("join", function(message) {
+		Game.findGame(message.gameId).players.push(new Player(this, message.name));
+	});
 
+	//Create a game
+	//message: { name }
+	client.on("create", function(message) {
+		var game = games.push(new Game(server, client));
+		game.players.push(new Player(this, new User(message.name)));
+		server.emit("created", { id : game.id });
+	});
 });
 
-
-
-http.listen(process.env.PORT|| SERVER_PORT, function(){
-    console.log('Listening on port ' + SERVER_PORT);
+http.listen(process.env.PORT || SERVER_PORT, function() {
+	console.log("listening on " + SERVER_PORT);
 });
 
+game.setup(0, server);
 
+module.exports = server;
