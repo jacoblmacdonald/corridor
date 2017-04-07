@@ -6,7 +6,7 @@ var LOG_CONNECTIONS_CONSOLE = true;
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
-var db = require('./api/connection');
+var db = require('./api/defaultUser');
 
 
 //get functions
