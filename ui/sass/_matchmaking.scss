@@ -163,9 +163,11 @@
 						padding-left:5px;
 						padding-right:5px;
 						display:none;
+						margin-left:10px;
 
 						&.active {
 							display:inline-block;
+							cursor:pointer;
 						}
 					}
 				}
