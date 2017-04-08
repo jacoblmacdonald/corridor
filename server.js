@@ -102,11 +102,11 @@ server.on("connection", function(client) {
 	//Join a game
 	//message: { name, gameId }
 	client.on("join", function(message) {
-		var game = Game.findGame(message.gameId);
+		var game = Game.findGame(games, message.gameId);
         game.players.push(new Player(this, message.name));
 
         //Tell user who's in the game
-        client.emit("joined", { usernames : [ game.players.map(function(player) { return player.name; }) ]});
+        client.emit("joined", { usernames :  game.players.map(function(player) { return player.user.name; }) });
 	});
 
 	//Create a game
@@ -114,7 +114,7 @@ server.on("connection", function(client) {
 	client.on("create", function(message) {
         console.log("created!");
 		var index = games.push(new Game(server, client)) - 1;
-		games[index].players.push(new Player(this, new User(message.name)));
+		games[index].players.push(new Player(this, message.name));
 
         //Tell all users that a new game has been created
 		server.emit("created", { gameId : games[index].id, host : message.name });
