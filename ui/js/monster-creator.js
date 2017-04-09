@@ -320,6 +320,17 @@ function submitObject() {
 	console.log("SPRITE: "+object);
 	console.log("========================\n");
 
+	r.db('Corridor').table('Monsters').insert({
+		'name':,
+		'range' : ,
+		'description' :,
+		'num_tresures' :,
+		'debuff_class' :,
+		'debuff_lvl' :,
+		'sprite' :,
+		'creator_id' :,
+		'published' : 'False'
+	}).run()
 }
 
 // ////////////////////

@@ -324,6 +324,17 @@ function submitObject() {
 	console.log("DESCRIPTION: ");
 	console.log("SPRITE: "+object);
 	console.log("========================\n");
+
+	r.db('Corridor').table('Items').insert({
+		'name' : $("input[name=name]").val(),
+		'type' :,
+		'range' :,
+		'use_by_class' :,
+		'description' :,
+		'sprite' :,
+		'creator_id' :,
+		'published' : 'False'
+	}).run()
 }
 
 // ////////////////////
