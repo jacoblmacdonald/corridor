@@ -1,13 +1,12 @@
 const express = require("express");
 const app = express();
 const SERVER_PORT = 3000;
-var LOG_CONNECTIONS_CONSOLE = true;
 
 var http = require('http').Server(app);
 var server = require('socket.io')(http);
 var db = require('./api/defaultUser');
 
-var classes = require("./classes");
+var classes = require("./game/classes");
 var User = classes.User;
 var Player = classes.Player;
 var Game = classes.Game;
@@ -23,52 +22,31 @@ var games = [ ];
 
 //get functions
 function getHomePage(request,response){
-    if(LOG_CONNECTIONS_CONSOLE){
-        console.log('Serving::Person has connected and requested home page');
-    }
     response.sendFile(__dirname + '/ui/login.html');
     //if logged in, switch to matchmaking page
 }
 
 function getSignupPage(request,response){
-    if(LOG_CONNECTIONS_CONSOLE){
-        console.log('Serving::Person has connected and requested home page');
-    }
     response.sendFile(__dirname + '/ui/signup.html');
 }
 
 function getMatchmakingPage(request,response){
-    if(LOG_CONNECTIONS_CONSOLE){
-        console.log('Serving::Person has connected and requested home page');
-    }
     response.sendFile(__dirname + '/ui/matchmaking.html');
 }
 
 function getCorridorPage(request,response){
-    if(LOG_CONNECTIONS_CONSOLE){
-        console.log('Serving::Person has connected and requested home page');
-    }
     response.sendFile(__dirname + '/ui/corridor.html');
 }
 
 function getItemCreatorPage(request,response){
-    if(LOG_CONNECTIONS_CONSOLE){
-        console.log('Serving::Person has connected and requested home page');
-    }
     response.sendFile(__dirname + '/ui/item-creator.html');
 }
 
 function getMonsterCreatorPage(request,response){
-    if(LOG_CONNECTIONS_CONSOLE){
-        console.log('Serving::Person has connected and requested home page');
-    }
     response.sendFile(__dirname + '/ui/monster-creator.html');
 }
 
 function getGamePage(request,response){
-    if(LOG_CONNECTIONS_CONSOLE){
-        console.log('Serving::Person has connected and requested home page');
-    }
     response.sendFile(__dirname + '/game.html');
 }
 
@@ -83,9 +61,6 @@ app.get("/game", getGamePage);
 app.get( '/*' , function( req, res, next ) {
     //This is the current file they have requested
     var file = req.params[0];
-    //For debugging, we can track what files are requested.
-    if(LOG_CONNECTIONS_CONSOLE) console.log('\t :: Express :: file requested : ' + file);
-    //Send the requesting client the file.
     res.sendFile( __dirname + '/' + file );
 
 });
@@ -93,6 +68,15 @@ app.get( '/*' , function( req, res, next ) {
 server.on("connection", function(client) {
 	console.log(client.id + " connected");
 	client.emit("connected");
+
+    client.on("login", function(message){
+        console.log(message);
+    });
+
+    client.on("signUp", function(message){
+        var signUp = require("./api/signup");
+        signUp(message);
+    })
 
 	//Do something (in game)
 	client.on("action", function(message) {
@@ -118,6 +102,6 @@ http.listen(process.env.PORT || SERVER_PORT, function() {
 	console.log("listening on " + SERVER_PORT);
 });
 
-game.setup(0, server);
+//game.setup(0, server);
 
 module.exports = server;

@@ -1,7 +1,7 @@
 // ////////////////////
 // I N I T
 // ///////////////////////////////////////
-
+var socket = io();
 var colors = [
 "#FF0000", "#FF9900", "#FFCC00", "#FFFF00", "#B2FF00", "#66FF00", "#33FF70", "#00FFE1", "#0088F0", "#0011FF", "#7534ff", "#fff"];
 var colorDelay = 0.1;
@@ -46,8 +46,8 @@ function clearErrors() {
 
 function processLogin() {
 	clearErrors();
-	var username = $(".input-username").val();
-	var password = $(".input-password").val();
+	const username = $(".input-username").val();
+	const password = $(".input-password").val();
 	var c = true;
 
 	if (username == "") {
@@ -61,10 +61,13 @@ function processLogin() {
 	}
 
 	if (c == true) {
-		console.log("attempting login with");
-		console.log("username: "+username);
-		console.log("password: "+password);
-		console.log("\n");
+		//Create Object With Login Data
+		var loginData = {
+			username: username,
+			password: password
+		}
+		//Send it to server via socket.emit
+		socket.emit("login", loginData);
 
 		//Do checks for correct information (ie no blank fields)
 		//Send to node, if success:
@@ -81,10 +84,10 @@ function processLogin() {
 
 function processSignup() {
 	clearErrors();
-	var username = $(".signup-username").val();
-	var email = $(".signup-email").val();
-	var pass1 = $(".signup-password").val();
-	var pass2 = $(".signup-password2").val();
+	const username = $(".signup-username").val();
+	const email = $(".signup-email").val();
+	const pass1 = $(".signup-password").val();
+	const pass2 = $(".signup-password2").val();
 	var c = true;
 	if (username == "") {
 		$(".user-t .error").html(" username cannot be blank");
@@ -107,12 +110,14 @@ function processSignup() {
 	}
 
 	if (c == true) {
-		console.log("attempting signup with");
-		console.log("username: "+username);
-		console.log("email: "+email);
-		console.log("password: "+pass1);
-		console.log("\n");
-
+		//Create Object With Login Data
+		const signUpData = {
+			email: email,
+			username: username,
+			password: pass1,
+		}
+		//Send it to server via socket.emit
+		socket.emit("signUp", signUpData);
 		//Do checks for correct information (ie no blank fields)
 		//Send to node, if success:
 		window.location.href = "/matchmaking";
