@@ -2,6 +2,7 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="ui/stylesheets/style.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
  	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
  	<script src="ui/js/matchmaking.js"></script>
 </head>
@@ -16,10 +17,10 @@
 			</div>
 			<div class="game-info-c">
 				<p class="game-host v-small">username's game</p>
-				<p class="game-player v-small p1 joined">p1: username</p>
-				<p class="game-player v-small p2">p2: ...waiting for player</p>
-				<p class="game-player v-small p3">p3: ...waiting for player</p>
-				<p class="game-player v-small p4">p4: ...waiting for player</p>
+				<p class="game-player v-small p1">p1: <span class="text">...waiting for player</span></p>
+				<p class="game-player v-small p2">p2: <span class="text">...waiting for player</span></p>
+				<p class="game-player v-small p3">p3: <span class="text">...waiting for player</span></p>
+				<p class="game-player v-small p4">p4: <span class="text">...waiting for player</span></p>
 				<div class="start-game-button">
 					<p class="v-small">start game</p>
 				</div>
@@ -38,15 +39,6 @@
 				<p class="v-small">active players</p>
 			</div>
 			<div class="all-players">
-				<div class="player"><p class="v-small">username 00 <span class="join">join game</span></p></div>
-				<div class="player"><p class="v-small">username 00 <span class="join">join game</span></p></div>
-				<div class="player"><p class="v-small">username 00 <span class="join">join game</span></p></div>
-				<div class="player"><p class="v-small">username 00 <span class="join active">join game</span></p></div>
-				<div class="player"><p class="v-small">username 00 <span class="join">join game</span></p></div>
-				<div class="player"><p class="v-small">username 00 <span class="join">join game</span></p></div>
-				<div class="player"><p class="v-small">username 00 <span class="join">join game</span></p></div>
-				<div class="player"><p class="v-small">username 00 <span class="join active">join game</span></p></div>
-				<div class="player"><p class="v-small">username 00 <span class="join active">join game</span></p></div>
 			</div>
 		</div>
 	</div>

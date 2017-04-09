@@ -35,7 +35,6 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 var classes = require("./game/classes");
 var User = classes.User;
 var Player = classes.Player;
@@ -49,6 +48,7 @@ var GameState = classes.GameState;
 var ItemType = classes.ItemType;
 
 var games = [ ];
+var users = [ ];
 
 //////////////////////
 // S O C K E T S
@@ -57,6 +57,7 @@ var http = require('http').Server(app);
 var server = require('socket.io')(http);
 
 server.on("connection", function(client) {
+  
 	console.log(client.id + " connected");
 	client.emit("connected");
 

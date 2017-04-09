@@ -41,15 +41,25 @@ class User {
 
 	constructor(name) {
 		this.name = name;
+
+		this.hosting = null;
+	}
+
+	static findUser(users, name) {
+		for(var i = 0; i < users.length; i++) {
+			if(users[i].name == name) {
+				return users[i];
+			}
+		}
 	}
 }
 
 class Player {
 
-	constructor(client, username) {
+	constructor(client, user) {
 		this.client = client;
-		
-		this.user = new User(username);
+		this.user = user;
+
 		this.level = 1;
 	}
 }

@@ -19,6 +19,8 @@ $(window).on("load", function() {
 	$(".signup-submit").click(function() {
 		processSignup();
 	});
+
+	$(".login-error").html("");
 });
 
 // ////////////////////
@@ -43,6 +45,7 @@ function clearErrors() {
 	$(".user-t .error").html("");
 	$(".pass-t .error").html("");
 	$(".pass2-t .error").html("");
+	$(".login-error").html("");
 }
 
 function processLogin() {
@@ -79,6 +82,7 @@ function processLogin() {
 			success: function(data){
 				console.log('success');
 				console.log(data);
+				$(".login-error").html(data);
 			}
 		});
 
@@ -136,6 +140,7 @@ function processSignup() {
 			url: '/register',
 			success: function(data){
 				console.log(data);
+				$(".login-error").html(data);
 			}
 		});
 
