@@ -1,11 +1,39 @@
+//////////////////////
+// E X P R E S S
+/////////////////////////////////////////
 const express = require("express");
 const app = express();
-const SERVER_PORT = 3000;
-var LOG_CONNECTIONS_CONSOLE = true;
+const session = require('express-session');
+const bodyParser = require('body-parser');
+const routes = require('./routes');
 
-var http = require('http').Server(app);
-var server = require('socket.io')(http);
-var db = require('./api/defaultUser');
+
+//////////////////////
+// R E T H I N K D B 
+/////////////////////////////////////////
+const config = require('./config/defaults');
+const r = require('rethinkdbdash')(config.db);
+
+//////////////////////
+// P A S S P O R T
+/////////////////////////////////////////
+const passport = require('passport');
+//Create A RethinkDB Store to hold Session data
+const RDBStore = require('session-rethinkdb')(session);
+const store = new RDBStore(r, {
+    table: "Sessions"
+});
+
+//Init Sessions
+app.use(session({  
+  secret: config.sessionSecret,
+  store: store,
+  resave: true,
+  saveUninitialized: false
+}));
+//Init & Connect To Passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 var classes = require("./game/classes");
 var User = classes.User;
@@ -22,127 +50,52 @@ var ItemType = classes.ItemType;
 var games = [ ];
 var users = [ ];
 
-//get functions
-function getHomePage(request,response){
-    if(LOG_CONNECTIONS_CONSOLE){
-        console.log('Serving::Person has connected and requested home page');
-    }
-    response.sendFile(__dirname + '/ui/login.html');
-    //if logged in, switch to matchmaking page
-}
-
-function getSignupPage(request,response){
-    if(LOG_CONNECTIONS_CONSOLE){
-        console.log('Serving::Person has connected and requested home page');
-    }
-    response.sendFile(__dirname + '/ui/signup.html');
-}
-
-function getMatchmakingPage(request,response){
-    if(LOG_CONNECTIONS_CONSOLE){
-        console.log('Serving::Person has connected and requested home page');
-    }
-    response.sendFile(__dirname + '/ui/matchmaking.html');
-}
-
-function getCorridorPage(request,response){
-    if(LOG_CONNECTIONS_CONSOLE){
-        console.log('Serving::Person has connected and requested home page');
-    }
-    response.sendFile(__dirname + '/ui/corridor.html');
-}
-
-function getItemCreatorPage(request,response){
-    if(LOG_CONNECTIONS_CONSOLE){
-        console.log('Serving::Person has connected and requested home page');
-    }
-    response.sendFile(__dirname + '/ui/item-creator.html');
-}
-
-function getMonsterCreatorPage(request,response){
-    if(LOG_CONNECTIONS_CONSOLE){
-        console.log('Serving::Person has connected and requested home page');
-    }
-    response.sendFile(__dirname + '/ui/monster-creator.html');
-}
-
-function getGamePage(request,response){
-    if(LOG_CONNECTIONS_CONSOLE){
-        console.log('Serving::Person has connected and requested home page');
-    }
-    response.sendFile(__dirname + '/game.html');
-}
-
-app.get('/', getHomePage);
-app.get("/matchmaking", getMatchmakingPage);
-app.get("/signup", getSignupPage);
-app.get("/corridor", getCorridorPage);
-app.get("/item-creator", getItemCreatorPage);
-app.get("/monster-creator", getMonsterCreatorPage);
-app.get("/game", getGamePage);
-
-app.get( '/*' , function( req, res, next ) {
-    //This is the current file they have requested
-    var file = req.params[0];
-    //For debugging, we can track what files are requested.
-    if(LOG_CONNECTIONS_CONSOLE) console.log('\t :: Express :: file requested : ' + file);
-    //Send the requesting client the file.
-    res.sendFile( __dirname + '/' + file );
-
-});
+//////////////////////
+// S O C K E T S
+/////////////////////////////////////////
+var http = require('http').Server(app);
+var server = require('socket.io')(http);
 
 server.on("connection", function(client) {
-    console.log(client.id + " connected");
+  
+	console.log(client.id + " connected");
+	client.emit("connected");
 
-    //Load the matchmaking screen
-    client.on("loaded", function(message) {
-        if(games.length != 0) {
-            client.emit("connected", {
-                users : users.map(function(user) {
-                    return [ user.name, user.hosting ];
-                })
-            });
-        }
-        users.push(new User(message.username));
+    client.on("login", function(message){
+        console.log(message);
     });
 
-    //Do something (in game)
-    client.on("action", function(message) {
-        game.receive(message, client);
-    });
+    client.on("signUp", function(credentials){
+        var signUp = require("./api/signup");
+        signUp(credentials);
+    })
 
-    //Join a game
-    //message: { name, gameId }
-    client.on("join", function(message) {
-        var game = Game.findGame(games, message.gameId);
-        game.players.push(new Player(this, User.findUser(message.name)));
+	//Do something (in game)
+	client.on("action", function(message) {
+		game.receive(message, client);
+	});
 
-        //Tell user who's in the game
-        client.emit("joined", { usernames : game.players.map(function(player) { return player.user.name; })});
-    });
+	//Join a game
+	//message: { name, gameId }
+	client.on("join", function(message) {
+		Game.findGame(message.gameId).players.push(new Player(this, message.name));
+	});
 
-    //Create a game
-    //message: { name }
-    client.on("create", function(message) {
-        console.log("created!");
-        var index = games.push(new Game(server, client)) - 1;
-        var user = User.findUser(message.name);
-        user.hosting = games[index].id;
-        games[index].players.push(new Player(this, user));
-
-        //Tell all users that a new game has been created
-        server.emit("created", { gameId : games[index].id, host : message.name });
-    });
-
-    //Start a game
-    //message: { gameId }
-    client.on("start", function(message) {
-
-    });
+	//Create a game
+	//message: { name }
+	client.on("create", function(message) {
+		var game = games.push(new Game(server, client));
+		game.players.push(new Player(this, new User(message.name)));
+		server.emit("created", { id : game.id });
+	});
 });
+//body parser middleware
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json());
+app.use('/', routes);
 
-http.listen(process.env.PORT || SERVER_PORT, function() {
-    console.log("listening on " + SERVER_PORT);
+http.listen(process.env.PORT || 3000, function() {
+	console.log("listening on http://localhost:3000");
 });
 
 module.exports = server;
