@@ -105,6 +105,8 @@ a:link {
         display: inline-block; }
       .login-c .content-c input:focus {
         outline: none; }
+    .login-c .content-c .login-error {
+      color: red; }
 
 .matchmaking-c {
   width: 100%;
@@ -238,6 +240,35 @@ a:link {
   margin-right: 40px;
   margin-left: 20px;
   /*
+	.submit-button {
+		height:$creator-button-height;
+		width:100%;
+		border:2px solid white;
+		margin-bottom: $content-margin-small;
+		text-align: center;
+		cursor:pointer;
+
+		p {
+			color:white;
+			line-height: calc(50px - 2px);
+		}
+	}
+
+	.load-button {
+		height:$creator-button-height;
+		width:100%;
+		border:2px solid white;
+		margin-bottom: $content-margin-small;
+		text-align: center;
+		cursor:pointer;
+
+		p {
+			color:white;
+			line-height: calc(50px - 2px);
+		}
+	}
+	*/
+  /*
 	.type-input {
 		margin-top:10px;
 
@@ -285,26 +316,6 @@ a:link {
 	}*/ }
   .sidebar-c .sidebar-top {
     height: calc(100% - ((2 * 50px) + (2 * 20px))); }
-  .sidebar-c .submit-button {
-    height: 50px;
-    width: 100%;
-    border: 2px solid white;
-    margin-bottom: 20px;
-    text-align: center;
-    cursor: pointer; }
-    .sidebar-c .submit-button p {
-      color: white;
-      line-height: calc(50px - 2px); }
-  .sidebar-c .load-button {
-    height: 50px;
-    width: 100%;
-    border: 2px solid white;
-    margin-bottom: 20px;
-    text-align: center;
-    cursor: pointer; }
-    .sidebar-c .load-button p {
-      color: white;
-      line-height: calc(50px - 2px); }
   .sidebar-c input {
     background-color: #111;
     border: none;
@@ -335,32 +346,51 @@ a:link {
     .sidebar-c .radio-container .range-c {
       float: left;
       width: 50%; }
-    .sidebar-c .radio-container .type-input, .sidebar-c .radio-container .range-input {
+    .sidebar-c .radio-container .classes-c {
+      float: left;
+      width: 100%; }
+    .sidebar-c .radio-container .buff-c {
+      float: left;
+      width: 50%; }
+      .sidebar-c .radio-container .buff-c .buff-amt-p {
+        color: #444; }
+        .sidebar-c .radio-container .buff-c .buff-amt-p.active {
+          color: white; }
+      .sidebar-c .radio-container .buff-c input {
+        width: 100%;
+        border-bottom: 1px solid #444;
+        color: #444;
+        pointer-events: none; }
+        .sidebar-c .radio-container .buff-c input.active {
+          color: white;
+          border-bottom: 1px solid white;
+          pointer-events: all; }
+    .sidebar-c .radio-container .type-input, .sidebar-c .radio-container .range-input, .sidebar-c .radio-container .buff-input, .sidebar-c .radio-container .class-input {
       margin-top: 10px; }
-      .sidebar-c .radio-container .type-input p, .sidebar-c .radio-container .range-input p {
+      .sidebar-c .radio-container .type-input p, .sidebar-c .radio-container .range-input p, .sidebar-c .radio-container .buff-input p, .sidebar-c .radio-container .class-input p {
         display: inline-block;
         margin-left: 10px;
         color: white; }
-      .sidebar-c .radio-container .type-input input[type="radio"], .sidebar-c .radio-container .range-input input[type="radio"] {
+      .sidebar-c .radio-container .type-input input[type="radio"], .sidebar-c .radio-container .range-input input[type="radio"], .sidebar-c .radio-container .buff-input input[type="radio"], .sidebar-c .radio-container .class-input input[type="radio"] {
         display: none; }
-      .sidebar-c .radio-container .type-input .radio, .sidebar-c .radio-container .range-input .radio {
+      .sidebar-c .radio-container .type-input .radio, .sidebar-c .radio-container .range-input .radio, .sidebar-c .radio-container .buff-input .radio, .sidebar-c .radio-container .class-input .radio {
         margin-bottom: 10px;
         overflow: hidden;
         cursor: pointer; }
-        .sidebar-c .radio-container .type-input .radio .checkbox, .sidebar-c .radio-container .range-input .radio .checkbox {
+        .sidebar-c .radio-container .type-input .radio .checkbox, .sidebar-c .radio-container .range-input .radio .checkbox, .sidebar-c .radio-container .buff-input .radio .checkbox, .sidebar-c .radio-container .class-input .radio .checkbox {
           float: left;
           width: 14px;
           height: 14px;
           border: 2px solid #444;
           background-color: #111; }
-        .sidebar-c .radio-container .type-input .radio p, .sidebar-c .radio-container .range-input .radio p {
+        .sidebar-c .radio-container .type-input .radio p, .sidebar-c .radio-container .range-input .radio p, .sidebar-c .radio-container .buff-input .radio p, .sidebar-c .radio-container .class-input .radio p {
           float: left;
           line-height: 15px;
           color: #444; }
-        .sidebar-c .radio-container .type-input .radio.active .checkbox, .sidebar-c .radio-container .type-input .radio:hover .checkbox, .sidebar-c .radio-container .range-input .radio.active .checkbox, .sidebar-c .radio-container .range-input .radio:hover .checkbox {
+        .sidebar-c .radio-container .type-input .radio.active .checkbox, .sidebar-c .radio-container .type-input .radio:hover .checkbox, .sidebar-c .radio-container .range-input .radio.active .checkbox, .sidebar-c .radio-container .range-input .radio:hover .checkbox, .sidebar-c .radio-container .buff-input .radio.active .checkbox, .sidebar-c .radio-container .buff-input .radio:hover .checkbox, .sidebar-c .radio-container .class-input .radio.active .checkbox, .sidebar-c .radio-container .class-input .radio:hover .checkbox {
           border-color: white;
           background-color: white; }
-        .sidebar-c .radio-container .type-input .radio.active p, .sidebar-c .radio-container .type-input .radio:hover p, .sidebar-c .radio-container .range-input .radio.active p, .sidebar-c .radio-container .range-input .radio:hover p {
+        .sidebar-c .radio-container .type-input .radio.active p, .sidebar-c .radio-container .type-input .radio:hover p, .sidebar-c .radio-container .range-input .radio.active p, .sidebar-c .radio-container .range-input .radio:hover p, .sidebar-c .radio-container .buff-input .radio.active p, .sidebar-c .radio-container .buff-input .radio:hover p, .sidebar-c .radio-container .class-input .radio.active p, .sidebar-c .radio-container .class-input .radio:hover p {
           color: white; }
   .sidebar-c .color-selector {
     width: 100%;
@@ -391,7 +421,9 @@ a:link {
 
 .creator-screen-c {
   float: left;
-  padding: 40px; }
+  padding: 40px;
+  position: relative;
+  height: 100vh; }
   .creator-screen-c p {
     color: white; }
   .creator-screen-c .screen {
@@ -422,6 +454,31 @@ a:link {
     .creator-screen-c .box .box-cell {
       float: left;
       pointer-events: none; }
+  .creator-screen-c .buttons-c {
+    width: calc(100% - 80px);
+    position: absolute;
+    bottom: 0;
+    left: 40px; }
+    .creator-screen-c .buttons-c .submit-button {
+      height: 50px;
+      width: 100%;
+      border: 2px solid white;
+      margin-bottom: 20px;
+      text-align: center;
+      cursor: pointer; }
+      .creator-screen-c .buttons-c .submit-button p {
+        color: white;
+        line-height: calc(50px - 2px); }
+    .creator-screen-c .buttons-c .load-button {
+      height: 50px;
+      width: 100%;
+      border: 2px solid white;
+      margin-bottom: 20px;
+      text-align: center;
+      cursor: pointer; }
+      .creator-screen-c .buttons-c .load-button p {
+        color: white;
+        line-height: calc(50px - 2px); }
 
 .game-c {
   width: 100vw;

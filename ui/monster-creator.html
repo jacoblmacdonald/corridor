@@ -3,28 +3,28 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="ui/stylesheets/style.css">
  	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
- 	<script src="ui/js/item-creator.js"></script>
+ 	<script src="ui/js/monster-creator.js"></script>
 </head>
 <body>
 	<input class="loader" style="display:none;" type="file">
 	<div class="creator-content-c">
 		<div class="sidebar-c">
 			<div class="sidebar-top">
-				<p class="v-tiny sidebar-title">corridor item creator v0.0</p>
+				<p class="v-tiny sidebar-title">corridor monster creator v0.0</p>
 				<p class="v-small sidebar-p">name:</p>
-				<input type="text" class="v-small" name="name" placeholder="my item" value="my-item">
+				<input type="text" class="v-small" name="name" placeholder="my monster" value="my-item">
+				<p class="v-small sidebar-p">num treasures:</p>
+				<input type="text" class="v-small" name="num-treasures" placeholder="1" value="1">
 				<div class="radio-container">
-					<div class="type-c">
-						<p class="v-small sidebar-p">type:</p>
-						<div class="type-input"></div>
+					<div class="buff-c">
+						<p class="v-small sidebar-p">buff against:</p>
+						<div class="buff-input"></div>
+						<p class="v-small sidebar-p buff-amt-p">amount:</p>
+						<input type="text" class="v-small" name="buff-amount" placeholder="1" value="1">
 					</div>
 					<div class="range-c">
 						<p class="v-small sidebar-p">range:</p>
 						<div class="range-input"></div>
-					</div>
-					<div class="classes-c">
-						<p class="v-small sidebar-p">usable by class:</p>
-						<div class="class-input"></div>
 					</div>
 				</div>
 				<p class="v-small sidebar-p">colors:</p>
@@ -57,7 +57,6 @@
 			<div class="box">
 				<div class="box-level"><p class="v-small">5</p></div>
 			</div>
-
 			<div class="buttons-c">
 				<div class="load-button">
 					<p class="v-small">load</p>

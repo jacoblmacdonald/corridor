@@ -51,6 +51,7 @@ socket.on("connected", function(message) {
 			showPlayerJoin(message.users[i][0], message.users[i][1]);
 		}
 	}
+	showActivePlayers();
 });
 
 

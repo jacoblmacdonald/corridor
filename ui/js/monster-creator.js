@@ -2,12 +2,12 @@
 // I N I T
 // //////////////////////////////////////////
 
-var itemType = "";
-var itemRange = "";
-var itemClass = "";
-var types = ["otu","1 hand","2 hand", "head", "armor"];
+//var itemType = "";
+var monsterRange = "";
+var buffClass = "";
+var buffAmt = 0;
 var ranges = ["low","med","high", "wild"];
-var classes = ["all","warrior","wizard", "troll", "priest"];
+var classes = ["none", "warrior", "wizard", "troll", "priest"];
 var colors = [
 "#FF0000", "#FF9900", "#FFCC00", "#FFFF00", "#B2FF00", "#66FF00", "#33FF70", "#00FFE1", "#0088F0", "#0011FF", "#7534ff"];
 var bkColor = "#111";
@@ -21,7 +21,6 @@ var boxWidth = 80;
 var object = [];
 
 $(window).on("load", function() {
-	populateTypes();
 	populateRanges();
 	populateClasses();
 	populateColors();
@@ -30,9 +29,8 @@ $(window).on("load", function() {
 	populateIcon();
 	buttonHovers();
 
-	$(".r-type").click(function() {updateType($(this));});
+	$(".r-class").click(function() {updateBuff($(this));});
 	$(".r-range").click(function() {updateRange($(this));});
-	$(".r-class").click(function() {updateClass($(this));});
 	$(".color").click(function() {updateColor($(this));});
 	$(".eraser").click(function() {updateEraser();});
 	$(".cell").mousemove(function(e) {
@@ -51,9 +49,8 @@ $(window).on("load", function() {
 
 function printUpdate() {
 	//console.log("=======");
-	//console.log("item type: " + itemType);
-	//console.log("item range: " + itemRange);
-	//console.log("item class: " + itemClass);
+	//console.log("buff class: " + buffClass);
+	//console.log("item range: " + monsterRange);
 	//console.log("active color: " + activeColor);
 }
 
@@ -61,11 +58,11 @@ function printUpdate() {
 // S I D E B A R
 // //////////////////////////////////////////
 
-function populateTypes() {
-	for (var i = 0; i < types.length; i++) {
-		$(".type-input").append("<div class='radio r-type' data-type='"+types[i]+"'><div class='checkbox'></div><p class='v-small'>"+types[i]+"</p></div>");
+function populateClasses() {
+	for (var i = 0; i < classes.length; i++) {
+		$(".buff-input").append("<div class='radio r-class' data-class='"+classes[i]+"'><div class='checkbox'></div><p class='v-small'>"+classes[i]+"</p></div>");
 	}
-	updateType($(".r-type[data-type='"+types[0]+"']"))
+	updateBuff($(".r-class[data-class='"+classes[0]+"']"));
 }
 
 function populateRanges() {
@@ -73,13 +70,6 @@ function populateRanges() {
 		$(".range-input").append("<div class='radio r-range' data-type='"+ranges[i]+"'><div class='checkbox'></div><p class='v-small'>"+ranges[i]+"</p></div>");
 	}
 	updateRange($(".r-range[data-type='"+ranges[0]+"']"))
-}
-
-function populateClasses() {
-	for (var i = 0; i < classes.length; i++) {
-		$(".class-input").append("<div class='radio r-class' data-class='"+classes[i]+"'><div class='checkbox'></div><p class='v-small'>"+classes[i]+"</p></div>");
-	}
-	updateClass($(".r-class[data-class='"+classes[0]+"']"))
 }
 
 function populateColors() {
@@ -117,34 +107,38 @@ function updateLevel(text) {
 	$("input[name=level]").val(text);
 }
 
-function updateType(e) {
-	$(".r-type").removeClass("active");
-	e.addClass("active");
-	itemType = e.data("type");
-
+function updateBuff(e) {
+	/*
+	if (e.hasClass("active")) {
+		$(".r-class").removeClass("active");
+		buffClass = "";
+		$(".buff-amt-p").removeClass("active");
+		$(".buff-c input").removeClass("active");
+	} else {
+		$(".r-class").removeClass("active");
+		e.addClass("active");
+		buffClass = e.data("class");
+		$(".buff-amt-p").addClass("active");
+		$(".buff-c input").addClass("active");
+	}
 	printUpdate();
-}
-
-function updateClass(e) {
+	*/
 	$(".r-class").removeClass("active");
 	e.addClass("active");
-	itemClass = e.data("class");
-
-	printUpdate();
-}
-
-function updateTypeByText(text) {
-	$(".r-type").removeClass("active");
-	$(".r-type[data-type='"+text+"']").addClass("active");
-	itemType = text;
-
-	printUpdate();
+	buffClass = e.data("class");
+	if (e.data("class") == "none") {
+		$(".buff-amt-p").removeClass("active");
+		$(".buff-c input").removeClass("active");
+	} else {
+		$(".buff-amt-p").addClass("active");
+		$(".buff-c input").addClass("active");
+	}
 }
 
 function updateRange(e) {
 	$(".r-range").removeClass("active");
 	e.addClass("active");
-	itemRange = e.data("type");
+	monsterRange = e.data("type");
 
 	printUpdate();
 }
@@ -152,7 +146,7 @@ function updateRange(e) {
 function updateRangeByText(text) {
 	$(".r-range").removeClass("active");
 	$(".r-range[data-type='"+text+"']").addClass("active");
-	itemRange = text;
+	monsterRange = text;
 
 	printUpdate();
 }
@@ -316,14 +310,16 @@ function submitObject() {
 	});
 	*/
 	console.log("========================\n");
-	console.log("saving item with attributes:");
+	console.log("saving monster with attributes:");
 	console.log("NAME: "+$("input[name=name]").val());
-	console.log("TYPE: "+itemType);
-	console.log("RANGE: "+itemRange);
-	console.log("USE BY CLASS: "+itemClass);
+	console.log("RANGE: "+monsterRange);
 	console.log("DESCRIPTION: ");
+	console.log("NUM TREASURES: "+$("input[name=num-treasures]").val());
+	console.log("DE-BUFF CLASS: "+buffClass);
+	console.log("DE-BUFF Lvl: "+$("input[name=buff-amount]").val());
 	console.log("SPRITE: "+object);
 	console.log("========================\n");
+
 }
 
 // ////////////////////

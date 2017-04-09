@@ -17,6 +17,7 @@
 		height:calc(100% - ((2 * #{$creator-button-height}) + (2 * #{$content-margin-small})));
 	}
 
+	/*
 	.submit-button {
 		height:$creator-button-height;
 		width:100%;
@@ -44,6 +45,7 @@
 			line-height: calc(#{$creator-button-height} - 2px);
 		}
 	}
+	*/
 
 	input {
 		background-color:$bk-color;
@@ -92,7 +94,38 @@
 			width:50%;
 		}
 
-		.type-input, .range-input {
+		.classes-c {
+			float:left;
+			width:100%;
+		}
+
+		.buff-c {
+			float:left;
+			width:50%;
+
+			.buff-amt-p {
+				color:$placeholder-color;
+
+				&.active {
+					color:white;
+				}
+			}
+
+			input {
+				width:100%;
+				border-bottom:1px solid $placeholder-color;
+				color:$placeholder-color;
+				pointer-events:none;
+
+				&.active {
+					color:white;
+					border-bottom:1px solid white;
+					pointer-events:all;
+				}
+			}
+		}
+
+		.type-input, .range-input, .buff-input, .class-input{
 			margin-top:10px;
 
 			p {
