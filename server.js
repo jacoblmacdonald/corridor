@@ -62,9 +62,9 @@ server.on("connection", function(client) {
         console.log(message);
     });
 
-    client.on("signUp", function(message){
+    client.on("signUp", function(credentials){
         var signUp = require("./api/signup");
-        signUp(message);
+        signUp(credentials);
     })
 
 	//Do something (in game)
