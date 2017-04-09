@@ -23,7 +23,7 @@ var createUser = function(username, email, pwd){
 	});
 }
 var signUp = function(credentials){
-	const username = credentials.username;
+	const username = credentials.username.toLowerCase();
 	const email = credentials.email;
 	const pwd = credentials.password;
 
