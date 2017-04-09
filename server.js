@@ -4,7 +4,9 @@
 const express = require("express");
 const app = express();
 const session = require('express-session');
+const bodyParser = require('body-parser');
 const routes = require('./routes');
+
 
 //////////////////////
 // R E T H I N K D B 
@@ -86,7 +88,9 @@ server.on("connection", function(client) {
 		server.emit("created", { id : game.id });
 	});
 });
-
+//body parser middleware
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json());
 app.use('/', routes);
 
 http.listen(process.env.PORT || 3000, function() {

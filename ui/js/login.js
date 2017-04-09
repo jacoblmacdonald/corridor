@@ -1,7 +1,8 @@
 // ////////////////////
 // I N I T
 // ///////////////////////////////////////
-var socket = io();
+
+//var socket = io();
 var colors = [
 "#FF0000", "#FF9900", "#FFCC00", "#FFFF00", "#B2FF00", "#66FF00", "#33FF70", "#00FFE1", "#0088F0", "#0011FF", "#7534ff", "#fff"];
 var colorDelay = 0.1;
@@ -60,18 +61,29 @@ function processLogin() {
 		c = false;
 	}
 
-	if (c == true) {
+	if (c) {
 		//Create Object With Login Data
 		var loginData = {
 			username: username,
 			password: password
-		}
-		//Send it to server via socket.emit
-		socket.emit("login", loginData);
+		};
 
 		//Do checks for correct information (ie no blank fields)
 		//Send to node, if success:
-		window.location.href = "/matchmaking";
+
+		$.ajax({
+			type: 'POST',
+			data: JSON.stringify(loginData),
+			contentType: 'application/json',
+			url: '/login',
+			success: function(data){
+				console.log('success');
+				console.log(data);
+			}
+		});
+
+
+
 	}
 	
 }
@@ -114,12 +126,18 @@ function processSignup() {
 		const signUpData = {
 			email: email,
 			username: username,
-			password: pass1,
-		}
-		//Send it to server via socket.emit
-		socket.emit("signUp", signUpData);
-		//Do checks for correct information (ie no blank fields)
-		//Send to node, if success:
-		window.location.href = "/matchmaking";
+			password: pass1
+		};
+
+		$.ajax({
+			type: 'POST',
+			data: JSON.stringify(signUpData),
+			contentType: 'application/json',
+			url: '/register',
+			success: function(data){
+				console.log(data);
+			}
+		});
+
 	}
 }
