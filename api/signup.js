@@ -1,9 +1,10 @@
-var r = require('rethinkdb');
+//DB Connection
 var config = require('../config/defaults');
+var r = require('rethinkdbdash')(config.db);
+
+//Setup Bcrypt
 var bcrypt = require('bcrypt');
 const saltRounds = 10;
-
-var connection - r.connect(config.db);
 
 var signUp = function(message){
 	const pwd = message.password;
@@ -11,7 +12,6 @@ var signUp = function(message){
   		console.log(hash);
 	});
 }
-
 
 
 module.exports = signUp;

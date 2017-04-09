@@ -1,10 +1,41 @@
+//////////////////////
+// E X P R E S S
+/////////////////////////////////////////
 const express = require("express");
 const app = express();
-const SERVER_PORT = 3000;
+const session = require('express-session');
+const routes = require('./routes');
 
+//////////////////////
+// S O C K E T . I O 
+/////////////////////////////////////////
 var http = require('http').Server(app);
 var server = require('socket.io')(http);
-var db = require('./api/defaultUser');
+
+//////////////////////
+// R E T H I N K D B 
+/////////////////////////////////////////
+const config = require('./config/defaults');
+const r = require('rethinkdbdash')(config.db);
+
+//////////////////////
+// P A S S P O R T
+/////////////////////////////////////////
+const passport = require('passport');
+const RDBStore = require('session-rethinkdb')(session);
+const store = new RDBStore(r, {
+    table: "Sessions"
+});
+
+app.use(session({  
+  secret: config.sessionSecret,
+  store: store,
+  resave: true,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 var classes = require("./game/classes");
 var User = classes.User;
@@ -19,51 +50,6 @@ var GameState = classes.GameState;
 var ItemType = classes.ItemType;
 
 var games = [ ];
-
-//get functions
-function getHomePage(request,response){
-    response.sendFile(__dirname + '/ui/login.html');
-    //if logged in, switch to matchmaking page
-}
-
-function getSignupPage(request,response){
-    response.sendFile(__dirname + '/ui/signup.html');
-}
-
-function getMatchmakingPage(request,response){
-    response.sendFile(__dirname + '/ui/matchmaking.html');
-}
-
-function getCorridorPage(request,response){
-    response.sendFile(__dirname + '/ui/corridor.html');
-}
-
-function getItemCreatorPage(request,response){
-    response.sendFile(__dirname + '/ui/item-creator.html');
-}
-
-function getMonsterCreatorPage(request,response){
-    response.sendFile(__dirname + '/ui/monster-creator.html');
-}
-
-function getGamePage(request,response){
-    response.sendFile(__dirname + '/game.html');
-}
-
-app.get('/', getHomePage);
-app.get("/matchmaking", getMatchmakingPage);
-app.get("/signup", getSignupPage);
-app.get("/corridor", getCorridorPage);
-app.get("/item-creator", getItemCreatorPage);
-app.get("/monster-creator", getMonsterCreatorPage);
-app.get("/game", getGamePage);
-
-app.get( '/*' , function( req, res, next ) {
-    //This is the current file they have requested
-    var file = req.params[0];
-    res.sendFile( __dirname + '/' + file );
-
-});
 
 server.on("connection", function(client) {
 	console.log(client.id + " connected");
@@ -98,9 +84,12 @@ server.on("connection", function(client) {
 	});
 });
 
-http.listen(process.env.PORT || SERVER_PORT, function() {
-	console.log("listening on " + SERVER_PORT);
+app.use('/', routes);
+
+http.listen(process.env.PORT || 3000, function() {
+	console.log("listening on http://localhost:3000");
 });
+
 
 //game.setup(0, server);
 
