@@ -20,6 +20,7 @@ var GameState = classes.GameState;
 var ItemType = classes.ItemType;
 
 var games = [ ];
+var users = [ ];
 
 //get functions
 function getHomePage(request,response){
@@ -91,34 +92,47 @@ app.get( '/*' , function( req, res, next ) {
 });
 
 server.on("connection", function(client) {
-	console.log(client.id + " connected");
-	client.emit("connected");
+    console.log(client.id + " connected");
 
-	//Do something (in game)
-	client.on("action", function(message) {
-		game.receive(message, client);
-	});
+    //Load the matchmaking screen
+    client.on("loaded", function(message) {
+        if(games.length != 0) {
+            client.emit("connected", {
+                users : users.map(function(user) {
+                    return [ user.name, user.hosting ];
+                })
+            });
+        }
+        users.push(new User(message.username));
+    });
 
-	//Join a game
-	//message: { name, gameId }
-	client.on("join", function(message) {
-		var game = Game.findGame(games, message.gameId);
-        game.players.push(new Player(this, message.name));
+    //Do something (in game)
+    client.on("action", function(message) {
+        game.receive(message, client);
+    });
+
+    //Join a game
+    //message: { name, gameId }
+    client.on("join", function(message) {
+        var game = Game.findGame(games, message.gameId);
+        game.players.push(new Player(this, User.findUser(message.name)));
 
         //Tell user who's in the game
-        client.emit("joined", { usernames :  game.players.map(function(player) { return player.user.name; }) });
-	});
+        client.emit("joined", { usernames : game.players.map(function(player) { return player.user.name; })});
+    });
 
-	//Create a game
-	//message: { name }
-	client.on("create", function(message) {
+    //Create a game
+    //message: { name }
+    client.on("create", function(message) {
         console.log("created!");
-		var index = games.push(new Game(server, client)) - 1;
-		games[index].players.push(new Player(this, message.name));
+        var index = games.push(new Game(server, client)) - 1;
+        var user = User.findUser(message.name);
+        user.hosting = games[index].id;
+        games[index].players.push(new Player(this, user));
 
         //Tell all users that a new game has been created
-		server.emit("created", { gameId : games[index].id, host : message.name });
-	});
+        server.emit("created", { gameId : games[index].id, host : message.name });
+    });
 
     //Start a game
     //message: { gameId }
@@ -128,7 +142,7 @@ server.on("connection", function(client) {
 });
 
 http.listen(process.env.PORT || SERVER_PORT, function() {
-	console.log("listening on " + SERVER_PORT);
+    console.log("listening on " + SERVER_PORT);
 });
 
 module.exports = server;

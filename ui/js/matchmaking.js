@@ -9,45 +9,54 @@ var socket = io();
 var TEST_USER = "username7";
 var CURRENT_GAME_ID = 0;
 
-//Game created (received by everyone)
-socket.on("created", function(message) {
-	//alert(message.host);
-	console.log("creating game "+ message.gameId);
-	if (message.host == TEST_USER) {
-		showGameInfo(message.gameId, [TEST_USER]);
-	} else {
-		//$(".player[data-username='"+message.host+"']").addClass("active");
-		$(".player[data-username='"+message.host+"'] .v-small .join").data("id", message.gameId)
-		$(".player[data-username='"+message.host+"'] .v-small .join").addClass("active");
-	}
-});
-
-//Game joined (received by all users in the joined game)
-socket.on("joined", function(message) {
-	// TODO: message.usernames contains an array of all users in the match
-	//// send to showGameInfo()
-	showGameInfo(message.gameId, message.usernames);
-});
-
 $(window).on("load", function() {
 	
 
 	$(".create-game-button").click(function() {
 		if (!$(".game-info-c").hasClass("active")) {
-			//socket.emit("create", { name : TEST_USER });
 			socket.emit("create", { name : TEST_USER });
 		}
 	});
 
 	$(".start-game-button").click(function() {
-		//figure out who has joined the game and start it
-
 		socket.emit("start", { gameId : CURRENT_GAME_ID });
 		//window.location.href = "/corridor";
 	});
 
-	showActivePlayers();
+	socket.emit("loaded", { username : TEST_USER });
 });
+
+// ////////////////////
+// I N I T
+// ///////////////////////////////////////
+
+socket.on("created", function(message) {
+	console.log("creating game "+ message.gameId);
+	if (message.host == TEST_USER) {
+		showGameInfo(message.gameId, [TEST_USER]);
+	} else {
+		showPlayerJoin(message.host, message.gameId);
+	}
+});
+
+socket.on("joined", function(message) {
+	showGameInfo(message.gameId, message.usernames);
+});
+
+
+socket.on("connected", function(message) {
+	console.log(message.users);
+	for (var i = 0; i < message.users.length; i++) {
+		if (message.users[i][1] !== null) {
+			showPlayerJoin(message.users[i][0], message.users[i][1]);
+		}
+	}
+});
+
+
+// ////////////////////
+// D I S P L A Y
+// ///////////////////////////////////////
 
 function showGameInfo(id, players) {
 	//refresh everything
@@ -61,11 +70,9 @@ function showGameInfo(id, players) {
 
 	//update game id
 	CURRENT_GAME_ID = id;
-	//console.log(players);
 
 	//show joined players
 	for (var i = 1; i <= players.length; i++) {
-		console.log(players[i-1]);
 		$(".p"+i).addClass("joined");
 		$(".p"+i+" .text").html(players[i - 1]);
 	}
@@ -99,8 +106,12 @@ function showActivePlayers() {
 	});
 }
 
+function showPlayerJoin(user, id) {
+	$(".player[data-username='"+user+"'] .v-small .join").data("id", id)
+	$(".player[data-username='"+user+"'] .v-small .join").addClass("active");
+}
+
 function processJoin(e) {
-	//alert("clicked");
 	if(e.hasClass("active")) {
 		var id = $(".v-small .join", e).data("id");
 		socket.emit("join", { name : TEST_USER, gameId : id});
