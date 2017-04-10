@@ -41,11 +41,11 @@ $(window).on("load", function() {
 	$(".cell").click(function(e) {updateCell($(this));});
 	$(".submit-button").click(function() {submitObject();});
 	$(".load-button").click(function() {
-		$(".loader").val("");
-		$(".loader").trigger("click");
+		toggleLoad();
 	});
-	$(".loader").change(function() {loadObject();});
+	//$(".loader").change(function() {loadObject();});
 
+	populateLoad();
 	printUpdate();
 });
 
@@ -334,33 +334,52 @@ function submitObject() {
 // ////////////////////
 // L O A D
 // //////////////////////////////////////////
-function loadObject() {
-	var filename = "php/" + $('.loader').val().split('\\').pop();
-	var lines = getFile(filename).split("\n");
-	for (var i = 0; i < lines.length; i++) {
-		if (lines[i] == "name:") {
-			updateName(lines[++i]);
-		} else if (lines[i] == "type:") {
-			updateTypeByText(lines[++i]);
-		} else if (lines[i] == "object:") {
-			updateCreator(lines[++i]);
-		} else if (lines[i] == "level:") {
-			updateLevel(lines[++i]);
+
+function populateLoad() {
+	$.ajax({
+		type: 'POST',
+		//data: JSON.stringify(itemData),
+		contentType: 'application/json',
+		url: '/items-list',
+		success: function(data){
+			//console.log(data);
+			var items = JSON.parse(data);
+			//console.log(items[0].id);
+
+			for (var i = 0; i < items.length; i++) {
+				$(".load-window").append("<p class='v-small'>"+items[i].id+"</p>");
+			}
+
+			$(".load-window .v-small").each(function() {
+				$(this).click(function() {
+					grabItem($(this));
+				});
+			});
 		}
-	}
+	});
 }
 
-function getFile(path) {
-	newfile = "";
+function grabItem(el) {
+
+	var itemData = {
+		id: el.html(),
+		creator_id: "raf" //will change
+	};
+
+	console.log(itemData);
+
 	$.ajax({
-    	async: false,
-     	type: 'GET',
-     	dataType: "text",
-     	url: path,
-     	success: function(data) {
-       		newFile = data;
-       		console.log("successfully got object from file :D");
-     	}
+		type: 'POST',
+		data: JSON.stringify(itemData),
+		contentType: 'application/json',
+		url: '/grab-item',
+		success: function(data){
+			console.log(data);
+		}
 	});
-	return newFile;
+	
+}
+
+function toggleLoad() {
+	$(".load-window").toggleClass("active");
 }

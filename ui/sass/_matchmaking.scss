@@ -178,4 +178,20 @@
 			}
 		}
 	}
+
+	.logout-button {
+		height:$small-button-height;
+		width:150px;
+		position:absolute;
+		top:$large-margin;
+		right:20px;
+		border:2px solid white;
+		text-align: center;
+		cursor:pointer;
+
+		p {
+			color:white;
+			line-height: calc(#{$small-button-height} - 2px);
+		}
+	}
 }

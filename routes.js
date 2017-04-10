@@ -143,6 +143,26 @@ router.post("/monster-upload", function(req, res) {
     })
 });
 
+router.post("/items-list", function(req, res) {
+    r.db('Corridor').table('Items').filter({'creator_id':'raf'}).orderBy(r.desc("id")).pluck("id").run(function(err, cursor) {
+        return res.send(JSON.stringify(cursor, null, 2));
+        //cursor.toArray(function(err, result) {
+            //return res.send(result);
+        //});
+    });
+});
+
+router.post("/grab-item", function(req, res) {
+    const id = req.body.id;
+    const creator_id = req.body.creator_id;
+    r.db('Corridor').table('Items').filter({
+        'creator_id' : creator_id,
+        'id' : id
+    }).run(function(err, cursor){
+        return res.send(JSON.stringify(cursor, null, 2));
+    });
+});
+
 //Gets
 router.get('/', function(req, res){
     res.sendFile(__dirname + '/ui/login.html');
