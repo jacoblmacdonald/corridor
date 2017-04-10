@@ -80,9 +80,13 @@ function processLogin() {
 			contentType: 'application/json',
 			url: '/login',
 			success: function(data){
-				console.log('success');
-				console.log(data);
-				$(".login-error").html(data);
+				//console.log('success');
+				//console.log(data);
+				if (data == "success") {
+					window.location.href = "/";
+				} else {
+ 					$(".login-error").html("incorrect information, please try again");
+ 				}
 			}
 		});
 
@@ -139,8 +143,11 @@ function processSignup() {
 			contentType: 'application/json',
 			url: '/register',
 			success: function(data){
-				console.log(data);
-				$(".login-error").html(data);
+				if (data == "success") {
+					window.location.href = "/";
+				} else {
+ 					$(".login-error").html("username already taken :<");
+ 				}
 			}
 		});
 

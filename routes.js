@@ -5,14 +5,12 @@
 module.exports = function(app, passport){
     app.post('/register', passport.authenticate('local-signup',{
         failureRedirect: '/signup'}), function(req, res){
-            res.send("It All Works");
-            return res.redirect('/matchmaking');
+            return res.send("success");
         });
 
     app.post('/login', passport.authenticate('local-login',{
         failureRedirect: '/'}), function(req, res){
-            res.send("It All Works");
-            return res.redirect('/matchmaking');
+            return res.send("success");
         });
   
     app.post("/item-upload", function(req, res) {
@@ -151,6 +149,10 @@ module.exports = function(app, passport){
     app.get('/logout', function(req, res){
         req.logout();
         res.redirect('/');
+    });
+    app.get('/getThisUser', isLoggedIn, function(req, res) {
+        const user = req.user.id;
+        return res.send(user);
     });
     app.get( '/*' , function(req, res) {
         //This is the current file they have requested
