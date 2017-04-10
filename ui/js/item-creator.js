@@ -299,42 +299,36 @@ var cellSize = boxWidth / numCells;
 // S U B M I T
 // //////////////////////////////////////////
 function submitObject() {
-	/*
-	$.ajax({
-		url:"php/write-object.php",
-		type:"POST",
-		data:{
-			"object":object,
-			"type":itemType,
-			"level":$("input[name=level]").val(),
-			"name":$("input[name=name]").val()
-		},
-		success:function(data) {
-			console.log("sucessfully sent object to file :D");
-			location.reload();
-		}
-	});
-	*/
 	console.log("========================\n");
 	console.log("saving item with attributes:");
 	console.log("NAME: "+$("input[name=name]").val());
 	console.log("TYPE: "+itemType);
 	console.log("RANGE: "+itemRange);
 	console.log("USE BY CLASS: "+itemClass);
-	console.log("DESCRIPTION: ");
+	console.log("DESCRIPTION: "+$(".item-desc").val());
 	console.log("SPRITE: "+object);
 	console.log("========================\n");
 
-	r.db('Corridor').table('Items').insert({
-		'name' : $("input[name=name]").val(),
-		'type' :,
-		'range' :,
-		'use_by_class' :,
-		'description' :,
-		'sprite' :,
-		'creator_id' :,
-		'published' : 'False'
-	}).run()
+	const itemData = {
+		id: $("input[name=name]").val(),
+		type: itemType,
+		range: itemRange,
+		use_by_class: itemClass,
+		description: $(".item-desc").val(),
+		sprite: object,
+		creator_id: "raf", //change this
+		published: 'False'
+	};
+
+	$.ajax({
+		type: 'POST',
+		data: JSON.stringify(itemData),
+		contentType: 'application/json',
+		url: '/item-upload',
+		success: function(data){
+			console.log(data);
+		}
+	});
 }
 
 // ////////////////////

@@ -54,6 +54,95 @@ router.post('/register', function(req, res){
 
 });
 
+router.post("/item-upload", function(req, res) {
+    const id = req.body.id;
+    const type = req.body.type;
+    const range = req.body.range;
+    const use_by_class = req.body.use_by_class;
+    const description = req.body.description;
+    const sprite = req.body.sprite;
+    const creator_id = req.body.creator_id;
+    const published = req.body.published;
+
+    r.db('Corridor').table('Items').filter({
+        'id' : id,
+        'creator_id' : creator_id
+    }).run().then(function(item){
+        if(item[0]){
+            r.db('Corridor').table('Items').get(id).replace({
+                'id' : id,
+                'type' :type,
+                'range' :range,
+                'use_by_class' :use_by_class,
+                'description' :description,
+                'sprite' :sprite,
+                'creator_id' :creator_id,
+                'published' : published
+            }).run()
+            return res.send("Item of the same name already exists");
+        }
+        else{
+            r.db('Corridor').table('Items').insert({
+                'id' : id,
+                'type' :type,
+                'range' :range,
+                'use_by_class' :use_by_class,
+                'description' :description,
+                'sprite' :sprite,
+                'creator_id' :creator_id,
+                'published' : published
+            }).run()
+            return res.send("Item Successfully uploaded");
+        }
+    })
+});
+
+router.post("/monster-upload", function(req, res) {
+    const id = req.body.id;
+    const range = req.body.range;
+    const description = req.body.description;
+    const num_treasures = req.body.num_treasures;
+    const buff_class = req.body.buff_class;
+    const buff_lvl = req.body.buff_lvl;
+    const sprite = req.body.sprite;
+    const creator_id = req.body.creator_id;
+    const published = req.body.published;
+
+    r.db('Corridor').table('Monsters').filter({
+        'id' : id,
+        'creator_id' : creator_id
+    }).run().then(function(item){
+        if(item[0]){
+            r.db('Corridor').table('Monsters').get(id).replace({
+                'id' : id,
+                'range' :range,
+                'description' :description,
+                'num_treasures' : num_treasures,
+                'buff_class' : buff_class,
+                'buff_lvl' : buff_lvl,
+                'sprite' :sprite,
+                'creator_id' :creator_id,
+                'published' : published
+            }).run()
+            return res.send("Monster of the same name already exists");
+        }
+        else{
+        r.db('Corridor').table('Monsters').insert({
+            'id' : id,
+            'range' :range,
+            'description' :description,
+            'num_treasures' : num_treasures,
+            'buff_class' : buff_class,
+            'buff_lvl' : buff_lvl,
+            'sprite' :sprite,
+            'creator_id' :creator_id,
+            'published' : published
+        }).run()
+        return res.send("Monster Successfully uploaded");
+        }
+    })
+});
+
 //Gets
 router.get('/', function(req, res){
     res.sendFile(__dirname + '/ui/login.html');
@@ -71,7 +160,7 @@ router.get("/item-creator", function(req,res){
     res.sendFile(__dirname + '/ui/item-creator.html');
 });
 router.get("/monster-creator", function(req,res){
-    res.sendFile(__dirname + '/ui/game.html');
+    res.sendFile(__dirname + '/ui/monster-creator.html');
 });
 router.get("/game", function(req,res){
     res.sendFile(__dirname + '/ui/login.html');

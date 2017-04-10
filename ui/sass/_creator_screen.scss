@@ -2,6 +2,8 @@
 	float:left;
 	padding:$creator-padding;
 	margin-right:$content-margin-small;
+	position:relative;
+	height:100vh;
 
 	.creator {
 		width:$creator-width;
@@ -17,6 +19,31 @@
 
 	p {
 		color:white;
+	}
+
+	textarea {
+		position:absolute;
+		left:40px;
+		bottom:20px;
+		width:calc(100% - 80px);
+		background-color:$bk-color;
+		border:2px solid white;
+		height:calc(100vh - (#{$creator-width} + 120px));
+		color:white;
+		cursor:pointer;
+
+		&::-webkit-input-placeholder {
+		 	color: $placeholder-color;
+		}
+		&::-moz-placeholder {
+		  	color: $placeholder-color;
+		}
+		&:-ms-input-placeholder {
+		  	color: $placeholder-color;
+		}
+		&:-moz-placeholder {
+		  	color: $placeholder-color;
+		}
 	}
 }
 

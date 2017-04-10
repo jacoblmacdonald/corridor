@@ -407,7 +407,9 @@ a:link {
 .creator-c {
   float: left;
   padding: 40px;
-  margin-right: 20px; }
+  margin-right: 20px;
+  position: relative;
+  height: 100vh; }
   .creator-c .creator {
     width: 500px;
     height: 500px;
@@ -418,6 +420,24 @@ a:link {
       cursor: pointer; }
   .creator-c p {
     color: white; }
+  .creator-c textarea {
+    position: absolute;
+    left: 40px;
+    bottom: 20px;
+    width: calc(100% - 80px);
+    background-color: #111;
+    border: 2px solid white;
+    height: calc(100vh - (500px + 120px));
+    color: white;
+    cursor: pointer; }
+    .creator-c textarea::-webkit-input-placeholder {
+      color: #444; }
+    .creator-c textarea::-moz-placeholder {
+      color: #444; }
+    .creator-c textarea:-ms-input-placeholder {
+      color: #444; }
+    .creator-c textarea:-moz-placeholder {
+      color: #444; }
 
 .creator-screen-c {
   float: left;
