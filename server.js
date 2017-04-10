@@ -18,6 +18,7 @@ const r = require('rethinkdbdash')(config.db);
 // P A S S P O R T
 /////////////////////////////////////////
 const passport = require('passport');
+require('./config/passport')(passport);
 //Create A RethinkDB Store to hold Session data
 const RDBStore = require('session-rethinkdb')(session);
 const store = new RDBStore(r, {
@@ -92,7 +93,8 @@ server.on("connection", function(client) {
 //body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
-app.use('/', routes);
+
+require('./routes.js')(app, passport);
 
 http.listen(process.env.PORT || 3000, function() {
 	console.log("listening on http://localhost:3000");
