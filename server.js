@@ -62,15 +62,6 @@ server.on("connection", function(client) {
 	console.log(client.id + " connected");
 	client.emit("connected");
 
-    client.on("login", function(message){
-        console.log(message);
-    });
-
-    client.on("signUp", function(credentials){
-        var signUp = require("./api/signup");
-        signUp(credentials);
-    })
-
 	//Do something (in game)
 	client.on("action", function(message) {
 		game.receive(message, client);

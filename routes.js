@@ -5,16 +5,17 @@
 module.exports = function(app, passport){
     app.post('/register', passport.authenticate('local-signup',{
         failureRedirect: '/signup'}), function(req, res){
+            res.send("It All Works");
             return res.redirect('/matchmaking');
         });
 
     app.post('/login', passport.authenticate('local-login',{
         failureRedirect: '/'}), function(req, res){
-            console.log("SUCCESS!");
+            res.send("It All Works");
             return res.redirect('/matchmaking');
         });
   
-    router.post("/item-upload", function(req, res) {
+    app.post("/item-upload", function(req, res) {
     const id = req.body.id;
     const type = req.body.type;
     const range = req.body.range;
@@ -57,7 +58,7 @@ module.exports = function(app, passport){
         })
     });
 
-    router.post("/monster-upload", function(req, res) {
+    app.post("/monster-upload", function(req, res) {
         const id = req.body.id;
         const range = req.body.range;
         const description = req.body.description;
@@ -103,7 +104,7 @@ module.exports = function(app, passport){
         })
     });
 
-    router.post("/items-list", function(req, res) {
+    app.post("/items-list", function(req, res) {
         r.db('Corridor').table('Items').filter({'creator_id':'raf'}).orderBy(r.desc("id")).pluck("id").run(function(err, cursor) {
             return res.send(JSON.stringify(cursor, null, 2));
             //cursor.toArray(function(err, result) {
@@ -112,7 +113,7 @@ module.exports = function(app, passport){
         });
     });
 
-    router.post("/grab-item", function(req, res) {
+    app.post("/grab-item", function(req, res) {
         const id = req.body.id;
         const creator_id = req.body.creator_id;
         r.db('Corridor').table('Items').filter({
@@ -163,4 +164,5 @@ module.exports = function(app, passport){
     if (req.isAuthenticated()) return next();
     // if they aren't redirect them to the home page
     res.redirect('/');
+    }
 }
