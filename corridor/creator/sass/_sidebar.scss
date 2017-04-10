@@ -1,0 +1,138 @@
+.sidebar-c {
+	float:left;
+	width:$sidebar-width;
+	height:100%;
+	//border:2px solid white;
+	margin-right:$content-margin;
+	margin-left:$content-margin-small;
+
+	.sidebar-top {
+		height:calc(100% - ((2 * #{$button-height}) + (2 * #{$content-margin-small})));
+	}
+
+	.submit-button {
+		height:$button-height;
+		width:100%;
+		border:2px solid white;
+		margin-bottom: $content-margin-small;
+		text-align: center;
+		cursor:pointer;
+
+		p {
+			color:white;
+			line-height: calc(#{$button-height} - 2px);
+		}
+	}
+
+	.load-button {
+		height:$button-height;
+		width:100%;
+		border:2px solid white;
+		margin-bottom: $content-margin-small;
+		text-align: center;
+		cursor:pointer;
+
+		p {
+			color:white;
+			line-height: calc(#{$button-height} - 2px);
+		}
+	}
+
+	input {
+		background-color:$bk-color;
+		border:none;
+		border-bottom:1px solid white;
+		color:white;
+		cursor:pointer;
+		margin-bottom:$sidebar-spacing;
+
+		&::-webkit-input-placeholder {
+		 	color: $placeholder-color;
+		}
+		&::-moz-placeholder {
+		  	color: $placeholder-color;
+		}
+		&:-ms-input-placeholder {
+		  	color: $placeholder-color;
+		}
+		&:-moz-placeholder {
+		  	color: $placeholder-color;
+		}
+	}
+
+	.sidebar-title {
+		color:white;
+		margin-bottom:$sidebar-spacing;
+	}
+
+	.sidebar-p {
+		color:white;
+		//margin-bottom:$sidebar-spacing;
+	}
+
+	.type-input {
+		margin-top:10px;
+		margin-bottom:$sidebar-spacing;
+
+		p {
+			display:inline-block;
+			margin-left:10px;
+			color:white;
+		}
+
+		input[type="radio"] {
+ 			display:none;
+		}
+
+		.radio {
+			margin-bottom:10px;
+			overflow:hidden;
+			cursor:pointer;
+
+			.checkbox {
+				float:left;
+				width:14px;
+				height:14px;
+				border:2px solid $placeholder-color;
+				background-color:$bk-color;
+			}
+
+			p {
+				float:left;
+				line-height:15px;
+				color:$placeholder-color;
+			}
+
+			&.active, &:hover {
+
+				.checkbox {
+					border-color:white;
+					background-color:white;
+				}
+
+				p {
+					color:white;
+				}
+			}
+		}
+	}
+
+	.color-selector {
+		width:100%;
+		padding-top: 10px;
+		border-top:2px solid white;
+
+		.color {
+			cursor:pointer;
+		}
+
+		.eraser {
+			color:$placeholder-color;
+			cursor:pointer;
+		}
+
+		.eraser:hover, .eraser.active {
+			color:white;
+		}
+	}
+}
