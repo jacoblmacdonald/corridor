@@ -40,18 +40,17 @@ module.exports = function(passport){
     	function(req, username, password, done){
         const email = req.body.email;
         if(!validateEmail(email)) {
-            return done(null, false); 
+            return done(null, false, {message: "Email Already Registered."}); 
         }
         //Check if email exists
         get.byEmailAddress(email).then(function(user) {
         if(user[0]) {
-        	console.log("EMAIL EXISTS");
           return done(null, false);
         } else {
             get.byUsername(username).then(function(user) {
                 if(user){
                 	console.log("USERNAME EXISTS");
-                    return done(null, false);
+                    return done(null, false, {message: "Sorry, That Username Is Taken"});
                 }
                 else{
                     var signUp = require("../api/signup");
@@ -73,13 +72,12 @@ module.exports = function(passport){
     	function(req,username, password, done){
     		get.byUsername(username).then(function(user){
     			if(!user){
-    				console.log("USERNAME EXISTS");
-    				return done(null, false);
+    				return done(null, false, {message: "Sorry, Username Doesn't Exist"});
     			}
     			const match = bcrypt.compareSync(password, user.password);
     			if(!match){
     				console.log("PASSWORDS DON'T MATCH");
-    				return done(null,false);
+    				return done(null,false, {message: "Incorrect Password"});
     			}
     			return done(null, user);
     		});
