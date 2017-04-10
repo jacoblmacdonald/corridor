@@ -1,6 +1,4 @@
-//DB Connection
-var config = require('../config/defaults');
-var r = require('rethinkdbdash')(config.db);
+var r = require('./rethinkdb');
 
 function byEmailAddress(emailAddress) {
   return r.table('Users')

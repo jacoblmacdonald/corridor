@@ -8,33 +8,8 @@ const bodyParser = require('body-parser');
 const routes = require('./routes');
 
 
-//////////////////////
-// R E T H I N K D B 
-/////////////////////////////////////////
-const config = require('./config/defaults');
-const r = require('rethinkdbdash')(config.db);
+const r = require('./api/rethinkdb');
 
-//////////////////////
-// P A S S P O R T
-/////////////////////////////////////////
-const passport = require('passport');
-require('./config/passport')(passport);
-//Create A RethinkDB Store to hold Session data
-const RDBStore = require('session-rethinkdb')(session);
-const store = new RDBStore(r, {
-    table: "Sessions"
-});
-
-//Init Sessions
-app.use(session({  
-  secret: config.sessionSecret,
-  store: store,
-  resave: true,
-  saveUninitialized: false
-}));
-//Init & Connect To Passport
-app.use(passport.initialize());
-app.use(passport.session());
 
 var classes = require("./game/classes");
 var User = classes.User;
@@ -84,6 +59,29 @@ server.on("connection", function(client) {
 //body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
+
+//////////////////////
+// P A S S P O R T
+/////////////////////////////////////////
+const config = require('./config/defaults');
+const passport = require('passport');
+require('./config/passport')(passport);
+//Create A RethinkDB Store to hold Session data
+const RDBStore = require('session-rethinkdb')(session);
+const store = new RDBStore(r, {
+    table: "Sessions"
+});
+
+//Init Sessions
+app.use(session({  
+  secret: config.sessionSecret,
+  store: store,
+  resave: true,
+  saveUninitialized: false
+}));
+//Init & Connect To Passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 require('./routes.js')(app, passport);
 

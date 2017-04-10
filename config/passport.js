@@ -1,7 +1,6 @@
 var LocalStrategy   = require('passport-local').Strategy;
 
-var config = require('./defaults');
-var r = require('rethinkdbdash')(config.db);
+const r = require('../api/rethinkdb');
 const bcrypt = require('bcrypt');
 
 var get = require('../api/getters');
@@ -18,14 +17,13 @@ function validateEmail(mail){
 module.exports = function(passport){
 	// used to serialize the user for the session
     passport.serializeUser(function(user, done) {
-    	console.log("Serialize");
-    	console.log(user.id);
+    	console.log("Serializing: " + user.id);
   		done(null, user.id);
 	});
 
     // used to deserialize the user
     passport.deserializeUser(function(username, done) {
-    	console.log("Deserialize");
+    	console.log("Deserializing: " + username);
        	get.byUsername(username).then(function(user) {
             if(user){
                 return done(null, user);
