@@ -41,11 +41,11 @@ $(window).on("load", function() {
 	$(".cell").click(function(e) {updateCell($(this));});
 	$(".submit-button").click(function() {submitObject();});
 	$(".load-button").click(function() {
-		$(".loader").val("");
-		$(".loader").trigger("click");
+		toggleLoad();
 	});
-	$(".loader").change(function() {loadObject();});
+	//$(".loader").change(function() {loadObject();});
 
+	populateLoad();
 	printUpdate();
 });
 
@@ -299,74 +299,87 @@ var cellSize = boxWidth / numCells;
 // S U B M I T
 // //////////////////////////////////////////
 function submitObject() {
-	/*
-	$.ajax({
-		url:"php/write-object.php",
-		type:"POST",
-		data:{
-			"object":object,
-			"type":itemType,
-			"level":$("input[name=level]").val(),
-			"name":$("input[name=name]").val()
-		},
-		success:function(data) {
-			console.log("sucessfully sent object to file :D");
-			location.reload();
-		}
-	});
-	*/
 	console.log("========================\n");
 	console.log("saving item with attributes:");
 	console.log("NAME: "+$("input[name=name]").val());
 	console.log("TYPE: "+itemType);
 	console.log("RANGE: "+itemRange);
 	console.log("USE BY CLASS: "+itemClass);
-	console.log("DESCRIPTION: ");
+	console.log("DESCRIPTION: "+$(".item-desc").val());
 	console.log("SPRITE: "+object);
 	console.log("========================\n");
 
-	r.db('Corridor').table('Items').insert({
-		'name' : $("input[name=name]").val(),
-		'type' :,
-		'range' :,
-		'use_by_class' :,
-		'description' :,
-		'sprite' :,
-		'creator_id' :,
-		'published' : 'False'
-	}).run()
+	const itemData = {
+		id: $("input[name=name]").val(),
+		type: itemType,
+		range: itemRange,
+		use_by_class: itemClass,
+		description: $(".item-desc").val(),
+		sprite: object,
+		creator_id: "raf", //change this
+		published: 'False'
+	};
+
+	$.ajax({
+		type: 'POST',
+		data: JSON.stringify(itemData),
+		contentType: 'application/json',
+		url: '/item-upload',
+		success: function(data){
+			console.log(data);
+		}
+	});
 }
 
 // ////////////////////
 // L O A D
 // //////////////////////////////////////////
-function loadObject() {
-	var filename = "php/" + $('.loader').val().split('\\').pop();
-	var lines = getFile(filename).split("\n");
-	for (var i = 0; i < lines.length; i++) {
-		if (lines[i] == "name:") {
-			updateName(lines[++i]);
-		} else if (lines[i] == "type:") {
-			updateTypeByText(lines[++i]);
-		} else if (lines[i] == "object:") {
-			updateCreator(lines[++i]);
-		} else if (lines[i] == "level:") {
-			updateLevel(lines[++i]);
+
+function populateLoad() {
+	$.ajax({
+		type: 'POST',
+		//data: JSON.stringify(itemData),
+		contentType: 'application/json',
+		url: '/items-list',
+		success: function(data){
+			//console.log(data);
+			var items = JSON.parse(data);
+			//console.log(items[0].id);
+
+			for (var i = 0; i < items.length; i++) {
+				$(".load-window").append("<p class='v-small'>"+items[i].id+"</p>");
+			}
+
+			$(".load-window .v-small").each(function() {
+				$(this).click(function() {
+					grabItem($(this));
+				});
+			});
 		}
-	}
+	});
 }
 
-function getFile(path) {
-	newfile = "";
+function grabItem(el) {
+
+	var itemData = {
+		id: el.html(),
+		creator_id: "raf" //will change
+	};
+
+	console.log(itemData);
+
 	$.ajax({
-    	async: false,
-     	type: 'GET',
-     	dataType: "text",
-     	url: path,
-     	success: function(data) {
-       		newFile = data;
-       		console.log("successfully got object from file :D");
-     	}
+		type: 'POST',
+		data: JSON.stringify(itemData),
+		contentType: 'application/json',
+		url: '/grab-item',
+		success: function(data){
+			console.log(data);
+		}
 	});
-	return newFile;
+	
+}
+
+function toggleLoad() {
+	$(".load-window").toggleClass("active");
 }

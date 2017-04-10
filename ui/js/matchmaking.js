@@ -23,6 +23,10 @@ $(window).on("load", function() {
 		//window.location.href = "/corridor";
 	});
 
+	$(".logout-button").click(function() {
+		//alright arvind here is your logout button :)))
+	});
+
 	socket.emit("loaded", { username : TEST_USER });
 });
 

@@ -293,44 +293,38 @@ var cellSize = boxWidth / numCells;
 // S U B M I T
 // //////////////////////////////////////////
 function submitObject() {
-	/*
-	$.ajax({
-		url:"php/write-object.php",
-		type:"POST",
-		data:{
-			"object":object,
-			"type":itemType,
-			"level":$("input[name=level]").val(),
-			"name":$("input[name=name]").val()
-		},
-		success:function(data) {
-			console.log("sucessfully sent object to file :D");
-			location.reload();
-		}
-	});
-	*/
 	console.log("========================\n");
 	console.log("saving monster with attributes:");
 	console.log("NAME: "+$("input[name=name]").val());
 	console.log("RANGE: "+monsterRange);
-	console.log("DESCRIPTION: ");
+	console.log("DESCRIPTION: "+$(".monster-desc").val());
 	console.log("NUM TREASURES: "+$("input[name=num-treasures]").val());
 	console.log("DE-BUFF CLASS: "+buffClass);
 	console.log("DE-BUFF Lvl: "+$("input[name=buff-amount]").val());
 	console.log("SPRITE: "+object);
 	console.log("========================\n");
 
-	r.db('Corridor').table('Monsters').insert({
-		'name':,
-		'range' : ,
-		'description' :,
-		'num_tresures' :,
-		'debuff_class' :,
-		'debuff_lvl' :,
-		'sprite' :,
-		'creator_id' :,
-		'published' : 'False'
-	}).run()
+	const monsterData = {
+		id: $("input[name=name]").val(),
+		range: monsterRange,
+		description: $(".item-desc").val(),
+		num_treasures: $("input[name=num-treasures]").val(),
+		buff_class: buffClass,
+		buff_lvl: $("input[name=buff-amount]").val(),
+		sprite: object,
+		creator_id: "raf", //change this
+		published: 'False'
+	};
+
+	$.ajax({
+		type: 'POST',
+		data: JSON.stringify(monsterData),
+		contentType: 'application/json',
+		url: '/monster-upload',
+		success: function(data){
+			console.log(data);
+		}
+	});
 }
 
 // ////////////////////
