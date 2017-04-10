@@ -1,0 +1,39 @@
+{
+  "name": "corridor",
+  "version": "0.0.1",
+  "description": "A neat multiplayer turn-based game.",
+  "main": "app.js",
+  "scripts": {
+    "test": "make test",
+    "build-sass": "node-sass --include-path scss ui/sass/style.scss   ui/stylesheets/style.css",
+    "watch-css": "nodemon -e scss -x \"npm run build-sass\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jacoblmacdonald/corridor.git"
+  },
+  "author": "Team B6",
+  "license": "UNLICENSED",
+  "private": true,
+  "bugs": {
+    "url": "https://github.com/jacoblmacdonald/corridor/issues"
+  },
+  "homepage": "https://github.com/jacoblmacdonald/corridor#readme",
+  "dependencies": {
+    "async": "^2.3.0",
+    "bcrypt": "^1.0.2",
+    "body-parser": "^1.17.1",
+    "express": "^4.14.1",
+    "express-session": "^1.15.2",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "rethinkdbdash": "^2.3.28",
+    "session-rethinkdb": "^2.0.0",
+    "socket.io": "^1.7.3",
+    "uuid": "^3.0.1"
+  },
+  "devDependencies": {
+    "node-sass": "^4.5.2",
+    "nodemon": "^1.11.0"
+  }
+}
