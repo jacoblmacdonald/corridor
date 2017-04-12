@@ -9,11 +9,11 @@ var types = ["otu","1 hand","2 hand", "head", "armor"];
 var ranges = ["low","med","high", "wild"];
 var classes = ["all","warrior","wizard", "troll", "priest"];
 var colors = [
-"#FF0000", "#FF9900", "#FFCC00", "#FFFF00", "#B2FF00", "#66FF00", "#33FF70", "#00FFE1", "#0088F0", "#0011FF", "#7534ff"];
+"#ffffff","#b5b5b5","#FF0000", "#FF9900", "#FFCC00", "#FFFF00", "#B2FF00", "#66FF00", "#33FF70", "#00FFE1", "#0088F0", "#0011FF", "#7534ff"];
 var bkColor = "#111";
 var screenColor = "#141414";
 var activeColor = "";
-var numCells = 20;
+var numCells = 30;
 var creatorWidth = 500;
 var screenWidth = 300;
 var boxWidth = 80;

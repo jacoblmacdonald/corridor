@@ -9,11 +9,11 @@ var buffAmt = 0;
 var ranges = ["low","med","high", "wild"];
 var classes = ["none", "warrior", "wizard", "troll", "priest"];
 var colors = [
-"#FF0000", "#FF9900", "#FFCC00", "#FFFF00", "#B2FF00", "#66FF00", "#33FF70", "#00FFE1", "#0088F0", "#0011FF", "#7534ff"];
+"#ffffff","#b5b5b5","#FF0000", "#FF9900", "#FFCC00", "#FFFF00", "#B2FF00", "#66FF00", "#33FF70", "#00FFE1", "#0088F0", "#0011FF", "#7534ff"];
 var bkColor = "#111";
 var screenColor = "#141414";
 var activeColor = "";
-var numCells = 20;
+var numCells = 30;
 var creatorWidth = 500;
 var screenWidth = 300;
 var boxWidth = 80;
@@ -122,7 +122,7 @@ function updateName(text) {
 }
 
 function updateDescription(text) {
-	$(".item-desc").val(text);
+	$(".monster-desc").val(text);
 }
 
 function updateNumTreasures(text) {
@@ -332,7 +332,7 @@ function submitObject() {
 	const monsterData = {
 		id: $("input[name=name]").val(),
 		range: monsterRange,
-		description: $(".item-desc").val(),
+		description: $(".monster-desc").val(),
 		num_treasures: $("input[name=num-treasures]").val(),
 		buff_class: buffClass,
 		buff_lvl: $("input[name=buff-amount]").val(),
@@ -407,32 +407,6 @@ function toggleLoad() {
 }
 
 function loadObject(data) {
-	/*
-	var filename = "php/" + $('.loader').val().split('\\').pop();
-	var lines = getFile(filename).split("\n");
-	for (var i = 0; i < lines.length; i++) {
-		if (lines[i] == "name:") {
-			updateName(lines[++i]);
-		} else if (lines[i] == "type:") {
-			updateTypeByText(lines[++i]);
-		} else if (lines[i] == "object:") {
-			updateCreator(lines[++i]);
-		} else if (lines[i] == "level:") {
-			updateLevel(lines[++i]);
-		}
-	}
-	*/
-
-	console.log("========================\n");
-	console.log("saving monster with attributes:");
-	console.log("NAME: "+$("input[name=name]").val());
-	console.log("RANGE: "+monsterRange);
-	console.log("DESCRIPTION: "+$(".monster-desc").val());
-	console.log("NUM TREASURES: "+$("input[name=num-treasures]").val());
-	console.log("DE-BUFF CLASS: "+buffClass);
-	console.log("DE-BUFF Lvl: "+$("input[name=buff-amount]").val());
-	console.log("SPRITE: "+object);
-	console.log("========================\n");
 
 	console.log(data);
 	updateName(data.id);
