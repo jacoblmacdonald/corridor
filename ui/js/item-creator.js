@@ -25,7 +25,7 @@ $(window).on("load", function() {
 });
 
 function getSession() {
-
+/*
 	$.ajax({
 		type: 'GET',
 		//data: JSON.stringify(loginData),
@@ -36,6 +36,8 @@ function getSession() {
 			startPage();
 		}
 	});
+	*/
+	startPage();
 }
 
 function startPage() {
@@ -350,7 +352,7 @@ function submitObject() {
 		use_by_class: itemClass,
 		description: $(".item-desc").val(),
 		sprite: object,
-		creator_id: CURRENT_USER, //change this
+		//creator_id: CURRENT_USER, //change this
 		published: 'False'
 	};
 
@@ -370,13 +372,9 @@ function submitObject() {
 // //////////////////////////////////////////
 
 function populateLoad() {
-
-	var userData = {
-		creator_id: CURRENT_USER
-	}
 	$.ajax({
-		type: 'POST',
-		data: JSON.stringify(userData),
+		type: 'GET',
+		//data: JSON.stringify(userData),
 		contentType: 'application/json',
 		url: '/items-list',
 		success: function(data){
@@ -400,8 +398,7 @@ function populateLoad() {
 function grabItem(el) {
 
 	var itemData = {
-		id: el.html(),
-		creator_id: CURRENT_USER //will change
+		id: el.html()
 	};
 
 	//console.log("grabbing item "+itemData);
