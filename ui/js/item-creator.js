@@ -1,7 +1,7 @@
 // ////////////////////
 // I N I T
 // //////////////////////////////////////////
-
+var CURRENT_USER = "";
 var itemType = "";
 var itemRange = "";
 var itemClass = "";
@@ -21,6 +21,24 @@ var boxWidth = 80;
 var object = [];
 
 $(window).on("load", function() {
+	getSession();
+});
+
+function getSession() {
+
+	$.ajax({
+		type: 'GET',
+		//data: JSON.stringify(loginData),
+		contentType: 'application/json',
+		url: '/getThisUser',
+		success: function(data){
+			CURRENT_USER = data;
+			startPage();
+		}
+	});
+}
+
+function startPage() {
 	populateTypes();
 	populateRanges();
 	populateClasses();
@@ -47,14 +65,15 @@ $(window).on("load", function() {
 
 	populateLoad();
 	printUpdate();
-});
+}
 
 function printUpdate() {
-	//console.log("=======");
-	//console.log("item type: " + itemType);
-	//console.log("item range: " + itemRange);
-	//console.log("item class: " + itemClass);
-	//console.log("active color: " + activeColor);
+	console.log("=======");
+	console.log("item type: " + itemType);
+	console.log("item range: " + itemRange);
+	console.log("item class: " + itemClass);
+	//console.log("item description: " + );
+	console.log("active color: " + activeColor);
 }
 
 // ////////////////////
@@ -109,6 +128,8 @@ function deactivateColor(e) {
 	}
 }
 
+//updates
+
 function updateName(text) {
 	$("input[name=name]").val(text);
 }
@@ -117,20 +138,16 @@ function updateLevel(text) {
 	$("input[name=level]").val(text);
 }
 
+function updateDescription(text) {
+	$(".item-desc").val(text);
+}
+
 function updateType(e) {
 	$(".r-type").removeClass("active");
 	e.addClass("active");
 	itemType = e.data("type");
 
-	printUpdate();
-}
-
-function updateClass(e) {
-	$(".r-class").removeClass("active");
-	e.addClass("active");
-	itemClass = e.data("class");
-
-	printUpdate();
+	//printUpdate();
 }
 
 function updateTypeByText(text) {
@@ -138,7 +155,23 @@ function updateTypeByText(text) {
 	$(".r-type[data-type='"+text+"']").addClass("active");
 	itemType = text;
 
-	printUpdate();
+	//printUpdate();
+}
+
+function updateClass(e) {
+	$(".r-class").removeClass("active");
+	e.addClass("active");
+	itemClass = e.data("class");
+
+	//printUpdate();
+}
+
+function updateClassByText(text) {
+	$(".r-class").removeClass("active");
+	$(".r-class[data-class='"+text+"']").addClass("active");
+	itemClass = text;
+
+	//printUpdate();
 }
 
 function updateRange(e) {
@@ -146,7 +179,7 @@ function updateRange(e) {
 	e.addClass("active");
 	itemRange = e.data("type");
 
-	printUpdate();
+	//printUpdate();
 }
 
 function updateRangeByText(text) {
@@ -154,7 +187,7 @@ function updateRangeByText(text) {
 	$(".r-range[data-type='"+text+"']").addClass("active");
 	itemRange = text;
 
-	printUpdate();
+	//printUpdate();
 }
 
 function updateColor(e) {
@@ -170,7 +203,7 @@ function updateColor(e) {
 
 	$(".eraser").removeClass("active");
 
-	printUpdate();
+	//printUpdate();
 }
 
 function updateEraser() {
@@ -181,7 +214,7 @@ function updateEraser() {
 	activeColor = screenColor;
 	$(".eraser").addClass("active");
 
-	printUpdate();
+	//printUpdate();
 }
 
 function buttonHovers() {
@@ -246,16 +279,17 @@ function updateCell(e) {
 }
 
 function updateCreator(text) {
-	var values = text.split(",");
-	var index = 0;
+	//console.log(text[0][0]);
+	//var values = text.split(",");
+	//var index = 0;
 	for (var i = 0; i < numCells; i++) {
 		for (var j = 0; j < numCells; j++) {
-			$(".cell[data-x='"+j+"'][data-y='"+i+"']").css("background-color", values[index]);
-			$(".cell[data-x='"+j+"'][data-y='"+i+"']").data("color", values[index]);
-			$(".screen-cell[data-x="+j+"][data-y="+i+"]").css("background-color", values[index]);
-			$(".box-cell[data-x="+j+"][data-y="+i+"]").css("background-color", values[index]);
-			object[i][j] = values[index];
-			index++;
+			$(".cell[data-x='"+j+"'][data-y='"+i+"']").css("background-color", text[i][j]);
+			$(".cell[data-x='"+j+"'][data-y='"+i+"']").data("color", text[i][j]);
+			$(".screen-cell[data-x="+j+"][data-y="+i+"]").css("background-color", text[i][j]);
+			$(".box-cell[data-x="+j+"][data-y="+i+"]").css("background-color", text[i][j]);
+			object[i][j] = text[i][j];
+			//index++;
 		}
 	}
 }
@@ -316,7 +350,7 @@ function submitObject() {
 		use_by_class: itemClass,
 		description: $(".item-desc").val(),
 		sprite: object,
-		creator_id: "raf", //change this
+		creator_id: CURRENT_USER, //change this
 		published: 'False'
 	};
 
@@ -336,9 +370,13 @@ function submitObject() {
 // //////////////////////////////////////////
 
 function populateLoad() {
+
+	var userData = {
+		creator_id: CURRENT_USER
+	}
 	$.ajax({
 		type: 'POST',
-		//data: JSON.stringify(itemData),
+		data: JSON.stringify(userData),
 		contentType: 'application/json',
 		url: '/items-list',
 		success: function(data){
@@ -363,10 +401,10 @@ function grabItem(el) {
 
 	var itemData = {
 		id: el.html(),
-		creator_id: "raf" //will change
+		creator_id: CURRENT_USER //will change
 	};
 
-	console.log(itemData);
+	//console.log("grabbing item "+itemData);
 
 	$.ajax({
 		type: 'POST',
@@ -374,7 +412,8 @@ function grabItem(el) {
 		contentType: 'application/json',
 		url: '/grab-item',
 		success: function(data){
-			console.log(data);
+			//console.log(data);
+			loadObject(JSON.parse(data)[0]);
 		}
 	});
 	
@@ -382,4 +421,16 @@ function grabItem(el) {
 
 function toggleLoad() {
 	$(".load-window").toggleClass("active");
+}
+
+function loadObject(data) {
+	console.log(data);
+	updateName(data.id);
+	updateRangeByText(data.range);
+	updateTypeByText(data.type);
+	updateClassByText(data.use_by_class);
+	updateDescription(data.description);
+	updateCreator(data.sprite);
+
+	printUpdate();
 }
