@@ -25,7 +25,7 @@ $(window).on("load", function() {
 });
 
 function getSession() {
-
+/*
 	$.ajax({
 		type: 'GET',
 		//data: JSON.stringify(loginData),
@@ -36,6 +36,8 @@ function getSession() {
 			startPage();
 		}
 	});
+	*/
+	startPage();
 }
 
 function startPage() {
@@ -337,7 +339,7 @@ function submitObject() {
 		buff_class: buffClass,
 		buff_lvl: $("input[name=buff-amount]").val(),
 		sprite: object,
-		creator_id: CURRENT_USER, //change this
+		//creator_id: CURRENT_USER, //change this
 		published: 'False'
 	};
 
@@ -358,7 +360,7 @@ function submitObject() {
 
 function populateLoad() {
 	$.ajax({
-		type: 'POST',
+		type: 'GET',
 		//data: JSON.stringify(itemData),
 		contentType: 'application/json',
 		url: '/monster-list',
@@ -383,11 +385,10 @@ function populateLoad() {
 function grabItem(el) {
 
 	var monsterData = {
-		id: el.html(),
-		creator_id: CURRENT_USER //will change
+		id: el.html()
 	};
 
-	//console.log("grabbing item "+itemData);
+	//console.log("grabbing item "+monsterData.id);
 
 	$.ajax({
 		type: 'POST',
@@ -395,7 +396,7 @@ function grabItem(el) {
 		contentType: 'application/json',
 		url: '/grab-monster',
 		success: function(data){
-			//console.log(data);
+			console.log(JSON.parse(data)[0]);
 			loadObject(JSON.parse(data)[0]);
 		}
 	});
@@ -408,7 +409,7 @@ function toggleLoad() {
 
 function loadObject(data) {
 
-	console.log(data);
+	//console.log(data);
 	updateName(data.id);
 	updateRangeByText(data.range);
 	updateDescription(data.description);
