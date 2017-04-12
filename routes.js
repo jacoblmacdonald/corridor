@@ -105,11 +105,14 @@ module.exports = function(app, passport){
     });
 
     app.post("/items-list", function(req, res) {
-        r.db('Corridor').table('Items').filter({'creator_id':'raf'}).orderBy(r.desc("id")).pluck("id").run(function(err, cursor) {
+        r.db('Corridor').table('Items').filter({'creator_id':req.body.creator_id}).orderBy(r.desc("id")).pluck("id").run(function(err, cursor) {
             return res.send(JSON.stringify(cursor, null, 2));
-            //cursor.toArray(function(err, result) {
-                //return res.send(result);
-            //});
+        });
+    });
+
+    app.post("/monster-list", function(req, res) {
+        r.db('Corridor').table('Monsters').filter({'creator_id':req.body.creator_id}).orderBy(r.desc("id")).pluck("id").run(function(err, cursor) {
+            return res.send(JSON.stringify(cursor, null, 2));
         });
     });
 
@@ -117,6 +120,17 @@ module.exports = function(app, passport){
         const id = req.body.id;
         const creator_id = req.body.creator_id;
         r.db('Corridor').table('Items').filter({
+            'creator_id' : creator_id,
+            'id' : id
+        }).run(function(err, cursor){
+            return res.send(JSON.stringify(cursor, null, 2));
+        });
+    });
+
+    app.post("/grab-monster", function(req, res) {
+        const id = req.body.id;
+        const creator_id = req.body.creator_id;
+        r.db('Corridor').table('Monsters').filter({
             'creator_id' : creator_id,
             'id' : id
         }).run(function(err, cursor){

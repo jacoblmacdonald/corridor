@@ -471,6 +471,7 @@ a:link {
   .creator-screen-c .box {
     width: 80px;
     height: 80px;
+    outline: 2px solid white;
     position: relative;
     background-color: #141414;
     z-index: 1; }
@@ -539,7 +540,7 @@ a:link {
 .box {
   width: 80px;
   height: 80px;
-  border: 2px solid white;
+  outline: 2px solid white;
   position: relative; }
   .box .box-level {
     position: absolute;
