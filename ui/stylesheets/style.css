@@ -471,7 +471,6 @@ a:link {
   .creator-screen-c .box {
     width: 80px;
     height: 80px;
-    outline: 2px solid white;
     position: relative;
     background-color: #141414;
     z-index: 1; }
@@ -540,8 +539,13 @@ a:link {
 .box {
   width: 80px;
   height: 80px;
-  outline: 2px solid white;
-  position: relative; }
+  border: 2px solid white;
+  position: relative;
+  z-index: 1; }
+  .box.active {
+    z-index: 100; }
+    .box.active .box-menu {
+      display: block; }
   .box .box-level {
     position: absolute;
     bottom: -2;
@@ -553,6 +557,26 @@ a:link {
       line-height: calc(30px - 2px);
       width: 29px;
       color: white; }
+  .box .box-cell {
+    float: left;
+    pointer-events: none; }
+  .box .box-menu {
+    display: none;
+    width: 100px;
+    height: 100px;
+    background-color: #141414;
+    position: absolute;
+    left: calc(100% + 2px);
+    top: -2px; }
+  .box.bag-box.bag-2nd-row .box-menu {
+    top: auto;
+    bottom: -2px; }
+  .box.bag-box.last-in-row .box-menu {
+    left: auto;
+    right: calc(100% + 2px); }
+  .box.last-body-box .box-menu {
+    left: auto;
+    right: calc(100% + 2px); }
 
 .screen-c {
   text-align: center;
