@@ -49,11 +49,7 @@ class GameMaker {
 	}
 
 	static getItems() {
-		r.db("Corridor").table("Items").run().then(function(items) {
-			items.forEach(function(item) {
-				console.log(item.id);
-			});
-		});
+		return r.db("Corridor").table("Items").run();
 	}
 
 	findGame(gameId) {
@@ -81,8 +77,10 @@ class GameMaker {
 		this.addUserToGame(game, username, socket);
 		console.log("USERNAME: " + username);
 		if(game.isReady()) {
-			game.players.forEach(function(player) {
-				player.socket.emit("ready", { usernames : game.getUsernames() });
+			GameMaker.getItems().then(function(items) {
+				game.players.forEach(function(player) {
+					player.socket.emit("ready", { usernames : game.getUsernames(), items : items.map(function(item) { return item.id; }) });
+				});
 			});
 		}
 	}
