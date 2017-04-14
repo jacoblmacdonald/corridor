@@ -2,6 +2,8 @@
 // GENERAL GAME CONSTANTS / ENUMS
 //////////////////////////////////////////////
 
+const r = require('./api/rethinkdb');
+
 const itemRanges = {
 	"weak" : [ 1, 3 ],
 	"mid" : [ 4, 6 ],
@@ -43,6 +45,15 @@ class GameMaker {
 		this.server = server;
 
 		this.games = [ ];
+		GameMaker.getItems();
+	}
+
+	static getItems() {
+		r.db("Corridor").table("Items").run().then(function(items) {
+			items.forEach(function(item) {
+				console.log(item.id);
+			});
+		});
 	}
 
 	findGame(gameId) {

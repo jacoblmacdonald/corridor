@@ -48,15 +48,6 @@ server.on("connection", function(client) {
     //Setup a game
     client.on("setup", function(message) {
     	gamemaker.onSetup(message.gameId, message.username, client);
-        // var game = Game.findGame(games, message.gameId);
-        // if(game) {
-        //     game.players.forEach(function(player) {
-        //         player.client.emit("setup", { usernames : game.players.map(function(player) { return player.user.name; }) });
-        //     });
-        // }
-        // else {
-        //     client.emit("failure");
-        // }
     });
 
 	//Do something (in game)
