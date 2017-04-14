@@ -33,4 +33,5 @@ function getId() {
 
 socket.on("ready", function(message) {
 	console.log(message.usernames);
+	console.log(message.items);
 });
