@@ -4,4 +4,4 @@
 const config = require('../config/defaults');
 const r = require('rethinkdbdash')(config.db);
 
-module.exports = r; 
+module.exports = r;

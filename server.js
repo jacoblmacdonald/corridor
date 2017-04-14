@@ -21,6 +21,7 @@ var Gamemaker = require("./game");
 var gamemaker = new Gamemaker(server);
 
 server.on("connection", function(client) {
+  
 	console.log(client.id + " connected");
  	
  	//Load the matchmaking screen
@@ -89,7 +90,6 @@ app.use(session({
 //Init & Connect To Passport
 app.use(passport.initialize());
 app.use(passport.session());
-
 
 require('./routes.js')(app, passport);
 

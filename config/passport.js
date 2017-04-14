@@ -15,27 +15,27 @@ function validateEmail(mail){
 
 
 module.exports = function(passport){
-    // used to serialize the user for the session
+	// used to serialize the user for the session
     passport.serializeUser(function(user, done) {
-        console.log("Serializing: " + user.id);
-        done(null, user.id);
-    });
+    	console.log("Serializing: " + user.id);
+  		done(null, user.id);
+	});
 
     // used to deserialize the user
     passport.deserializeUser(function(username, done) {
-        console.log("Deserializing: " + username);
-        get.byUsername(username).then(function(user) {
+    	console.log("Deserializing: " + username);
+       	get.byUsername(username).then(function(user) {
             if(user){
                 return done(null, user);
-            }
+        	}
         });
     });
 
 
     passport.use('local-signup', new LocalStrategy({
-        passReqToCallback : true
+    	passReqToCallback : true
     },
-        function(req, username, password, done){
+    	function(req, username, password, done){
         const email = req.body.email;
         if(!validateEmail(email)) {
             return done(null, false, {message: "Email Already Registered."}); 
@@ -47,15 +47,15 @@ module.exports = function(passport){
         } else {
             get.byUsername(username).then(function(user) {
                 if(user){
-                    console.log("USERNAME EXISTS");
+                	console.log("USERNAME EXISTS");
                     return done(null, false, {message: "Sorry, That Username Is Taken"});
                 }
                 else{
                     var signUp = require("../api/signup");
                     signUp(username, email, password, function(){
-                        r.table('Users').get(username).run(function(err, user){
-                            return done(null, user);
-                        });
+                    	r.table('Users').get(username).run(function(err, user){
+       						return done(null, user);
+       					});
                     });
                     }
                 })
@@ -65,20 +65,20 @@ module.exports = function(passport){
     ));
 
     passport.use('local-login', new LocalStrategy({
-        passReqToCallback: true
+    	passReqToCallback: true
     },
-        function(req,username, password, done){
-            get.byUsername(username).then(function(user){
-                if(!user){
-                    return done(null, false, {message: "Sorry, Username Doesn't Exist"});
-                }
-                const match = bcrypt.compareSync(password, user.password);
-                if(!match){
-                    console.log("PASSWORDS DON'T MATCH");
-                    return done(null,false, {message: "Incorrect Password"});
-                }
-                return done(null, user);
-            });
-        }));
+    	function(req,username, password, done){
+    		get.byUsername(username).then(function(user){
+    			if(!user){
+    				return done(null, false, {message: "Sorry, Username Doesn't Exist"});
+    			}
+    			const match = bcrypt.compareSync(password, user.password);
+    			if(!match){
+    				console.log("PASSWORDS DON'T MATCH");
+    				return done(null,false, {message: "Incorrect Password"});
+    			}
+    			return done(null, user);
+    		});
+    	}));
 
 };
