@@ -6,41 +6,65 @@ var gameInfoTrans = 30;
 
 //game info
 var socket = io();
-var TEST_USER = "username" + (getUrlVars("id") || 0); //TEMP
+var CURRENT_USER = "";
 
 $(window).on("load", function() {
-	$(".create-game-button").click(function() {
-		if (!$(".game-info-c").hasClass("active")) {
-			socket.emit("create", { name : TEST_USER });
-		}
-	});
-
-	$(".start-game-button").click(function() {
-		socket.emit("start", { username : TEST_USER });
-		//window.location.href = "/corridor";
-	});
-
-	$(".username").text(TEST_USER);
-
-	socket.emit("loaded", { username : TEST_USER });
+	getSession();
 });
 
 // ////////////////////
 // I N I T
 // ///////////////////////////////////////
 
+function getSession() {
+
+	$.ajax({
+		type: 'GET',
+		//data: JSON.stringify(loginData),
+		contentType: 'application/json',
+		url: '/getThisUser',
+		success: function(data){
+			CURRENT_USER = data;
+			startPage();
+		}
+	});
+}
+
+function startPage() {
+	$(".username").html(CURRENT_USER);
+	
+	$(".create-game-button").click(function() {
+		if (!$(".game-info-c").hasClass("active")) {
+			socket.emit("create", { username : CURRENT_USER });
+		}
+	});
+
+	$(".start-game-button").click(function() {
+		socket.emit("start", { username : CURRENT_USER });
+		//window.location.href = "/corridor";
+	});
+
+	$(".logout-button").click(function() {
+		//alright arvind here is your logout button :)))
+	});
+
+	socket.emit("loaded", { username : CURRENT_USER });
+}
+
+// ////////////////////
+// S O C K E T S
+// ///////////////////////////////////////
+
 socket.on("created", function(message) {
-	console.log("creating game "+ message.gameId);
-	if (message.host == TEST_USER) {
-		showGameInfo(message.gameId, [TEST_USER]);
-		$(".start-game-button").data("id", message.gameId);
+	if (message.host == CURRENT_USER) {
+		showGameInfo([ CURRENT_USER ]);
 	} else {
-		showPlayerJoin(message.host, message.gameId);
+		showPlayerJoin(message.host);
 	}
 });
 
 socket.on("joined", function(message) {
-	showGameInfo(message.gameId, message.usernames);
+	showGameInfo(message.usernames);
 });
 
 
@@ -48,8 +72,8 @@ socket.on("connected", function(message) {
 	console.log(message.users);
 	showActivePlayers(message.users);
 	for (var i = 0; i < message.users.length; i++) {
-		if (message.users[i][1] !== null) {
-			showPlayerJoin(message.users[i][0], message.users[i][1]);
+		if (message.users[i][1]) {
+			showPlayerJoin(message.users[i][0]);
 		}
 	}
 });
@@ -59,11 +83,17 @@ socket.on("started", function(message) {
 });
 
 
+
 // ////////////////////
 // D I S P L A Y
 // ///////////////////////////////////////
 
-function showGameInfo(id, players) {
+function showGameInfo(players) {
+	if(players[0] != CURRENT_USER) {
+		$(".start-game-button").off("click");
+		$(".start-game-button p").text("waiting for host");
+	}
+
 	//refresh everything
 	$(".game-host").removeClass("active");
 	$(".start-game-button").removeClass("active");
@@ -72,9 +102,6 @@ function showGameInfo(id, players) {
 		$(this).removeClass("joined");
 		$(".text", this).html("...waiting for player");
 	});
-
-	//update game id
-	CURRENT_GAME_ID = id;
 
 	//show joined players
 	for (var i = 1; i <= players.length; i++) {
@@ -95,10 +122,10 @@ function showGameInfo(id, players) {
 }
 
 function showActivePlayers(users) {
-	$(".all-players").html();
+	$(".all-players").html("");
 	for (var i = 0; i < users.length; i++) {
-		if(users[i][0] != TEST_USER) {
-			$(".all-players").append("<div class='player' data-username='" + users[i][0] + "'><p class='v-small'>" + users[i][0] + "<span class='join' data-id='0'>join game</span></p></div>")
+		if(users[i][0] != CURRENT_USER) {
+			$(".all-players").append("<div class='player' data-username='" + users[i][0] + "'><p class='v-small'>" + users[i][0] + "<span class='join' data-host=''>join game</span></p></div>")
 		}
 	}
 	
@@ -114,23 +141,16 @@ function showActivePlayers(users) {
 	});
 }
 
-function showPlayerJoin(user, id) {
-	$(".player[data-username='"+user+"'] .v-small .join").data("id", id)
-	$(".player[data-username='"+user+"'] .v-small .join").addClass("active");
+function showPlayerJoin(host) {
+	$(".player[data-username='"+host+"'] .v-small .join").data("host", host)
+	$(".player[data-username='"+host+"'] .v-small .join").addClass("active");
 }
 
 function processJoin(e) {
 	if(e.hasClass("active")) {
-		var id = $(".v-small .join", e).data("id");
-		socket.emit("join", { name : TEST_USER, gameId : id});
-		console.log("joining game "+ id);
+		var host = $(".v-small .join", e).data("host");
+		console.log("HOST: " + host);
+		socket.emit("join", { username : CURRENT_USER, hostname : host});
+		console.log("joining game "+ host);
 	}
-}
-
-function getUrlVars(key) { //TEMP
-	var vars = {};
-	var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-		vars[key] = value;
-	});
-	return vars[key];
 }

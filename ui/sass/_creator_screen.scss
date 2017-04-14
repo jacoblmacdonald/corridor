@@ -2,6 +2,8 @@
 	float:left;
 	padding:$creator-padding;
 	margin-right:$content-margin-small;
+	position:relative;
+	height:100vh;
 
 	.creator {
 		width:$creator-width;
@@ -18,11 +20,39 @@
 	p {
 		color:white;
 	}
+
+	textarea {
+		position:absolute;
+		left:40px;
+		bottom:20px;
+		width:calc(100% - 80px);
+		background-color:$bk-color;
+		border:2px solid white;
+		height:calc(100vh - (#{$creator-width} + 120px));
+		color:white;
+		cursor:pointer;
+
+		&::-webkit-input-placeholder {
+		 	color: $placeholder-color;
+		}
+		&::-moz-placeholder {
+		  	color: $placeholder-color;
+		}
+		&:-ms-input-placeholder {
+		  	color: $placeholder-color;
+		}
+		&:-moz-placeholder {
+		  	color: $placeholder-color;
+		}
+	}
 }
 
 .creator-screen-c {
 	float:left;
 	padding:$creator-padding;
+	position:relative;
+	height:100vh;
+	padding-top:240px;
 
 	p {
 		color:white;
@@ -32,7 +62,8 @@
 		width:$screen-width;
 		height:$screen-width;
 		background-color: $screen-color;
-		margin-bottom:$content-margin;
+		margin-bottom:18px;
+		z-index:1;
 
 		.screen-cell {
 			float:left;
@@ -46,6 +77,7 @@
 		//border:2px solid white;
 		position:relative;
 		background-color:$screen-color;
+		z-index:1;
 
 		.box-level {
 			position:absolute;
@@ -66,6 +98,60 @@
 		.box-cell {
 			float:left;
 			pointer-events:none;
+		}
+	}
+
+	.buttons-c {
+		width:calc(100% - 80px);
+		//width:100%;
+		position:absolute;
+		top:60;
+		left:40px;
+		z-index:10;
+
+		.submit-button {
+			height:$creator-button-height;
+			width:100%;
+			border:2px solid white;
+			margin-bottom: $content-margin-small;
+			text-align: center;
+			cursor:pointer;
+
+			p {
+				color:white;
+				line-height: calc(#{$creator-button-height} - 2px);
+			}
+		}
+
+		.load-button {
+			height:$creator-button-height;
+			width:100%;
+			border:2px solid white;
+			margin-bottom: $content-margin-small;
+			text-align: center;
+			cursor:pointer;
+
+			p {
+				color:white;
+				line-height: calc(#{$creator-button-height} - 2px);
+			}
+		}
+
+		.load-window {
+			height:0px;
+			width:100%;
+			transition:height 0.2s;
+			padding-left:5px;
+			background-color:rgba(0,0,0,0.8);
+			overflow-y:scroll;
+
+			&.active {
+				height:606px;
+			}
+
+			.load-item {
+				color:white;
+			}
 		}
 	}
 }

@@ -1,43 +1,43 @@
-#Meeting #2
-##2/5
+# Meeting #2
+## 2/5
 
-###RAS finished
+### RAS finished
 
-###Start initial game design planning
+### Start initial game design planning
 
-###Plan for next week
+### Plan for next week
 Finalize game design, game flow
 
 Figure out jobs
 
 Begin coding
 
-#Meeting #1
-##1/29
+# Meeting #1
+## 1/29
 
-###Meeting schedule
+### Meeting schedule
 Meeting every Sunday at 11 at Dibner
 
 Before meeting: decide on work for that day
 
 After meeting: decide on work to be done over the coming week
 
-###Server architecture
+### Server architecture
 Aravind + Matias
 
 Figuring it out next time (Node.js, Mongoose/MySQL, sockets, etc.)
 
-###Game design
+### Game design
 Raf
 
 Planning out how the game actually works over the next couple of weeks
 
-###Frontend
+### Frontend
 Raf + Jacob + Jun
 
 Pure HTML/CSS/JQuery
 
-###Tentative schedule
+### Tentative schedule
 Working environment, staging server, basic socket connections: 2/5
 
 Finalized game design: 2/12

@@ -1,23 +1,36 @@
+// ////////////////////
+// I N I T
+// ///////////////////////////////////////
+
 //game info
 var socket = io();
-
-socket.on("failure", function() {
-	window.location.href = "/matchmaking?id=0";
-});
-
-socket.on("setup", function(message) {
-	console.log(message.usernames);
-	alert(message);
-});
+var CURRENT_USER = "";
 
 $(window).on("load", function() {
-	socket.emit("setup", { gameId : getUrlVars("id") });
+	getSession();
 });
 
-function getUrlVars(key) { //TEMP
-	var vars = {};
-	var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-		vars[key] = value;
+function getSession() {
+	$.ajax({
+		type: 'GET',
+		//data: JSON.stringify(loginData),
+		contentType: 'application/json',
+		url: '/getThisUser',
+		success: function(data){
+			CURRENT_USER = data;
+			startPage();
+		}
 	});
-	return vars[key];
 }
+
+function startPage() {
+	socket.emit("setup", { "gameId" : getId(), "username" : CURRENT_USER });
+}
+
+function getId() {
+    return window.location.href.split("=")[1];
+}
+
+socket.on("ready", function(message) {
+	console.log(message.usernames);
+});

@@ -2,12 +2,12 @@
 // I N I T
 // //////////////////////////////////////////
 
-var itemType = "";
-var itemRange = "";
-var itemClass = "";
-var types = ["otu","1 hand","2 hand", "head", "armor"];
+//var itemType = "";
+var monsterRange = "";
+var buffClass = "";
+var buffAmt = 0;
 var ranges = ["low","med","high", "wild"];
-var classes = ["all","warrior","wizard", "troll", "priest"];
+var classes = ["none", "warrior", "wizard", "troll", "priest"];
 var colors = [
 "#FF0000", "#FF9900", "#FFCC00", "#FFFF00", "#B2FF00", "#66FF00", "#33FF70", "#00FFE1", "#0088F0", "#0011FF", "#7534ff"];
 var bkColor = "#111";
@@ -21,7 +21,6 @@ var boxWidth = 80;
 var object = [];
 
 $(window).on("load", function() {
-	populateTypes();
 	populateRanges();
 	populateClasses();
 	populateColors();
@@ -30,9 +29,8 @@ $(window).on("load", function() {
 	populateIcon();
 	buttonHovers();
 
-	$(".r-type").click(function() {updateType($(this));});
+	$(".r-class").click(function() {updateBuff($(this));});
 	$(".r-range").click(function() {updateRange($(this));});
-	$(".r-class").click(function() {updateClass($(this));});
 	$(".color").click(function() {updateColor($(this));});
 	$(".eraser").click(function() {updateEraser();});
 	$(".cell").mousemove(function(e) {
@@ -41,19 +39,18 @@ $(window).on("load", function() {
 	$(".cell").click(function(e) {updateCell($(this));});
 	$(".submit-button").click(function() {submitObject();});
 	$(".load-button").click(function() {
-		toggleLoad();
+		$(".loader").val("");
+		$(".loader").trigger("click");
 	});
-	//$(".loader").change(function() {loadObject();});
+	$(".loader").change(function() {loadObject();});
 
-	populateLoad();
 	printUpdate();
 });
 
 function printUpdate() {
 	//console.log("=======");
-	//console.log("item type: " + itemType);
-	//console.log("item range: " + itemRange);
-	//console.log("item class: " + itemClass);
+	//console.log("buff class: " + buffClass);
+	//console.log("item range: " + monsterRange);
 	//console.log("active color: " + activeColor);
 }
 
@@ -61,11 +58,11 @@ function printUpdate() {
 // S I D E B A R
 // //////////////////////////////////////////
 
-function populateTypes() {
-	for (var i = 0; i < types.length; i++) {
-		$(".type-input").append("<div class='radio r-type' data-type='"+types[i]+"'><div class='checkbox'></div><p class='v-small'>"+types[i]+"</p></div>");
+function populateClasses() {
+	for (var i = 0; i < classes.length; i++) {
+		$(".buff-input").append("<div class='radio r-class' data-class='"+classes[i]+"'><div class='checkbox'></div><p class='v-small'>"+classes[i]+"</p></div>");
 	}
-	updateType($(".r-type[data-type='"+types[0]+"']"))
+	updateBuff($(".r-class[data-class='"+classes[0]+"']"));
 }
 
 function populateRanges() {
@@ -73,13 +70,6 @@ function populateRanges() {
 		$(".range-input").append("<div class='radio r-range' data-type='"+ranges[i]+"'><div class='checkbox'></div><p class='v-small'>"+ranges[i]+"</p></div>");
 	}
 	updateRange($(".r-range[data-type='"+ranges[0]+"']"))
-}
-
-function populateClasses() {
-	for (var i = 0; i < classes.length; i++) {
-		$(".class-input").append("<div class='radio r-class' data-class='"+classes[i]+"'><div class='checkbox'></div><p class='v-small'>"+classes[i]+"</p></div>");
-	}
-	updateClass($(".r-class[data-class='"+classes[0]+"']"))
 }
 
 function populateColors() {
@@ -117,34 +107,38 @@ function updateLevel(text) {
 	$("input[name=level]").val(text);
 }
 
-function updateType(e) {
-	$(".r-type").removeClass("active");
-	e.addClass("active");
-	itemType = e.data("type");
-
+function updateBuff(e) {
+	/*
+	if (e.hasClass("active")) {
+		$(".r-class").removeClass("active");
+		buffClass = "";
+		$(".buff-amt-p").removeClass("active");
+		$(".buff-c input").removeClass("active");
+	} else {
+		$(".r-class").removeClass("active");
+		e.addClass("active");
+		buffClass = e.data("class");
+		$(".buff-amt-p").addClass("active");
+		$(".buff-c input").addClass("active");
+	}
 	printUpdate();
-}
-
-function updateClass(e) {
+	*/
 	$(".r-class").removeClass("active");
 	e.addClass("active");
-	itemClass = e.data("class");
-
-	printUpdate();
-}
-
-function updateTypeByText(text) {
-	$(".r-type").removeClass("active");
-	$(".r-type[data-type='"+text+"']").addClass("active");
-	itemType = text;
-
-	printUpdate();
+	buffClass = e.data("class");
+	if (e.data("class") == "none") {
+		$(".buff-amt-p").removeClass("active");
+		$(".buff-c input").removeClass("active");
+	} else {
+		$(".buff-amt-p").addClass("active");
+		$(".buff-c input").addClass("active");
+	}
 }
 
 function updateRange(e) {
 	$(".r-range").removeClass("active");
 	e.addClass("active");
-	itemRange = e.data("type");
+	monsterRange = e.data("type");
 
 	printUpdate();
 }
@@ -152,7 +146,7 @@ function updateRange(e) {
 function updateRangeByText(text) {
 	$(".r-range").removeClass("active");
 	$(".r-range[data-type='"+text+"']").addClass("active");
-	itemRange = text;
+	monsterRange = text;
 
 	printUpdate();
 }
@@ -300,21 +294,23 @@ var cellSize = boxWidth / numCells;
 // //////////////////////////////////////////
 function submitObject() {
 	console.log("========================\n");
-	console.log("saving item with attributes:");
+	console.log("saving monster with attributes:");
 	console.log("NAME: "+$("input[name=name]").val());
-	console.log("TYPE: "+itemType);
-	console.log("RANGE: "+itemRange);
-	console.log("USE BY CLASS: "+itemClass);
-	console.log("DESCRIPTION: "+$(".item-desc").val());
+	console.log("RANGE: "+monsterRange);
+	console.log("DESCRIPTION: "+$(".monster-desc").val());
+	console.log("NUM TREASURES: "+$("input[name=num-treasures]").val());
+	console.log("DE-BUFF CLASS: "+buffClass);
+	console.log("DE-BUFF Lvl: "+$("input[name=buff-amount]").val());
 	console.log("SPRITE: "+object);
 	console.log("========================\n");
 
-	const itemData = {
+	const monsterData = {
 		id: $("input[name=name]").val(),
-		type: itemType,
-		range: itemRange,
-		use_by_class: itemClass,
+		range: monsterRange,
 		description: $(".item-desc").val(),
+		num_treasures: $("input[name=num-treasures]").val(),
+		buff_class: buffClass,
+		buff_lvl: $("input[name=buff-amount]").val(),
 		sprite: object,
 		creator_id: "raf", //change this
 		published: 'False'
@@ -322,9 +318,9 @@ function submitObject() {
 
 	$.ajax({
 		type: 'POST',
-		data: JSON.stringify(itemData),
+		data: JSON.stringify(monsterData),
 		contentType: 'application/json',
-		url: '/item-upload',
+		url: '/monster-upload',
 		success: function(data){
 			console.log(data);
 		}
@@ -334,52 +330,33 @@ function submitObject() {
 // ////////////////////
 // L O A D
 // //////////////////////////////////////////
-
-function populateLoad() {
-	$.ajax({
-		type: 'POST',
-		//data: JSON.stringify(itemData),
-		contentType: 'application/json',
-		url: '/items-list',
-		success: function(data){
-			//console.log(data);
-			var items = JSON.parse(data);
-			//console.log(items[0].id);
-
-			for (var i = 0; i < items.length; i++) {
-				$(".load-window").append("<p class='v-small'>"+items[i].id+"</p>");
-			}
-
-			$(".load-window .v-small").each(function() {
-				$(this).click(function() {
-					grabItem($(this));
-				});
-			});
+function loadObject() {
+	var filename = "php/" + $('.loader').val().split('\\').pop();
+	var lines = getFile(filename).split("\n");
+	for (var i = 0; i < lines.length; i++) {
+		if (lines[i] == "name:") {
+			updateName(lines[++i]);
+		} else if (lines[i] == "type:") {
+			updateTypeByText(lines[++i]);
+		} else if (lines[i] == "object:") {
+			updateCreator(lines[++i]);
+		} else if (lines[i] == "level:") {
+			updateLevel(lines[++i]);
 		}
-	});
+	}
 }
 
-function grabItem(el) {
-
-	var itemData = {
-		id: el.html(),
-		creator_id: "raf" //will change
-	};
-
-	console.log(itemData);
-
+function getFile(path) {
+	newfile = "";
 	$.ajax({
-		type: 'POST',
-		data: JSON.stringify(itemData),
-		contentType: 'application/json',
-		url: '/grab-item',
-		success: function(data){
-			console.log(data);
-		}
+    	async: false,
+     	type: 'GET',
+     	dataType: "text",
+     	url: path,
+     	success: function(data) {
+       		newFile = data;
+       		console.log("successfully got object from file :D");
+     	}
 	});
-	
-}
-
-function toggleLoad() {
-	$(".load-window").toggleClass("active");
+	return newFile;
 }

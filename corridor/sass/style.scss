@@ -1,0 +1,76 @@
+// ////////////////////
+// V A R S
+// //////////////////////////////////////////
+// constants
+$content-width:						500px;
+$screen-width:						300px;
+$large-margin:						30px;
+$small-margin:						10px;
+$main-button-height:				60px;
+$box-width:							80px;
+$box-margin:						5px;
+$num-boxes:							6;
+$box-level-width:					30px;
+
+// computed
+$top-content-height: $screen-width + $large-margin + $main-button-height + $large-margin;
+$content-width: ($box-width * $num-boxes) + ($box-margin * ($num-boxes - 1));
+$build-info-width: ($box-width * 3) + ($box-margin * 2);
+
+// ////////////////////
+// C O L O R S
+// //////////////////////////////////////////
+$bk-color:							#111;
+$screen-color:						#141414;			
+
+// ////////////////////
+// F O N T S
+// //////////////////////////////////////////
+@font-face {
+	font-family:v-large;
+	src:url("../fonts/visitor1.ttf");
+}
+
+@font-face {
+	font-family:v-small;
+	src:url("../fonts/visitor2.ttf");
+}
+
+.v-large {
+	font-family:v-large;
+	font-size:50px;
+}
+
+.v-small {
+	font-family:v-small;
+	font-size:30px;
+}
+
+// ////////////////////
+// G L O B A L S
+// //////////////////////////////////////////
+body {
+	background-color:$bk-color;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizelegibility;
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+}
+
+* {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	margin:0;
+
+	&::-webkit-scrollbar {
+    	display:none;
+  	}
+}
+
+// ////////////////////
+// I M P O R T S
+// //////////////////////////////////////////
+@import "game";
+@import "screen";
+@import "console";
