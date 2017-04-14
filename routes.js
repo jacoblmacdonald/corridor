@@ -22,7 +22,7 @@ module.exports = function(app, passport){
     const use_by_class = req.body.use_by_class;
     const description = req.body.description;
     const sprite = req.body.sprite;
-    const creator_id = req.body.creator_id;
+    const creator_id = req.user.id;
     const published = req.body.published;
 
         r.db('Corridor').table('Items').filter({
@@ -66,7 +66,7 @@ module.exports = function(app, passport){
         const buff_class = req.body.buff_class;
         const buff_lvl = req.body.buff_lvl;
         const sprite = req.body.sprite;
-        const creator_id = req.body.creator_id;
+        const creator_id = req.user.id;
         const published = req.body.published;
 
         r.db('Corridor').table('Monsters').filter({
@@ -104,19 +104,35 @@ module.exports = function(app, passport){
         })
     });
 
-    app.post("/items-list", function(req, res) {
-        r.db('Corridor').table('Items').filter({'creator_id':'raf'}).orderBy(r.desc("id")).pluck("id").run(function(err, cursor) {
+    app.get("/items-list", function(req, res) {
+        const creator_id = req.user.id;
+        r.db('Corridor').table('Items').filter({'creator_id':creator_id}).orderBy(r.desc("id")).pluck("id").run(function(err, cursor) {
             return res.send(JSON.stringify(cursor, null, 2));
-            //cursor.toArray(function(err, result) {
-                //return res.send(result);
-            //});
+        });
+    });
+
+    app.get("/monster-list", function(req, res) {
+        const creator_id = req.user.id;
+        r.db('Corridor').table('Monsters').filter({'creator_id':creator_id}).orderBy(r.desc("id")).pluck("id").run(function(err, cursor) {
+            return res.send(JSON.stringify(cursor, null, 2));
         });
     });
 
     app.post("/grab-item", function(req, res) {
         const id = req.body.id;
-        const creator_id = req.body.creator_id;
+        const creator_id = req.user.id;
         r.db('Corridor').table('Items').filter({
+            'creator_id' : creator_id,
+            'id' : id
+        }).run(function(err, cursor){
+            return res.send(JSON.stringify(cursor, null, 2));
+        });
+    });
+
+    app.post("/grab-monster", function(req, res) {
+        const id = req.body.id;
+        const creator_id = req.user.id;
+        r.db('Corridor').table('Monsters').filter({
             'creator_id' : creator_id,
             'id' : id
         }).run(function(err, cursor){

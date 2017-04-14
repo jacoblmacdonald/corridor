@@ -2,18 +2,18 @@
 // I N I T
 // //////////////////////////////////////////
 
-//var itemType = "";
+var CURRENT_USER = "";
 var monsterRange = "";
 var buffClass = "";
 var buffAmt = 0;
 var ranges = ["low","med","high", "wild"];
 var classes = ["none", "warrior", "wizard", "troll", "priest"];
 var colors = [
-"#FF0000", "#FF9900", "#FFCC00", "#FFFF00", "#B2FF00", "#66FF00", "#33FF70", "#00FFE1", "#0088F0", "#0011FF", "#7534ff"];
+"#ffffff","#b5b5b5","#FF0000", "#FF9900", "#FFCC00", "#FFFF00", "#B2FF00", "#66FF00", "#33FF70", "#00FFE1", "#0088F0", "#0011FF", "#7534ff"];
 var bkColor = "#111";
 var screenColor = "#141414";
 var activeColor = "";
-var numCells = 20;
+var numCells = 30;
 var creatorWidth = 500;
 var screenWidth = 300;
 var boxWidth = 80;
@@ -21,6 +21,26 @@ var boxWidth = 80;
 var object = [];
 
 $(window).on("load", function() {
+	getSession();
+});
+
+function getSession() {
+/*
+	$.ajax({
+		type: 'GET',
+		//data: JSON.stringify(loginData),
+		contentType: 'application/json',
+		url: '/getThisUser',
+		success: function(data){
+			CURRENT_USER = data;
+			startPage();
+		}
+	});
+	*/
+	startPage();
+}
+
+function startPage() {
 	populateRanges();
 	populateClasses();
 	populateColors();
@@ -29,7 +49,7 @@ $(window).on("load", function() {
 	populateIcon();
 	buttonHovers();
 
-	$(".r-class").click(function() {updateBuff($(this));});
+	$(".r-class").click(function() {updateBuffClass($(this));});
 	$(".r-range").click(function() {updateRange($(this));});
 	$(".color").click(function() {updateColor($(this));});
 	$(".eraser").click(function() {updateEraser();});
@@ -39,13 +59,13 @@ $(window).on("load", function() {
 	$(".cell").click(function(e) {updateCell($(this));});
 	$(".submit-button").click(function() {submitObject();});
 	$(".load-button").click(function() {
-		$(".loader").val("");
-		$(".loader").trigger("click");
+		toggleLoad();
 	});
-	$(".loader").change(function() {loadObject();});
+	//$(".loader").change(function() {loadObject();});
 
-	printUpdate();
-});
+	populateLoad();
+	//printUpdate();
+}
 
 function printUpdate() {
 	//console.log("=======");
@@ -62,7 +82,7 @@ function populateClasses() {
 	for (var i = 0; i < classes.length; i++) {
 		$(".buff-input").append("<div class='radio r-class' data-class='"+classes[i]+"'><div class='checkbox'></div><p class='v-small'>"+classes[i]+"</p></div>");
 	}
-	updateBuff($(".r-class[data-class='"+classes[0]+"']"));
+	updateBuffClass($(".r-class[data-class='"+classes[0]+"']"));
 }
 
 function populateRanges() {
@@ -103,26 +123,15 @@ function updateName(text) {
 	$("input[name=name]").val(text);
 }
 
-function updateLevel(text) {
-	$("input[name=level]").val(text);
+function updateDescription(text) {
+	$(".monster-desc").val(text);
 }
 
-function updateBuff(e) {
-	/*
-	if (e.hasClass("active")) {
-		$(".r-class").removeClass("active");
-		buffClass = "";
-		$(".buff-amt-p").removeClass("active");
-		$(".buff-c input").removeClass("active");
-	} else {
-		$(".r-class").removeClass("active");
-		e.addClass("active");
-		buffClass = e.data("class");
-		$(".buff-amt-p").addClass("active");
-		$(".buff-c input").addClass("active");
-	}
-	printUpdate();
-	*/
+function updateNumTreasures(text) {
+	$("input[name=num-treasures]").val(text);
+}
+
+function updateBuffClass(e) {
 	$(".r-class").removeClass("active");
 	e.addClass("active");
 	buffClass = e.data("class");
@@ -135,12 +144,30 @@ function updateBuff(e) {
 	}
 }
 
+function updateBuffClassByText(text) {
+	$(".r-class").removeClass("active");
+	//e.addClass("active");
+	$(".r-class[data-class='"+text+"']").addClass("active");
+	buffClass = text;
+	if (buffClass == "none") {
+		$(".buff-amt-p").removeClass("active");
+		$(".buff-c input").removeClass("active");
+	} else {
+		$(".buff-amt-p").addClass("active");
+		$(".buff-c input").addClass("active");
+	}
+}
+
+function updateBuffLevel(text) {
+	$("input[name=buff-amount]").val(text);
+}
+
 function updateRange(e) {
 	$(".r-range").removeClass("active");
 	e.addClass("active");
 	monsterRange = e.data("type");
 
-	printUpdate();
+	//printUpdate();
 }
 
 function updateRangeByText(text) {
@@ -148,7 +175,7 @@ function updateRangeByText(text) {
 	$(".r-range[data-type='"+text+"']").addClass("active");
 	monsterRange = text;
 
-	printUpdate();
+	//printUpdate();
 }
 
 function updateColor(e) {
@@ -164,7 +191,7 @@ function updateColor(e) {
 
 	$(".eraser").removeClass("active");
 
-	printUpdate();
+	//printUpdate();
 }
 
 function updateEraser() {
@@ -175,7 +202,7 @@ function updateEraser() {
 	activeColor = screenColor;
 	$(".eraser").addClass("active");
 
-	printUpdate();
+	//printUpdate();
 }
 
 function buttonHovers() {
@@ -240,16 +267,16 @@ function updateCell(e) {
 }
 
 function updateCreator(text) {
-	var values = text.split(",");
-	var index = 0;
+	//var values = text.split(",");
+	//var index = 0;
 	for (var i = 0; i < numCells; i++) {
 		for (var j = 0; j < numCells; j++) {
-			$(".cell[data-x='"+j+"'][data-y='"+i+"']").css("background-color", values[index]);
-			$(".cell[data-x='"+j+"'][data-y='"+i+"']").data("color", values[index]);
-			$(".screen-cell[data-x="+j+"][data-y="+i+"]").css("background-color", values[index]);
-			$(".box-cell[data-x="+j+"][data-y="+i+"]").css("background-color", values[index]);
-			object[i][j] = values[index];
-			index++;
+			$(".cell[data-x='"+j+"'][data-y='"+i+"']").css("background-color", text[i][j]);
+			$(".cell[data-x='"+j+"'][data-y='"+i+"']").data("color", text[i][j]);
+			$(".screen-cell[data-x="+j+"][data-y="+i+"]").css("background-color", text[i][j]);
+			$(".box-cell[data-x="+j+"][data-y="+i+"]").css("background-color", text[i][j]);
+			object[i][j] = text[i][j];
+			//index++;
 		}
 	}
 }
@@ -307,12 +334,12 @@ function submitObject() {
 	const monsterData = {
 		id: $("input[name=name]").val(),
 		range: monsterRange,
-		description: $(".item-desc").val(),
+		description: $(".monster-desc").val(),
 		num_treasures: $("input[name=num-treasures]").val(),
 		buff_class: buffClass,
 		buff_lvl: $("input[name=buff-amount]").val(),
 		sprite: object,
-		creator_id: "raf", //change this
+		//creator_id: CURRENT_USER, //change this
 		published: 'False'
 	};
 
@@ -330,33 +357,65 @@ function submitObject() {
 // ////////////////////
 // L O A D
 // //////////////////////////////////////////
-function loadObject() {
-	var filename = "php/" + $('.loader').val().split('\\').pop();
-	var lines = getFile(filename).split("\n");
-	for (var i = 0; i < lines.length; i++) {
-		if (lines[i] == "name:") {
-			updateName(lines[++i]);
-		} else if (lines[i] == "type:") {
-			updateTypeByText(lines[++i]);
-		} else if (lines[i] == "object:") {
-			updateCreator(lines[++i]);
-		} else if (lines[i] == "level:") {
-			updateLevel(lines[++i]);
+
+function populateLoad() {
+	$.ajax({
+		type: 'GET',
+		//data: JSON.stringify(itemData),
+		contentType: 'application/json',
+		url: '/monster-list',
+		success: function(data){
+			//console.log(data);
+			var monsters = JSON.parse(data);
+			//console.log(items[0].id);
+
+			for (var i = 0; i < monsters.length; i++) {
+				$(".load-window").append("<p class='v-small'>"+monsters[i].id+"</p>");
+			}
+
+			$(".load-window .v-small").each(function() {
+				$(this).click(function() {
+					grabItem($(this));
+				});
+			});
 		}
-	}
+	});
 }
 
-function getFile(path) {
-	newfile = "";
+function grabItem(el) {
+
+	var monsterData = {
+		id: el.html()
+	};
+
+	//console.log("grabbing item "+monsterData.id);
+
 	$.ajax({
-    	async: false,
-     	type: 'GET',
-     	dataType: "text",
-     	url: path,
-     	success: function(data) {
-       		newFile = data;
-       		console.log("successfully got object from file :D");
-     	}
+		type: 'POST',
+		data: JSON.stringify(monsterData),
+		contentType: 'application/json',
+		url: '/grab-monster',
+		success: function(data){
+			console.log(JSON.parse(data)[0]);
+			loadObject(JSON.parse(data)[0]);
+		}
 	});
-	return newFile;
+	
+}
+
+function toggleLoad() {
+	$(".load-window").toggleClass("active");
+}
+
+function loadObject(data) {
+
+	//console.log(data);
+	updateName(data.id);
+	updateRangeByText(data.range);
+	updateDescription(data.description);
+	updateNumTreasures(data.num_treasures);
+	updateBuffClassByText(data.buff_class);
+	updateBuffLevel(data.buff_lvl);
+	updateCreator(data.sprite);
+
 }
