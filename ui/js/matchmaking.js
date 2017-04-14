@@ -11,6 +11,7 @@ var CURRENT_GAME_ID = 0;
 
 $(window).on("load", function() {
 	getSession();
+	
 });
 
 // ////////////////////

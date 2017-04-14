@@ -6,6 +6,9 @@ const app = express();
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const routes = require('./routes');
+const chat = require('./Chat/Chat-Backend');
+const passportSocketIo = require('passport.socketio');
+const cookieParser = require('cookie-parser');
 
 
 const r = require('./api/rethinkdb');
@@ -26,11 +29,13 @@ var ItemType = classes.ItemType;
 var games = [ ];
 var users = [ ];
 
+
+var http = require('http').Server(app);
+var server = require('socket.io')(http);
 //////////////////////
 // S O C K E T S
 /////////////////////////////////////////
-var http = require('http').Server(app);
-var server = require('socket.io')(http);
+
 
 server.on("connection", function(client) {
   
@@ -55,9 +60,13 @@ server.on("connection", function(client) {
 		game.players.push(new Player(this, new User(message.name)));
 		server.emit("created", { id : game.id });
 	});
+	
+	chat(client, server);
+
+
 });
 //body parser middleware
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 //////////////////////
@@ -79,6 +88,19 @@ app.use(session({
   resave: true,
   saveUninitialized: false
 }));
+
+// Socket Io
+server.use(passportSocketIo.authorize({
+	key: 'connect.sid',
+	secret: config.sessionSecret,
+	store: store,
+	passport: passport,
+	cookieParser: cookieParser
+}));
+
+
+
+
 //Init & Connect To Passport
 app.use(passport.initialize());
 app.use(passport.session());

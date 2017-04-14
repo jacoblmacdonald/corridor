@@ -21,5 +21,5 @@ var signUp = function(username, email, pwd, callbackFunction){
 		return;
 	});
 
-}
+};
 module.exports = signUp;

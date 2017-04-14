@@ -5,7 +5,7 @@ module.exports ={
 	db: {
 		host: '54.243.2.186',
 		port: 28015,
-		db: 'Corridor',
+		db: 'Corridor'
 	},
 	sessionSecret: "MinimumViableProduct"
 };

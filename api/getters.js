@@ -13,4 +13,4 @@ function byUsername(username) {
 module.exports ={
 	byUsername,
 	byEmailAddress
-}
+};

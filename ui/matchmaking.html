@@ -5,6 +5,8 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
  	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
  	<script src="ui/js/matchmaking.js"></script>
+	<script src="ui/js/ChatUI.js"></script>
+
 </head>
 <body>
 	<div class="matchmaking-c">
@@ -41,9 +43,31 @@
 			<div class="all-players">
 			</div>
 		</div>
+
+
+		<!-- CHAT BOX -->
+
+		<div class="v-tiny ChatBox1" id="ChatBox1">
+			<div class="ChatBox1-Channels" id="chatBox1Channels"></div>
+
+			<div class="ChatBox1-Chat" id="ChatBox1Chat">
+				<div class="ChatBox1-History" id="chatBox1History">
+				</div>
+				<div class="ChatBox1-InputBox">
+					<button class="ChatBox1-InputButton" id="chatBox1InputButton" onclick="sendMessage('chatBox1InputText')">
+						Send
+					</button>
+					<input type="text" class="ChatBox1-InputText" id="chatBox1InputText">
+				</div>
+			</div>
+
+			<div class="ChatBox1-Users" id="chatBox1Users"></div>
+		</div>
 		<a class="logout-button" href="/logout">
 			<p class="v-small">logout :<</p>
 		</a>
-	</div>
+
+
+
 </body>
 </html>
