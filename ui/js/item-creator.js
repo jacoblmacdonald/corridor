@@ -16,7 +16,7 @@ var activeColor = "";
 var numCells = 30;
 var creatorWidth = 500;
 var screenWidth = 300;
-var boxWidth = 80;
+var boxWidth = 80 - 4;
 
 var object = [];
 
