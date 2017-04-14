@@ -7,24 +7,7 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const routes = require('./routes');
 
-
 const r = require('./api/rethinkdb');
-
-
-var classes = require("./game/classes");
-var User = classes.User;
-var Player = classes.Player;
-var Game = classes.Game;
-var Sprite = classes.Sprite;
-var Effect = classes.Effect;
-var Item = classes.Item;
-var Monster = classes.Monster;
-var Job = classes.Job;
-var GameState = classes.GameState;
-var ItemType = classes.ItemType;
-
-var games = [ ];
-var users = [ ];
 
 //////////////////////
 // S O C K E T S
@@ -32,28 +15,53 @@ var users = [ ];
 var http = require('http').Server(app);
 var server = require('socket.io')(http);
 
+var Matchmaker = require("./matchmaker");
+var matchmaker = new Matchmaker(server);
+var Gamemaker = require("./game");
+var gamemaker = new Gamemaker(server);
+
 server.on("connection", function(client) {
   
 	console.log(client.id + " connected");
-	client.emit("connected");
+ 	
+ 	//Load the matchmaking screen
+    client.on("loaded", function(message) {
+        matchmaker.onUserLoaded(message.username, this);
+    });
+
+	//Create a game
+	client.on("create", function(message) {
+		matchmaker.onLobbyCreated(message.username);
+	});
+
+	//Join a game
+	client.on("join", function(message) {
+		matchmaker.onLobbyJoined(message.username, message.hostname);
+	});
+
+	//Start a game
+	client.on("start", function(message) {
+	    var lobby = matchmaker.onGameStarted(message.username);
+	    gamemaker.onGameStarted(lobby.id, lobby.getUsernames());
+	});
+
+    //Setup a game
+    client.on("setup", function(message) {
+    	gamemaker.onSetup(message.gameId, message.username, client);
+        // var game = Game.findGame(games, message.gameId);
+        // if(game) {
+        //     game.players.forEach(function(player) {
+        //         player.client.emit("setup", { usernames : game.players.map(function(player) { return player.user.name; }) });
+        //     });
+        // }
+        // else {
+        //     client.emit("failure");
+        // }
+    });
 
 	//Do something (in game)
 	client.on("action", function(message) {
 		game.receive(message, client);
-	});
-
-	//Join a game
-	//message: { name, gameId }
-	client.on("join", function(message) {
-		Game.findGame(message.gameId).players.push(new Player(this, message.name));
-	});
-
-	//Create a game
-	//message: { name }
-	client.on("create", function(message) {
-		var game = games.push(new Game(server, client));
-		game.players.push(new Player(this, new User(message.name)));
-		server.emit("created", { id : game.id });
 	});
 });
 //body parser middleware
