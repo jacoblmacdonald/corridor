@@ -1,13 +1,13 @@
 // ////////////////////
 // I N I T
 // //////////////////////////////////////////
+
 var CURRENT_USER = "";
-var itemType = "";
-var itemRange = "";
-var itemClass = "";
-var types = ["otu","1 hand","2 hand", "head", "armor"];
+var monsterRange = "";
+var buffClass = "";
+var buffAmt = 0;
 var ranges = ["low","med","high", "wild"];
-var classes = ["all","warrior","wizard", "troll", "priest"];
+var classes = ["none", "warrior", "wizard", "troll", "priest"];
 var colors = [
 "#ffffff","#b5b5b5","#FF0000", "#FF9900", "#FFCC00", "#FFFF00", "#B2FF00", "#66FF00", "#33FF70", "#00FFE1", "#0088F0", "#0011FF", "#7534ff"];
 var bkColor = "#111";
@@ -41,7 +41,6 @@ function getSession() {
 }
 
 function startPage() {
-	populateTypes();
 	populateRanges();
 	populateClasses();
 	populateColors();
@@ -50,9 +49,8 @@ function startPage() {
 	populateIcon();
 	buttonHovers();
 
-	$(".r-type").click(function() {updateType($(this));});
+	$(".r-class").click(function() {updateBuffClass($(this));});
 	$(".r-range").click(function() {updateRange($(this));});
-	$(".r-class").click(function() {updateClass($(this));});
 	$(".color").click(function() {updateColor($(this));});
 	$(".eraser").click(function() {updateEraser();});
 	$(".cell").mousemove(function(e) {
@@ -66,27 +64,25 @@ function startPage() {
 	//$(".loader").change(function() {loadObject();});
 
 	populateLoad();
-	printUpdate();
+	//printUpdate();
 }
 
 function printUpdate() {
-	console.log("=======");
-	console.log("item type: " + itemType);
-	console.log("item range: " + itemRange);
-	console.log("item class: " + itemClass);
-	//console.log("item description: " + );
-	console.log("active color: " + activeColor);
+	//console.log("=======");
+	//console.log("buff class: " + buffClass);
+	//console.log("item range: " + monsterRange);
+	//console.log("active color: " + activeColor);
 }
 
 // ////////////////////
 // S I D E B A R
 // //////////////////////////////////////////
 
-function populateTypes() {
-	for (var i = 0; i < types.length; i++) {
-		$(".type-input").append("<div class='radio r-type' data-type='"+types[i]+"'><div class='checkbox'></div><p class='v-small'>"+types[i]+"</p></div>");
+function populateClasses() {
+	for (var i = 0; i < classes.length; i++) {
+		$(".buff-input").append("<div class='radio r-class' data-class='"+classes[i]+"'><div class='checkbox'></div><p class='v-small'>"+classes[i]+"</p></div>");
 	}
-	updateType($(".r-type[data-type='"+types[0]+"']"))
+	updateBuffClass($(".r-class[data-class='"+classes[0]+"']"));
 }
 
 function populateRanges() {
@@ -94,13 +90,6 @@ function populateRanges() {
 		$(".range-input").append("<div class='radio r-range' data-type='"+ranges[i]+"'><div class='checkbox'></div><p class='v-small'>"+ranges[i]+"</p></div>");
 	}
 	updateRange($(".r-range[data-type='"+ranges[0]+"']"))
-}
-
-function populateClasses() {
-	for (var i = 0; i < classes.length; i++) {
-		$(".class-input").append("<div class='radio r-class' data-class='"+classes[i]+"'><div class='checkbox'></div><p class='v-small'>"+classes[i]+"</p></div>");
-	}
-	updateClass($(".r-class[data-class='"+classes[0]+"']"))
 }
 
 function populateColors() {
@@ -130,56 +119,53 @@ function deactivateColor(e) {
 	}
 }
 
-//updates
-
 function updateName(text) {
 	$("input[name=name]").val(text);
 }
 
-function updateLevel(text) {
-	$("input[name=level]").val(text);
-}
-
 function updateDescription(text) {
-	$(".item-desc").val(text);
+	$(".monster-desc").val(text);
 }
 
-function updateType(e) {
-	$(".r-type").removeClass("active");
-	e.addClass("active");
-	itemType = e.data("type");
-
-	//printUpdate();
+function updateNumTreasures(text) {
+	$("input[name=num-treasures]").val(text);
 }
 
-function updateTypeByText(text) {
-	$(".r-type").removeClass("active");
-	$(".r-type[data-type='"+text+"']").addClass("active");
-	itemType = text;
-
-	//printUpdate();
-}
-
-function updateClass(e) {
+function updateBuffClass(e) {
 	$(".r-class").removeClass("active");
 	e.addClass("active");
-	itemClass = e.data("class");
-
-	//printUpdate();
+	buffClass = e.data("class");
+	if (e.data("class") == "none") {
+		$(".buff-amt-p").removeClass("active");
+		$(".buff-c input").removeClass("active");
+	} else {
+		$(".buff-amt-p").addClass("active");
+		$(".buff-c input").addClass("active");
+	}
 }
 
-function updateClassByText(text) {
+function updateBuffClassByText(text) {
 	$(".r-class").removeClass("active");
+	//e.addClass("active");
 	$(".r-class[data-class='"+text+"']").addClass("active");
-	itemClass = text;
+	buffClass = text;
+	if (buffClass == "none") {
+		$(".buff-amt-p").removeClass("active");
+		$(".buff-c input").removeClass("active");
+	} else {
+		$(".buff-amt-p").addClass("active");
+		$(".buff-c input").addClass("active");
+	}
+}
 
-	//printUpdate();
+function updateBuffLevel(text) {
+	$("input[name=buff-amount]").val(text);
 }
 
 function updateRange(e) {
 	$(".r-range").removeClass("active");
 	e.addClass("active");
-	itemRange = e.data("type");
+	monsterRange = e.data("type");
 
 	//printUpdate();
 }
@@ -187,7 +173,7 @@ function updateRange(e) {
 function updateRangeByText(text) {
 	$(".r-range").removeClass("active");
 	$(".r-range[data-type='"+text+"']").addClass("active");
-	itemRange = text;
+	monsterRange = text;
 
 	//printUpdate();
 }
@@ -281,7 +267,6 @@ function updateCell(e) {
 }
 
 function updateCreator(text) {
-	//console.log(text[0][0]);
 	//var values = text.split(",");
 	//var index = 0;
 	for (var i = 0; i < numCells; i++) {
@@ -336,21 +321,23 @@ var cellSize = boxWidth / numCells;
 // //////////////////////////////////////////
 function submitObject() {
 	console.log("========================\n");
-	console.log("saving item with attributes:");
+	console.log("saving monster with attributes:");
 	console.log("NAME: "+$("input[name=name]").val());
-	console.log("TYPE: "+itemType);
-	console.log("RANGE: "+itemRange);
-	console.log("USE BY CLASS: "+itemClass);
-	console.log("DESCRIPTION: "+$(".item-desc").val());
+	console.log("RANGE: "+monsterRange);
+	console.log("DESCRIPTION: "+$(".monster-desc").val());
+	console.log("NUM TREASURES: "+$("input[name=num-treasures]").val());
+	console.log("DE-BUFF CLASS: "+buffClass);
+	console.log("DE-BUFF Lvl: "+$("input[name=buff-amount]").val());
 	console.log("SPRITE: "+object);
 	console.log("========================\n");
 
-	const itemData = {
+	const monsterData = {
 		id: $("input[name=name]").val(),
-		type: itemType,
-		range: itemRange,
-		use_by_class: itemClass,
-		description: $(".item-desc").val(),
+		range: monsterRange,
+		description: $(".monster-desc").val(),
+		num_treasures: $("input[name=num-treasures]").val(),
+		buff_class: buffClass,
+		buff_lvl: $("input[name=buff-amount]").val(),
 		sprite: object,
 		//creator_id: CURRENT_USER, //change this
 		published: 'False'
@@ -358,9 +345,9 @@ function submitObject() {
 
 	$.ajax({
 		type: 'POST',
-		data: JSON.stringify(itemData),
+		data: JSON.stringify(monsterData),
 		contentType: 'application/json',
-		url: '/item-upload',
+		url: '/monster-upload',
 		success: function(data){
 			console.log(data);
 		}
@@ -374,16 +361,16 @@ function submitObject() {
 function populateLoad() {
 	$.ajax({
 		type: 'GET',
-		//data: JSON.stringify(userData),
+		//data: JSON.stringify(itemData),
 		contentType: 'application/json',
-		url: '/items-list',
+		url: '/monster-list',
 		success: function(data){
 			//console.log(data);
-			var items = JSON.parse(data);
+			var monsters = JSON.parse(data);
 			//console.log(items[0].id);
 
-			for (var i = 0; i < items.length; i++) {
-				$(".load-window").append("<p class='v-small'>"+items[i].id+"</p>");
+			for (var i = 0; i < monsters.length; i++) {
+				$(".load-window").append("<p class='v-small'>"+monsters[i].id+"</p>");
 			}
 
 			$(".load-window .v-small").each(function() {
@@ -397,19 +384,19 @@ function populateLoad() {
 
 function grabItem(el) {
 
-	var itemData = {
+	var monsterData = {
 		id: el.html()
 	};
 
-	//console.log("grabbing item "+itemData);
+	//console.log("grabbing item "+monsterData.id);
 
 	$.ajax({
 		type: 'POST',
-		data: JSON.stringify(itemData),
+		data: JSON.stringify(monsterData),
 		contentType: 'application/json',
-		url: '/grab-item',
+		url: '/grab-monster',
 		success: function(data){
-			//console.log(data);
+			console.log(JSON.parse(data)[0]);
 			loadObject(JSON.parse(data)[0]);
 		}
 	});
@@ -421,13 +408,14 @@ function toggleLoad() {
 }
 
 function loadObject(data) {
-	console.log(data);
+
+	//console.log(data);
 	updateName(data.id);
 	updateRangeByText(data.range);
-	updateTypeByText(data.type);
-	updateClassByText(data.use_by_class);
 	updateDescription(data.description);
+	updateNumTreasures(data.num_treasures);
+	updateBuffClassByText(data.buff_class);
+	updateBuffLevel(data.buff_lvl);
 	updateCreator(data.sprite);
 
-	printUpdate();
 }

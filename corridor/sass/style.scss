@@ -2,31 +2,15 @@
 // V A R S
 // //////////////////////////////////////////
 // constants
-// creator
-$sidebar-width:						300px;
-$sidebar-spacing:					20px;
-$creator-width:						500px;
-$creator-padding:					40px;
-$content-margin:					40px;
-$content-margin-small:				20px;
-$creator-button-height:				50px;
-
-//matchmaking
-$options-width:400px;
-
-// game
 $content-width:						500px;
 $screen-width:						300px;
-$ultra-margin:						100px;
 $large-margin:						30px;
 $small-margin:						10px;
 $main-button-height:				60px;
-$small-button-height:				40px;
 $box-width:							80px;
 $box-margin:						5px;
 $num-boxes:							6;
 $box-level-width:					30px;
-//$box-menu
 
 // computed
 $top-content-height: $screen-width + $large-margin + $main-button-height + $large-margin;
@@ -37,8 +21,7 @@ $build-info-width: ($box-width * 3) + ($box-margin * 2);
 // C O L O R S
 // //////////////////////////////////////////
 $bk-color:							#111;
-$screen-color:						#141414;
-$placeholder-color:					#444;		
+$screen-color:						#141414;			
 
 // ////////////////////
 // F O N T S
@@ -53,11 +36,6 @@ $placeholder-color:					#444;
 	src:url("../fonts/visitor2.ttf");
 }
 
-.v-ultra {
-	font-family:v-large;
-	font-size:100px;
-} 
-
 .v-large {
 	font-family:v-large;
 	font-size:50px;
@@ -66,11 +44,6 @@ $placeholder-color:					#444;
 .v-small {
 	font-family:v-small;
 	font-size:30px;
-}
-
-.v-tiny {
-	font-family:v-small;
-	font-size:20px;
 }
 
 // ////////////////////
@@ -95,26 +68,9 @@ body {
   	}
 }
 
-a {
-	&:link {
-		text-decoration: none;
-	}
-}
-
-.version-title {
-	position:absolute;
-	top:0;
-	left:0;
-	color:white;
-}
-
 // ////////////////////
 // I M P O R T S
 // //////////////////////////////////////////
-@import "login";
-@import "matchmaking";
-@import "_creator_sidebar";
-@import "_creator_screen";
 @import "game";
 @import "screen";
 @import "console";
