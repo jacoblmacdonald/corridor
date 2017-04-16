@@ -76,6 +76,18 @@ function initClicks() {
 			$(this).addClass("active");
 		}
 	});
+
+	$(document).on('click', ".list-switch" , function() {
+    	switchItems($(this));
+	});
+
+	$(document).on('click', ".list-drop" , function() {
+    	dropItem($(this));
+	});
+
+	$(document).on('click', ".list-use" , function() {
+    	deployItem($(this));
+	});
 }
 
 // ////////////////////
@@ -117,4 +129,19 @@ function updateBoxMenu(b, type) {
 	for (var i = 0; i < ITEM_LIST.length; i++) {
 		$(".box-menu", b).append("<p class='v-small'>"+ITEM_LIST[i]+"</p>")
 	}
+}
+
+// ////////////////////
+// B O X   M E N U
+// //////////////////////////////////////////
+function switchItems(e) {
+
+}
+
+function dropItem(e) {
+
+}
+
+function deployItem(e) {
+
 }
