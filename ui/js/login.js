@@ -2,6 +2,7 @@
 // I N I T
 // ///////////////////////////////////////
 
+//var socket = io();
 var colors = [
 "#FF0000", "#FF9900", "#FFCC00", "#FFFF00", "#B2FF00", "#66FF00", "#33FF70", "#00FFE1", "#0088F0", "#0011FF", "#7534ff", "#fff"];
 var colorDelay = 0.1;
@@ -18,6 +19,8 @@ $(window).on("load", function() {
 	$(".signup-submit").click(function() {
 		processSignup();
 	});
+
+	$(".login-error").html("");
 });
 
 // ////////////////////
@@ -42,12 +45,13 @@ function clearErrors() {
 	$(".user-t .error").html("");
 	$(".pass-t .error").html("");
 	$(".pass2-t .error").html("");
+	$(".login-error").html("");
 }
 
 function processLogin() {
 	clearErrors();
-	var username = $(".input-username").val();
-	var password = $(".input-password").val();
+	const username = $(".input-username").val();
+	const password = $(".input-password").val();
 	var c = true;
 
 	if (username == "") {
@@ -60,15 +64,34 @@ function processLogin() {
 		c = false;
 	}
 
-	if (c == true) {
-		console.log("attempting login with");
-		console.log("username: "+username);
-		console.log("password: "+password);
-		console.log("\n");
+	if (c) {
+		//Create Object With Login Data
+		var loginData = {
+			username: username,
+			password: password
+		};
 
 		//Do checks for correct information (ie no blank fields)
 		//Send to node, if success:
-		window.location.href = "/matchmaking";
+
+		$.ajax({
+			type: 'POST',
+			data: JSON.stringify(loginData),
+			contentType: 'application/json',
+			url: '/login',
+			success: function(data){
+				//console.log('success');
+				//console.log(data);
+				if (data == "success") {
+					window.location.href = "/";
+				} else {
+ 					$(".login-error").html("incorrect information, please try again");
+ 				}
+			}
+		});
+
+
+
 	}
 	
 }
@@ -81,10 +104,10 @@ function processLogin() {
 
 function processSignup() {
 	clearErrors();
-	var username = $(".signup-username").val();
-	var email = $(".signup-email").val();
-	var pass1 = $(".signup-password").val();
-	var pass2 = $(".signup-password2").val();
+	const username = $(".signup-username").val();
+	const email = $(".signup-email").val();
+	const pass1 = $(".signup-password").val();
+	const pass2 = $(".signup-password2").val();
 	var c = true;
 	if (username == "") {
 		$(".user-t .error").html(" username cannot be blank");
@@ -107,14 +130,26 @@ function processSignup() {
 	}
 
 	if (c == true) {
-		console.log("attempting signup with");
-		console.log("username: "+username);
-		console.log("email: "+email);
-		console.log("password: "+pass1);
-		console.log("\n");
+		//Create Object With Login Data
+		const signUpData = {
+			email: email,
+			username: username,
+			password: pass1
+		};
 
-		//Do checks for correct information (ie no blank fields)
-		//Send to node, if success:
-		window.location.href = "/matchmaking";
+		$.ajax({
+			type: 'POST',
+			data: JSON.stringify(signUpData),
+			contentType: 'application/json',
+			url: '/register',
+			success: function(data){
+				if (data == "success") {
+					window.location.href = "/";
+				} else {
+ 					$(".login-error").html("username already taken :<");
+ 				}
+			}
+		});
+
 	}
 }

@@ -1,0 +1,71 @@
+.creator-c {
+	float:left;
+	padding:$creator-padding;
+	margin-right:$content-margin-small;
+
+	.creator {
+		width:$creator-width;
+		height:$creator-width;
+		background-color: $screen-color;
+		overflow:hidden;
+
+		.cell {
+			float:left;
+			cursor:pointer;
+		}
+	}
+
+	p {
+		color:white;
+	}
+}
+
+.screen-c {
+	float:left;
+	padding:$creator-padding;
+
+	p {
+		color:white;
+	}
+
+	.screen {
+		width:$screen-width;
+		height:$screen-width;
+		background-color: $screen-color;
+		margin-bottom:$content-margin;
+
+		.screen-cell {
+			float:left;
+			pointer-events:none;
+		}
+	}
+
+	.box {
+		width:$box-width;
+		height:$box-width;
+		//border:2px solid white;
+		position:relative;
+		background-color:$screen-color;
+
+		.box-level {
+			position:absolute;
+			bottom:-2;
+			right:-2;
+			width:$box-level-width;
+			height:$box-level-width;
+			border:2px solid white;
+			text-align: center;
+
+			p {
+				line-height:calc(#{$box-level-width} - 2px);
+				width:29px;
+				color:white;
+			}
+		}
+
+		.box-cell {
+			float:left;
+			pointer-events:none;
+		}
+	}
+}
