@@ -8,6 +8,17 @@
 		display:inline-block;
 		height:100%;
 	}
+
+	.players-side-bar {
+		position:absolute;
+		top:0;
+		left:0;
+		text-align:left;
+
+		p {
+			color:white;
+		}
+	}
 }
 
 .box {

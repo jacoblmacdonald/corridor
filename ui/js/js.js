@@ -1,10 +1,71 @@
+// ////////////////////
+// I N I T
+// ///////////////////////////////////////
+var socket = io();
+var CURRENT_USER = "";
+var ALL_USERS = [];
+
 var boxWidth = 80 - 4;
 var numCells = 30;
 var boxCellSize = boxWidth / numCells;
 
 var found_items = [];
 
-$(window).on("load", function() {
+$(window).on("load", function() {getSession();});
+
+// ////////////////////
+// I N I T (SERVER)
+// ///////////////////////////////////////
+
+function getSession() {
+	$.ajax({
+		type: 'GET',
+		//data: JSON.stringify(loginData),
+		contentType: 'application/json',
+		url: '/getThisUser',
+		success: function(data){
+			CURRENT_USER = data;
+			startPage();
+		}
+	});
+}
+
+function startPage() {
+	socket.emit("setup", { "gameId" : getId(), "username" : CURRENT_USER });
+}
+
+function getId() {
+    return window.location.href.split("=")[1];
+}
+
+socket.on("ready", function(message) {
+	console.log(message.usernames);
+	console.log(message.items);
+	ALL_USERS = message.usernames;
+	loadPage(message.items);
+});
+
+// ////////////////////
+// I N I T (FRONTEND)
+// ///////////////////////////////////////
+
+function loadPage(items) {
+	initClicks();
+	populatePlayers();
+	initBoxes();
+
+	for (var i = 0; i < items.length; i++) {
+		updateBox($(".bag-box.bag-"+i), items[i]);
+	}
+}
+
+function populatePlayers() {
+	for (var i = 0; i < ALL_USERS.length; i++) {
+		$(".players-side-bar").append("<p class='v-small'>"+ALL_USERS[i]+"</p>");
+	}
+}
+
+function initClicks() {
 	$(".box").click(function() {
 		if ($(this).hasClass("active")) {
 			$(".box").removeClass("active");
@@ -13,76 +74,14 @@ $(window).on("load", function() {
 			$(this).addClass("active");
 		}
 	});
-
-	initBoxes(); 
-
-	//for testing
-	//populateLoad();
-});
+}
 
 // ////////////////////
-// L O A D (TESTING)
+// 
 // //////////////////////////////////////////
 
-function populateLoad() {
-	$.ajax({
-		type: 'GET',
-		//data: JSON.stringify(userData),
-		contentType: 'application/json',
-		url: '/items-list',
-		success: function(data){
-			//console.log(data);
-			var items = JSON.parse(data);
-			//console.log(items[0].id);
-
-			grabItem(0, items);
-		}
-	});
-}
-
-function grabItem(index, items) {
-	//console.log(index);
-	if (index < items.length) {
-		var itemData = {
-			id:items[index].id
-		}
-		$.ajax({
-			type: 'POST',
-			data: JSON.stringify(itemData),
-			contentType: 'application/json',
-			url: '/grab-item',
-			success: function(data){
-				//console.log(data);
-				found_items.push(JSON.parse(data)[0]);
-				grabItem(++index, items);
-			}
-		});
-	} else {
-		loadBag();
-	}
-}
-
-function loadBag() {
-	/*
-	console.log("loading item");
-	console.log(item.id);
-	console.log(item.range);
-	console.log(item.type);
-	console.log(item.use_by_class);
-	console.log(item.description);
-	console.log(item.sprite);
-	*/
-	/*
-	var index = 0;
-	$(".bag-box").each(function() {
-		console.log(index);
-		updateBox($(this), found_items[index].sprite);
-		index++;
-	});
-	*/
-	for (var i = 0; i < found_items.length; i++) {
-		updateBox($(".bag-box.bag-"+i), found_items[i]);
-	}
+function addItemToBag(item) {
+	updateBox($(".bag-box.bag-"+item.bagIndex), item.sprite);
 }
 
 // ////////////////////
@@ -99,9 +98,7 @@ function initBoxes() {
 	});
 }
 
-function updateBox(b, object) {
-	var sprite = object.sprite;
-	//console.log(sprite)
+function updateBox(b, sprite) {
 	for (var i = 0; i < numCells; i++) {
 		for (var j = 0; j < numCells; j++) {
 			if (i < sprite.length) {

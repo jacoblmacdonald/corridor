@@ -33,7 +33,7 @@ const ItemType = {
 	ARMOR : 4
 };
 
-const maxPlayers = 2;
+const STARTING_HAND = 6;
 
 //////////////////////////////////////////////
 // GENERAL GAME CLASSES
@@ -45,11 +45,6 @@ class GameMaker {
 		this.server = server;
 
 		this.games = [ ];
-		GameMaker.getItems();
-	}
-
-	static getItems() {
-		return r.db("Corridor").table("Items").run();
 	}
 
 	findGame(gameId) {
@@ -77,12 +72,26 @@ class GameMaker {
 		this.addUserToGame(game, username, socket);
 		console.log("USERNAME: " + username);
 		if(game.isReady()) {
-			GameMaker.getItems().then(function(items) {
-				game.players.forEach(function(player) {
-					player.socket.emit("ready", { usernames : game.getUsernames(), items : items.map(function(item) { return item.id; }) });
-				});
-			});
+			game.start();
 		}
+	}
+}
+
+class Factory {
+
+	static getItems() {
+		return r.db("Corridor").table("Items").run();
+	}
+
+	static createItem(itemJSON) {
+		return new Item(
+			itemJSON.id,
+			itemJSON.type,
+			itemJSON.description,
+			itemJSON.range,
+			itemJSON.use_by_class,
+			itemJSON.sprite
+		);
 	}
 }
 
@@ -92,6 +101,7 @@ class Player {
 		this.name = name;
 
 		this.socket = null;
+		this.bag = [ ];
 		this.level = 1;
 	}
 }
@@ -104,6 +114,8 @@ class Game {
 		this.players = usernames.map(function(username) {
 			return new Player(username);
 		});
+		this.items = [ ];
+		this.itemIndex = 0;
 		this.state = GameState.SETUP;
 		this.currentPlayer = 0;
 	}
@@ -116,6 +128,60 @@ class Game {
 			}
 		});
 		return ready;
+	}
+
+	start() {
+		var game = this;
+		Factory.getItems().then(function(items) {
+			items.forEach(function(item) {
+				game.items.push(Factory.createItem(item));
+			});
+			for(var i = game.items.length - 1; i >= 0; i--) {
+				var clone;
+				clone = JSON.parse(JSON.stringify(game.items[i]));
+				game.items.push(clone);
+				clone = JSON.parse(JSON.stringify(game.items[i]));
+				game.items.push(clone);
+				clone = JSON.parse(JSON.stringify(game.items[i]));
+				game.items.push(clone);
+				clone = JSON.parse(JSON.stringify(game.items[i]));
+				game.items.push(clone);
+				clone = JSON.parse(JSON.stringify(game.items[i]));
+				game.items.push(clone);
+				clone = JSON.parse(JSON.stringify(game.items[i]));
+				game.items.push(clone);
+			}//TODO: TEMP
+
+			game.shuffle();
+
+			game.players.forEach(function(player) {
+				for(var i = 0; i < STARTING_HAND; i++) {
+					player.bag.push(game.draw());
+				}
+				player.socket.emit("ready", {
+					usernames : game.getUsernames(),
+					items : player.bag
+				});
+			});
+		});
+	}
+
+	shuffle() {
+		var temp = [ ];
+		while(this.items.length) {
+			var index = Math.floor(Math.random() * this.items.length);
+			temp.push(this.items[index]);
+			this.items.splice(index, 1);
+		}
+		this.items = temp;
+	}
+
+	draw() {
+		if(this.itemIndex == this.items.length) {
+			this.shuffle();
+			this.itemIndex = 0;
+		}
+		return this.items[this.itemIndex++];
 	}
 
 	getUsernames() {
@@ -146,7 +212,8 @@ class Game {
 	};
 
 	isFull() {
-		return this.players.length == this.maxPlayers;
+		// return this.players.length == this.MAX_PLAYERS;
+		return true;
 	}
 
 	static getValueFromRange(range, game) {
@@ -168,34 +235,20 @@ class Game {
 }
 
 //////////////////////////////////////////////
-// HELPER CLASSES
-//////////////////////////////////////////////
-
-class Sprite {
-	//TK
-}
-
-class Effect {
-	//TK
-}
-
-//////////////////////////////////////////////
 // GAME OBJECT CLASSES
 //////////////////////////////////////////////
 
 class Item {
 
-	constructor(id, name, type, description, range, effect, disabled_jobs, sprite, game) {
-		this.id = id;
+	constructor(name, type, description, range, use_by, sprite) {
 		this.name = name;
 		this.type = type;
 		this.description = description;
 		this.range = range;
-		this.effect = effect;
-		this.disabled_jobs = disabled_jobs;
+		this.use_by = use_by;
 		this.sprite = sprite;
 
-		this.value = Game.getValueFromRange(itemRanges[range], game);
+		// this.value = Game.getValueFromRange(itemRanges[range], game);
  	}
 }
 

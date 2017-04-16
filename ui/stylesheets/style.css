@@ -252,80 +252,80 @@ a:link {
   margin-right: 40px;
   margin-left: 20px;
   /*
-	.submit-button {
-		height:$creator-button-height;
-		width:100%;
-		border:2px solid white;
-		margin-bottom: $content-margin-small;
-		text-align: center;
-		cursor:pointer;
+  .submit-button {
+    height:$creator-button-height;
+    width:100%;
+    border:2px solid white;
+    margin-bottom: $content-margin-small;
+    text-align: center;
+    cursor:pointer;
 
-		p {
-			color:white;
-			line-height: calc(50px - 2px);
-		}
-	}
+    p {
+      color:white;
+      line-height: calc(50px - 2px);
+    }
+  }
 
-	.load-button {
-		height:$creator-button-height;
-		width:100%;
-		border:2px solid white;
-		margin-bottom: $content-margin-small;
-		text-align: center;
-		cursor:pointer;
+  .load-button {
+    height:$creator-button-height;
+    width:100%;
+    border:2px solid white;
+    margin-bottom: $content-margin-small;
+    text-align: center;
+    cursor:pointer;
 
-		p {
-			color:white;
-			line-height: calc(50px - 2px);
-		}
-	}
-	*/
+    p {
+      color:white;
+      line-height: calc(50px - 2px);
+    }
+  }
+  */
   /*
-	.type-input {
-		margin-top:10px;
+  .type-input {
+    margin-top:10px;
 
-		p {
-			display:inline-block;
-			margin-left:10px;
-			color:white;
-		}
+    p {
+      display:inline-block;
+      margin-left:10px;
+      color:white;
+    }
 
-		input[type="radio"] {
- 			display:none;
-		}
+    input[type="radio"] {
+      display:none;
+    }
 
-		.radio {
-			margin-bottom:10px;
-			overflow:hidden;
-			cursor:pointer;
+    .radio {
+      margin-bottom:10px;
+      overflow:hidden;
+      cursor:pointer;
 
-			.checkbox {
-				float:left;
-				width:14px;
-				height:14px;
-				border:2px solid $placeholder-color;
-				background-color:$bk-color;
-			}
+      .checkbox {
+        float:left;
+        width:14px;
+        height:14px;
+        border:2px solid $placeholder-color;
+        background-color:$bk-color;
+      }
 
-			p {
-				float:left;
-				line-height:15px;
-				color:$placeholder-color;
-			}
+      p {
+        float:left;
+        line-height:15px;
+        color:$placeholder-color;
+      }
 
-			&.active, &:hover {
+      &.active, &:hover {
 
-				.checkbox {
-					border-color:white;
-					background-color:white;
-				}
+        .checkbox {
+          border-color:white;
+          background-color:white;
+        }
 
-				p {
-					color:white;
-				}
-			}
-		}
-	}*/ }
+        p {
+          color:white;
+        }
+      }
+    }
+  }*/ }
   .sidebar-c .sidebar-top {
     height: calc(100% - ((2 * 50px) + (2 * 20px))); }
   .sidebar-c input {
@@ -535,6 +535,13 @@ a:link {
     width: 505px;
     display: inline-block;
     height: 100%; }
+  .game-c .players-side-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: left; }
+    .game-c .players-side-bar p {
+      color: white; }
 
 .box {
   width: 80px;

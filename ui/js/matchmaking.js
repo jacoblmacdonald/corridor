@@ -69,7 +69,6 @@ socket.on("joined", function(message) {
 
 
 socket.on("connected", function(message) {
-	console.log(message.users);
 	showActivePlayers(message.users);
 	for (var i = 0; i < message.users.length; i++) {
 		if (message.users[i][1]) {
@@ -149,8 +148,6 @@ function showPlayerJoin(host) {
 function processJoin(e) {
 	if(e.hasClass("active")) {
 		var host = $(".v-small .join", e).data("host");
-		console.log("HOST: " + host);
 		socket.emit("join", { username : CURRENT_USER, hostname : host});
-		console.log("joining game "+ host);
 	}
 }
