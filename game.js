@@ -5,15 +5,15 @@
 const r = require('./api/rethinkdb');
 
 const itemRanges = {
-	"weak" : [ 1, 3 ],
-	"mid" : [ 4, 6 ],
+	"low" : [ 1, 3 ],
+	"med" : [ 4, 6 ],
 	"high" : [ 7, 9 ],
 	"wild" : [ 1, 10]
 };
 
 const monsterRanges = {
-	"weak" : [ 3, 6 ],
-	"mid" : [ 7, 10 ],
+	"low" : [ 3, 6 ],
+	"med" : [ 7, 10 ],
 	"high" : [ 11, 14 ],
 	"higher" : [ 15, 18 ],
 	"highest" : [ 19, 22 ]
@@ -70,7 +70,6 @@ class GameMaker {
 	onSetup(gameId, username, socket) {
 		var game = this.findGame(gameId);
 		this.addUserToGame(game, username, socket);
-		console.log("USERNAME: " + username);
 		if(game.isReady()) {
 			game.start();
 		}
@@ -83,14 +82,15 @@ class Factory {
 		return r.db("Corridor").table("Items").run();
 	}
 
-	static createItem(itemJSON) {
+	static createItem(itemJSON, game) {
 		return new Item(
 			itemJSON.id,
 			itemJSON.type,
 			itemJSON.description,
 			itemJSON.range,
 			itemJSON.use_by_class,
-			itemJSON.sprite
+			itemJSON.sprite,
+			game
 		);
 	}
 }
@@ -134,7 +134,7 @@ class Game {
 		var game = this;
 		Factory.getItems().then(function(items) {
 			items.forEach(function(item) {
-				game.items.push(Factory.createItem(item));
+				game.items.push(Factory.createItem(item, game));
 			});
 			for(var i = game.items.length - 1; i >= 0; i--) {
 				var clone;
@@ -190,34 +190,8 @@ class Game {
 		});
 	}
 
-	send(message, client) {
-		var receiving = client || this.server;
-		console.log("Sending: " + message + " to: " + (receiving.id || "All"));
-		receiving.emit("message", { message : message });
-	};
-
-	receive(message, client) {
-		switch(this.state) {
-		case GameState.SETUP:
-			this.players.push(new Player(client, new User(message.name)));
-			if(this.isFull()) {
-				this.send("Game starting!");
-				this.state = GameState.PLAYING;
-			}
-			break;
-		case GameState.PLAYING:
-			console.log("Received: " + message + " from: " + client.id);
-			break;
-		}
-	};
-
-	isFull() {
-		// return this.players.length == this.MAX_PLAYERS;
-		return true;
-	}
-
-	static getValueFromRange(range, game) {
-		var avg_level = Math.floor(game.players.reduce(function(total_level, player) {
+	getValueFromRange(range) {
+		var avg_level = Math.floor(this.players.reduce(function(total_level, player) {
 			return total_level + player.level;
 		}, 0) / 4);
 		var min = range[0], max = range[1];
@@ -240,7 +214,7 @@ class Game {
 
 class Item {
 
-	constructor(name, type, description, range, use_by, sprite) {
+	constructor(name, type, description, range, use_by, sprite, game) {
 		this.name = name;
 		this.type = type;
 		this.description = description;
@@ -248,26 +222,26 @@ class Item {
 		this.use_by = use_by;
 		this.sprite = sprite;
 
-		// this.value = Game.getValueFromRange(itemRanges[range], game);
+		this.value = game.getValueFromRange(itemRanges[range]);
  	}
 }
 
-class Monster {
+// class Monster {
 
-	constructor(id, name, level, description, range, debuff_amount, debuff_job, item_reward, sprite, game) {
-		this.id = id;
-		this.name = name;
-		this.level = level;
-		this.description = description;
-		this.range = range;
-		this.debuff_amount = debuff_amount;
-		this.debuff_job = debuff_job;
-		this.item_reward = item_reward;
-		this.sprite = sprite;
+// 	constructor(id, name, level, description, range, debuff_amount, debuff_job, item_reward, sprite, game) {
+// 		this.id = id;
+// 		this.name = name;
+// 		this.level = level;
+// 		this.description = description;
+// 		this.range = range;
+// 		this.debuff_amount = debuff_amount;
+// 		this.debuff_job = debuff_job;
+// 		this.item_reward = item_reward;
+// 		this.sprite = sprite;
 
-		this.value = Game.getValueFromRange(monsterRanges[range], game);
- 	}
-}
+// 		// this.value = Game.getValueFromRange(monsterRanges[range], game);
+//  	}
+// }
 
 class Job {
 

@@ -5,6 +5,8 @@ var socket = io();
 var CURRENT_USER = "";
 var ALL_USERS = [];
 
+var ITEM_LIST = ["switch", "drop"];
+
 var boxWidth = 80 - 4;
 var numCells = 30;
 var boxCellSize = boxWidth / numCells;
@@ -55,7 +57,7 @@ function loadPage(items) {
 	initBoxes();
 
 	for (var i = 0; i < items.length; i++) {
-		updateBox($(".bag-box.bag-"+i), items[i]);
+		addItemToBag(items[i]);
 	}
 }
 
@@ -77,11 +79,12 @@ function initClicks() {
 }
 
 // ////////////////////
-// 
+// G A M E   S T U F F
 // //////////////////////////////////////////
 
 function addItemToBag(item) {
-	updateBox($(".bag-box.bag-"+item.bagIndex), item.sprite);
+	updateBox($(".bag-box.empty").first(), item.sprite);
+	$(".bag-box.empty").first().removeClass("empty");
 }
 
 // ////////////////////
@@ -105,5 +108,13 @@ function updateBox(b, sprite) {
 				$(".box-cell[data-x="+j+"][data-y="+i+"]", b).css("background-color", sprite[i][j]);
 			}
 		}
+	}
+	updateBoxMenu(b, "this");
+}
+
+function updateBoxMenu(b, type) {
+	$(".box-menu", b).html("");
+	for (var i = 0; i < ITEM_LIST.length; i++) {
+		$(".box-menu", b).append("<p class='v-small'>"+ITEM_LIST[i]+"</p>")
 	}
 }
