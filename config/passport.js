@@ -17,13 +17,13 @@ function validateEmail(mail){
 module.exports = function(passport){
 	// used to serialize the user for the session
     passport.serializeUser(function(user, done) {
-    	console.log("Serializing: " + user.id);
+    	//console.log("Serializing: " + user.id);
   		done(null, user.id);
 	});
 
     // used to deserialize the user
     passport.deserializeUser(function(username, done) {
-    	console.log("Deserializing: " + username);
+    	//console.log("Deserializing: " + username);
        	get.byUsername(username).then(function(user) {
             if(user){
                 return done(null, user);

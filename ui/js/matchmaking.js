@@ -5,7 +5,7 @@
 var gameInfoTrans = 30;
 
 //game info
-var socket = io();
+var game_socket = io();
 var CURRENT_USER = "";
 
 $(window).on("load", function() {
@@ -35,12 +35,12 @@ function startPage() {
 	
 	$(".create-game-button").click(function() {
 		if (!$(".game-info-c").hasClass("active")) {
-			socket.emit("create", { username : CURRENT_USER });
+			game_socket.emit("create", { username : CURRENT_USER });
 		}
 	});
 
 	$(".start-game-button").click(function() {
-		socket.emit("start", { username : CURRENT_USER });
+		game_socket.emit("start", { username : CURRENT_USER });
 		//window.location.href = "/corridor";
 	});
 
@@ -48,14 +48,14 @@ function startPage() {
 		//alright arvind here is your logout button :)))
 	});
 
-	socket.emit("loaded", { username : CURRENT_USER });
+	game_socket.emit("loaded", { username : CURRENT_USER });
 }
 
 // ////////////////////
 // S O C K E T S
 // ///////////////////////////////////////
 
-socket.on("created", function(message) {
+game_socket.on("created", function(message) {
 	if (message.host == CURRENT_USER) {
 		showGameInfo([ CURRENT_USER ]);
 	} else {
@@ -63,12 +63,13 @@ socket.on("created", function(message) {
 	}
 });
 
-socket.on("joined", function(message) {
-	showGameInfo(message.usernames);
+game_socket.on("joined", function(message) {
+	//alert("you have joined")
+;	showGameInfo(message.usernames);
 });
 
 
-socket.on("connected", function(message) {
+game_socket.on("connected", function(message) {
 	showActivePlayers(message.users);
 	for (var i = 0; i < message.users.length; i++) {
 		if (message.users[i][1]) {
@@ -77,7 +78,7 @@ socket.on("connected", function(message) {
 	}
 });
 
-socket.on("started", function(message) {
+game_socket.on("started", function(message) {
 	window.location.href = "/corridor?id=" + message.gameId;
 });
 
@@ -148,6 +149,7 @@ function showPlayerJoin(host) {
 function processJoin(e) {
 	if(e.hasClass("active")) {
 		var host = $(".v-small .join", e).data("host");
-		socket.emit("join", { username : CURRENT_USER, hostname : host});
+		game_socket.emit("join", { username : CURRENT_USER, hostname : host});
+		//alert("joining");
 	}
 }
