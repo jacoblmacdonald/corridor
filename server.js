@@ -48,6 +48,7 @@ server.on("connection", function(client) {
 
 	//Join a game
 	client.on("join", function(message) {
+		//console.log("attempting join");
 		matchmaker.onLobbyJoined(message.username, message.hostname);
 	});
 
