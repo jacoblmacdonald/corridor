@@ -17,13 +17,11 @@ function validateEmail(mail){
 module.exports = function(passport){
 	// used to serialize the user for the session
     passport.serializeUser(function(user, done) {
-    	//console.log("Serializing: " + user.id);
   		done(null, user.id);
 	});
 
     // used to deserialize the user
     passport.deserializeUser(function(username, done) {
-    	//console.log("Deserializing: " + username);
        	get.byUsername(username).then(function(user) {
             if(user){
                 return done(null, user);
@@ -37,15 +35,17 @@ module.exports = function(passport){
     },
     	function(req, username, password, done){
         const email = req.body.email;
-        if(!validateEmail(email)) {
+        const thisUser = username.toLowerCase();
+        const mail = email.toLowerCase();
+        if(!validateEmail(mail)) {
             return done(null, false, {message: "Email Already Registered."}); 
         }
         //Check if email exists
-        get.byEmailAddress(email).then(function(user) {
+        get.byEmailAddress(mail).then(function(user) {
         if(user[0]) {
           return done(null, false);
         } else {
-            get.byUsername(username).then(function(user) {
+            get.byUsername(thisUser).then(function(user) {
                 if(user){
                 	console.log("USERNAME EXISTS");
                     return done(null, false, {message: "Sorry, That Username Is Taken"});
@@ -68,7 +68,8 @@ module.exports = function(passport){
     	passReqToCallback: true
     },
     	function(req,username, password, done){
-    		get.byUsername(username).then(function(user){
+            const thisUser = username.toLowerCase();
+    		get.byUsername(thisUser).then(function(user){
     			if(!user){
     				return done(null, false, {message: "Sorry, Username Doesn't Exist"});
     			}
