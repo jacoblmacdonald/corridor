@@ -79,7 +79,7 @@ class GameMaker {
 class Factory {
 
 	static getItems() {
-		return r.db("Corridor").table("Items").run();
+		return r.db("Corridor").table("Items").filter({published: true}).run();
 	}
 
 	static createItem(itemJSON, game) {
