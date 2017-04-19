@@ -20,7 +20,7 @@ $(document).ready(function(){
     });
 
 
-   // populateChannels(test);
+    // populateChannels(test);
 });
 
 socket.on("newChatUser", function(data) {
@@ -72,14 +72,14 @@ function populateChatUsers(users, id){
     for(var m = 0; m < users.length; m++){
         var userTabDiv = document.createElement("DIV");
         userTabDiv.setAttribute("class", "ChatBox1-UserTab");
-            var userTabThumbnail = document.createElement("DIV");
-            userTabThumbnail.setAttribute("class", "ChatBox1-UserTabThumbnail");
-                var userTabImg = document.createElement("IMG");
-                userTabImg.setAttribute("class", "ChatBox1-UserTabThumbnailPicture");
-                userTabImg.setAttribute("src", "ui/resources/ChatUi/unknown_user.jpg");
-            var userTabName = document.createElement("DIV");
-            userTabName.setAttribute("class", "ChatBox1-UserTabName");
-            userTabName.innerHTML = users[m];
+        var userTabThumbnail = document.createElement("DIV");
+        userTabThumbnail.setAttribute("class", "ChatBox1-UserTabThumbnail");
+        var userTabImg = document.createElement("IMG");
+        userTabImg.setAttribute("class", "ChatBox1-UserTabThumbnailPicture");
+        userTabImg.setAttribute("src", "ui/resources/ChatUi/unknown_user.jpg");
+        var userTabName = document.createElement("DIV");
+        userTabName.setAttribute("class", "ChatBox1-UserTabName");
+        userTabName.innerHTML = users[m];
 
         userTabThumbnail.appendChild(userTabImg);
         userTabDiv.appendChild(userTabThumbnail);
@@ -122,7 +122,7 @@ function connectToChatChannel(channel){
 }
 
 function newUserJoined(username){
-   // console.log(username['username'] + ' JOINED');
+    // console.log(username['username'] + ' JOINED');
     //console.log(channelUsers);
     if(channelUsers.indexOf(username['username']) == -1){
         channelUsers.push(username['username']);
@@ -185,3 +185,6 @@ function clearChatUsers(id){
         users.removeChild(users.lastChild);
     }
 }
+/**
+ * Created by MatiMaster on 4/19/2017.
+ */

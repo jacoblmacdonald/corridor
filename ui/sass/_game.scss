@@ -8,13 +8,33 @@
 		display:inline-block;
 		height:100%;
 	}
+
+	.players-side-bar {
+		position:absolute;
+		top:0;
+		left:0;
+		text-align:left;
+
+		p {
+			color:white;
+		}
+	}
 }
 
 .box {
 	width:$box-width;
 	height:$box-width;
-	outline:2px solid white;
+	//outline:2px solid white;
+	border:2px solid white;
 	position:relative;
+	z-index:1;
+
+	&.active {
+		z-index:100;
+		.box-menu{
+			display:block;
+		}
+	}
 
 	.box-level {
 		position:absolute;
@@ -29,5 +49,44 @@
 			width:29px;
 			color:white;
 		}
+	}
+
+	.box-cell {
+		float:left;
+		pointer-events:none;
+	}
+
+	.box-menu {
+		display:none;
+		width:100px;
+		height:100px;
+		background-color: $screen-color;
+		position:absolute;
+		left:calc(100% + 2px);
+		top:-2px;
+		//z-index:100;
+
+		p {
+			color:white;
+			cursor:pointer;
+		}
+	}
+
+	&.bag-box.bag-2nd-row .box-menu{
+		top:auto;
+		bottom:-2px;
+	}
+
+	&.bag-box.last-in-row .box-menu {
+		//top:auto;
+		left:auto;
+		right:calc(100% + 2px);
+		//bottom:-2px;
+
+	}
+
+	&.last-body-box .box-menu {
+		left:auto;
+		right:calc(100% + 2px);
 	}
 }

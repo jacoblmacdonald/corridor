@@ -1,4 +1,7 @@
 /**
+ * Created by MatiMaster on 4/19/2017.
+ */
+/**
  * Created by MatiMaster on 4/12/2017.
  */
 
@@ -55,7 +58,7 @@ function handleChat(client, io){
         client.on("getChannelUsers", function(){
             var channel = usersToChannels[username];
             var users = chatChannels[channel];
-           // var ind = users.indexOf(username);
+            // var ind = users.indexOf(username);
             //users = users.splice(ind,1);
             client.emit("updateChannelUsers", {usernames: users} );
         });
@@ -68,9 +71,9 @@ function handleChat(client, io){
         })
 
     }
-    
-    
-    
+
+
+
 }
 
 

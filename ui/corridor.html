@@ -2,12 +2,19 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="ui/stylesheets/style.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
  	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
  	<script src="ui/js/js.js"></script>
+ 	<!--<script src="ui/js/corridor.js"></script>-->
 </head>
 <body>
 	<div class="game-c">
 		<div class="content-c">
+
+			<!-- SIDE USER LIST -->
+			<div class="players-side-bar">
+				
+			</div>
 
 			<!-- START SCREEN -->
 			<div class="screen-c">
@@ -32,19 +39,23 @@
 						<div class="body-col">
 							<div class="box">
 								<div class="box-level"><p class="v-small">5</p></div>
+								<div class="box-menu"></div>
 							</div>
 						</div>
 						<div class="body-col">
 							<div class="box">
 								<div class="box-level"><p class="v-small">5</p></div>
+								<div class="box-menu"></div>
 							</div>
 							<div class="box">
 								<div class="box-level"><p class="v-small">5</p></div>
+								<div class="box-menu"></div>
 							</div>
 						</div>
 						<div class="body-col">
-							<div class="box">
+							<div class="box last-body-box">
 								<div class="box-level"><p class="v-small">5</p></div>
+								<div class="box-menu"></div>
 							</div>
 						</div>
 					</div>
@@ -53,49 +64,57 @@
 							<p class="left v-small">class:</p>
 							<p class="right v-small">none</p>
 						</div>
-						<div class="race-row">
-							<p class="left v-small">race:</p>
-							<p class="right v-small">human</p>
-						</div>
 					</div>
 				</div>
 				<div class="bag-row">
-					<div class="box">
+					<div class="box bag-box empty bag-0">
 						<div class="box-level"><p class="v-small">5</p></div>
+						<div class="box-menu"></div>
 					</div>
-					<div class="box">
+					<div class="box bag-box empty bag-1">
 						<div class="box-level"><p class="v-small">5</p></div>
+						<div class="box-menu"></div>
 					</div>
-					<div class="box">
+					<div class="box bag-box empty bag-2">
 						<div class="box-level"><p class="v-small">5</p></div>
+						<div class="box-menu"></div>
 					</div>
-					<div class="box">
+					<div class="box bag-box empty bag-3">
 						<div class="box-level"><p class="v-small">5</p></div>
+						<div class="box-menu"></div>
 					</div>
-					<div class="box">
+					<div class="box bag-box empty bag-4">
 						<div class="box-level"><p class="v-small">5</p></div>
+						<div class="box-menu"></div>
 					</div>
-					<div class="box last-in-row">
+					<div class="box bag-box empty bag-5 last-in-row">
 						<div class="box-level"><p class="v-small">5</p></div>
+						<div class="box-menu"></div>
 					</div>
 
-					<div class="box">
+					<div class="box bag-box empty bag-2nd-row bag-6">
 						<div class="box-level"><p class="v-small">5</p></div>
+						<div class="box-menu"></div>
 					</div>
-					<div class="box">
+					<div class="box bag-box empty bag-2nd-row  bag-7">
 						<div class="box-level"><p class="v-small">5</p></div>
+						<div class="box-menu"></div>
 					</div>
-					<div class="box">
+					<div class="box bag-box empty bag-2nd-row  bag-8">
 						<div class="box-level"><p class="v-small">5</p></div>
+						<div class="box-menu"></div>
 					</div>
-					<div class="box">
+					<div class="box bag-box empty bag-2nd-row  bag-9">
 						<div class="box-level"><p class="v-small">5</p></div>
+						<div class="box-menu"></div>
 					</div>
-					<div class="box">
+					<div class="box bag-box empty bag-2nd-row  bag-10">
 						<div class="box-level"><p class="v-small">5</p></div>
+						<div class="box-menu"></div>
 					</div>
-					<div class="box last-in-row">
+					<div class="box bag-box empty bag-2nd-row  bag-11 last-in-row">
 						<div class="box-level"><p class="v-small">5</p></div>
+						<div class="box-menu"></div>
 					</div>
 				</div>
 			</div>

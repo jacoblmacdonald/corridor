@@ -196,7 +196,7 @@ a:link {
           opacity: 1; }
   .matchmaking-c .players-c {
     width: 400px;
-    height: 60%;
+    height: 100%;
     margin-top: 30px;
     margin-left: 40px;
     position: relative;
@@ -471,7 +471,6 @@ a:link {
   .creator-screen-c .box {
     width: 80px;
     height: 80px;
-    outline: 2px solid white;
     position: relative;
     background-color: #141414;
     z-index: 1; }
@@ -536,12 +535,24 @@ a:link {
     width: 505px;
     display: inline-block;
     height: 100%; }
+  .game-c .players-side-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: left; }
+    .game-c .players-side-bar p {
+      color: white; }
 
 .box {
   width: 80px;
   height: 80px;
-  outline: 2px solid white;
-  position: relative; }
+  border: 2px solid white;
+  position: relative;
+  z-index: 1; }
+  .box.active {
+    z-index: 100; }
+    .box.active .box-menu {
+      display: block; }
   .box .box-level {
     position: absolute;
     bottom: -2;
@@ -553,6 +564,29 @@ a:link {
       line-height: calc(30px - 2px);
       width: 29px;
       color: white; }
+  .box .box-cell {
+    float: left;
+    pointer-events: none; }
+  .box .box-menu {
+    display: none;
+    width: 100px;
+    height: 100px;
+    background-color: #141414;
+    position: absolute;
+    left: calc(100% + 2px);
+    top: -2px; }
+    .box .box-menu p {
+      color: white;
+      cursor: pointer; }
+  .box.bag-box.bag-2nd-row .box-menu {
+    top: auto;
+    bottom: -2px; }
+  .box.bag-box.last-in-row .box-menu {
+    left: auto;
+    right: calc(100% + 2px); }
+  .box.last-body-box .box-menu {
+    left: auto;
+    right: calc(100% + 2px); }
 
 .screen-c {
   text-align: center;
@@ -641,8 +675,7 @@ a:link {
       margin-bottom: 5px; }
       .console-c .bag-row .box:nth-child(6), .console-c .bag-row .box:nth-child(12) {
         margin-right: 0px; }
-
- /*
+/*
  Chat Box style...
  */
 .ChatBox1{
@@ -660,112 +693,112 @@ a:link {
   vertical-align: bottom;
 
 }
-  .ChatBox1-Channels{
-    float: left;
-    position: relative;
-    vertical-align:top;
-    height: 100%;
-    width: 25%;
-    border: 2px solid #ffffff;
-    overflow: hidden;
-  }
-    .ChatBox1-Channels-Buttons{
-      height: 14px;
-      width: 100%;
-      border: 0.5px solid #a0a9a1;
-      color: white;
-      font-family: v-large;
-      font-size: 12px;
-      text-align: center;
-      vertical-align: middle;
-      background-color: Transparent;
-    }
+.ChatBox1-Channels{
+  float: left;
+  position: relative;
+  vertical-align:top;
+  height: 100%;
+  width: 25%;
+  border: 2px solid #ffffff;
+  overflow: hidden;
+}
+.ChatBox1-Channels-Buttons{
+  height: 14px;
+  width: 100%;
+  border: 0.5px solid #a0a9a1;
+  color: white;
+  font-family: v-large;
+  font-size: 12px;
+  text-align: center;
+  vertical-align: middle;
+  background-color: Transparent;
+}
 
-  .ChatBox1-Chat{
-    float: left;
-    position: relative;
-    vertical-align:top;
-    height: 100%;
-    width: 50%;
-    border: 2px solid #ffffff;
+.ChatBox1-Chat{
+  float: left;
+  position: relative;
+  vertical-align:top;
+  height: 100%;
+  width: 50%;
+  border: 2px solid #ffffff;
 
-  }
-    .ChatBox1-History{
-      display:block;
-      position:relative;
-      width: 98%;
-      height: 84%;
-      background-color: transparent;
-      border: 1px solid #ffffff;
-      margin-top: 2px;
-      margin-left: 1%;
-      overflow: scroll;
-    }
-      .ChatMessage{
-        color:white;
-      }
-    .ChatBox1-InputBox{
-      display:block;
-      position:relative;
-      width: 98%;
-      height: 15%;
-      margin: auto;
-      border: 1px solid #ffffff;
-    }
-    .ChatBox1-InputButton{
-      float:left;
-      display: inline-block;
-      position: relative;
-      background-color: transparent;
-      color: white;
-      font-family: "v-large";
-      font-size: 12px;
-      margin: 0.5%;
-      height: 85%;
-      width: 20%;
-    }
-    .ChatBox1-InputText{
-      float: left;
-      display: inline-block;
-      background-color: transparent;
-      border: 2px solid #ffffff;
-      margin: 0.5%;
-      width: 77.5%;
-      height: 85%;
-      color: white;
-      font-family: "v-large";
-      font-size: 12px;
-    }
+}
+.ChatBox1-History{
+  display:block;
+  position:relative;
+  width: 98%;
+  height: 84%;
+  background-color: transparent;
+  border: 1px solid #ffffff;
+  margin-top: 2px;
+  margin-left: 1%;
+  overflow: scroll;
+}
+.ChatMessage{
+  color:white;
+}
+.ChatBox1-InputBox{
+  display:block;
+  position:relative;
+  width: 98%;
+  height: 15%;
+  margin: auto;
+  border: 1px solid #ffffff;
+}
+.ChatBox1-InputButton{
+  float:left;
+  display: inline-block;
+  position: relative;
+  background-color: transparent;
+  color: white;
+  font-family: "v-large";
+  font-size: 12px;
+  margin: 0.5%;
+  height: 85%;
+  width: 20%;
+}
+.ChatBox1-InputText{
+  float: left;
+  display: inline-block;
+  background-color: transparent;
+  border: 2px solid #ffffff;
+  margin: 0.5%;
+  width: 77.5%;
+  height: 85%;
+  color: white;
+  font-family: "v-large";
+  font-size: 12px;
+}
 
 
-  .ChatBox1-Users{
-    float: left;
-    height: 100%;
-    width: 25%;
-    border: 2px solid #ffffff;
-    overflow: scroll;
-  }
-    .ChatBox1-UserTab{
-      height: 14%;
-      min-height: 10px;
-      width: 100%;
-      border: 1px solid darkgrey;
-    }
-      .ChatBox1-UserTabThumbnail{
-        float: left;
-        height: 11px;
-        width: 11px;
-        margin-top: 4%;
-        margin-left: 2%;
-        border: 2px solid darkgrey;
-      }
-        .ChatBox1-UserTabThumbnailPicture{
-          max-width: 100%;
-          max-height: 100%;
-        }
-      .ChatBox1-UserTabName{
-        color: white;
-        text-align: center;
-        margin: 2%;
+.ChatBox1-Users{
+  float: left;
+  height: 100%;
+  width: 25%;
+  border: 2px solid #ffffff;
+  overflow: scroll;
+}
+.ChatBox1-UserTab{
+  height: 14%;
+  min-height: 10px;
+  width: 100%;
+  border: 1px solid darkgrey;
+}
+.ChatBox1-UserTabThumbnail{
+  float: left;
+  height: 11px;
+  width: 11px;
+  margin-top: 4%;
+  margin-left: 2%;
+  border: 2px solid darkgrey;
+}
+.ChatBox1-UserTabThumbnailPicture{
+  max-width: 100%;
+  max-height: 100%;
+}
+.ChatBox1-UserTabName{
+  color: white;
+  text-align: center;
+  margin: 2%;
 
-      }
+}
