@@ -68,12 +68,16 @@ function populatePlayers() {
 }
 
 function initClicks() {
-	$(".box").click(function() {
-		if ($(this).hasClass("active")) {
-			$(".box").removeClass("active");
+	$(".box").click(function(e) {
+		if ($(e.target).hasClass("list-item")) {
+
 		} else {
-			$(".box").removeClass("active");
-			$(this).addClass("active");
+			if ($(this).hasClass("active")) {
+				$(".box").removeClass("active");
+			} else {
+				$(".box").removeClass("active");
+				$(this).addClass("active");
+			}
 		}
 	});
 
@@ -127,7 +131,7 @@ function updateBox(b, sprite) {
 function updateBoxMenu(b, type) {
 	$(".box-menu", b).html("");
 	for (var i = 0; i < ITEM_LIST.length; i++) {
-		$(".box-menu", b).append("<p class='v-small'>"+ITEM_LIST[i]+"</p>")
+		$(".box-menu", b).append("<p class='v-small list-item list-"+ITEM_LIST[i]+"'>"+ITEM_LIST[i]+"</p>")
 	}
 }
 
@@ -135,7 +139,7 @@ function updateBoxMenu(b, type) {
 // B O X   M E N U
 // //////////////////////////////////////////
 function switchItems(e) {
-
+	alert(":)");
 }
 
 function dropItem(e) {

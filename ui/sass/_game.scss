@@ -65,6 +65,11 @@
 		left:calc(100% + 2px);
 		top:-2px;
 		//z-index:100;
+
+		p {
+			color:white;
+			cursor:pointer;
+		}
 	}
 
 	&.bag-box.bag-2nd-row .box-menu{
