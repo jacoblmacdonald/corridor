@@ -67,6 +67,11 @@ server.on("connection", function(client) {
 	client.on("action", function(message) {
 		game.receive(message, client);
 	});
+
+	//switch item
+	client.on("switch_item", function(message) {
+		//game.
+	});
 });
 //body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }))
