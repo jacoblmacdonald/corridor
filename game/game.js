@@ -2,7 +2,7 @@
 // GENERAL GAME CONSTANTS / ENUMS
 //////////////////////////////////////////////
 "use strict"; 
-const r = require('./api/rethinkdb');
+const r = require('../api/rethinkdb');
 
 const async = require("async");
 
