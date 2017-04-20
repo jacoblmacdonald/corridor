@@ -25,56 +25,51 @@ var gamemaker = new Gamemaker(server);
 
 server.on("connection", function(client) {
   
-	/**
-	 * Please keep this cleaner...
-	 */
 	chat(client, server);
-	// ^ encapsulate pl0x
-
 
 	var username = client.request.user['id'];
-	console.log(username + " connected");
+	var loggedIn = client.request.user['logged_in'];
 
- 	
- 	//Load the matchmaking screen
-    client.on("loaded", function(message) {
-        matchmaker.onUserLoaded(username, this);
-    });
+	if(loggedIn){
+		//Load the matchmaking screen
+	    client.on("loaded", function(message) {
+	        matchmaker.onUserLoaded(username, this);
+	    });
 
-	//Create a game
-	client.on("create", function(message) {
-		matchmaker.onLobbyCreated(username);
-	});
+		//Create a game
+		client.on("create", function(message) {
+			matchmaker.onLobbyCreated(username);
+		});
 
-	//Join a game
-	client.on("join", function(message) {
-		//console.log("attempting join");
-		matchmaker.onLobbyJoined(username, message.hostname);
-	});
+		//Join a game
+		client.on("join", function(message) {
+			//console.log("attempting join");
+			matchmaker.onLobbyJoined(username, message.hostname);
+		});
 
-	//Start a game
-	client.on("start", function(message) {
-	    var lobby = matchmaker.onGameStarted(username);
-	    gamemaker.onGameStarted(lobby.id, lobby.getUsernames());
-	});
+		//Start a game
+		client.on("start", function(message) {
+		    var lobby = matchmaker.onGameStarted(username);
+		    gamemaker.onGameStarted(lobby.id, lobby.getUsernames());
+		});
 
-    //Setup a game
-    client.on("setup", function(message) {
-    	gamemaker.onSetup(message.gameId, username, client);
-    });
+	    //Setup a game
+	    client.on("setup", function(message) {
+	    	gamemaker.onSetup(message.gameId, username, client);
+	    });
 
-	//Do something (in game)
-	client.on("action", function(message) {
-		game.receive(message, client);
-	});
+		//Do something (in game)
+		client.on("action", function(message) {
+			game.receive(message, client);
+		});
 
-	//switch item
-	client.on("switch_item", function(message) {
-		//console.log(message.gameId);
-		var game = gamemaker.findGame(message.gameId);
-		console.log("switching, "+game);
-		game.switchItems(username, message.switch_from, message.switch_to);
-	});
+		//switch item
+		client.on("switch_item", function(message) {
+			var game = gamemaker.findGame(message.gameId);
+			console.log("switching, "+game);
+			game.switchItems(username, message.switch_from, message.switch_to);
+			});
+	} 	
 });
 //body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }))
