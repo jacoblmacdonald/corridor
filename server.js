@@ -70,7 +70,10 @@ server.on("connection", function(client) {
 
 	//switch item
 	client.on("switch_item", function(message) {
-		//game.
+		//console.log(message.gameId);
+		var game = gamemaker.findGame(message.gameId);
+		console.log("switching, "+game);
+		game.switchItems(username, message.switch_from, message.switch_to);
 	});
 });
 //body parser middleware

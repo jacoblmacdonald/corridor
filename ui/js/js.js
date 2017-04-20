@@ -68,7 +68,8 @@ function loadPage(items, monster, current_player) {
 	updateScreen(monster);
 	updateCurrentPlayer(current_player);
 
-	for (var i = 0; i < items.length; i++) {
+	for (var i = 4; i < 10; i++) { //dont hard code pls
+		//console.log(items.length);
 		addItemToBag(items[i]);
 	}
 }
@@ -186,7 +187,7 @@ function clearSwitchBox() {
 function switchItems(e) {
 	SWITCHING_ITEMS = true;
 	SWITCH_BOX_FROM = e.parent().parent().data("index");
-	alert("attempting switch from "+ SWITCH_BOX_FROM);
+	//alert("attempting switch from "+ SWITCH_BOX_FROM);
 }
 
 function dropItem(e) {
@@ -225,8 +226,10 @@ function updateScreen(monster) {
 // //////////////////////////////////////////
 function attemptSwitch() {
 	if (SWITCH_BOX_FROM != -1 && SWITCH_BOX_TO != -1) {
-		console.log("attempting switch from "+ SWITCH_BOX_FROM + " to " + SWITCH_BOX_TO);
+		//console.log("attempting switch from "+ SWITCH_BOX_FROM + " to " + SWITCH_BOX_TO);
 
-		socket.emit("switch_item", { "switch_from" : SWITCH_BOX_FROM, "switch_to" : SWITCH_BOX_TO });
+		socket.emit("switch_item", { "gameId" : getId(), "switch_from" : SWITCH_BOX_FROM, "switch_to" : SWITCH_BOX_TO });
+
+		//socket.emit("setup", { "gameId" : getId(), "username" : CURRENT_USER });
 	}
 }

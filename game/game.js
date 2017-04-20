@@ -2,7 +2,7 @@
 // GENERAL GAME CONSTANTS / ENUMS
 //////////////////////////////////////////////
 "use strict"; 
-const r = require('./api/rethinkdb');
+const r = require('../api/rethinkdb');
 
 const async = require("async");
 
@@ -122,16 +122,56 @@ class Player {
 		this.name = name;
 
 		this.socket = null;
-		this.bag = [ ];
 		this.level = 1;
-		this.l_arm = null;
-		this.head = null;
-		this.armor = null;
-		this.r_arm = null;
+		this.items = [null, null, null, null, null, null, null, null, null ,null, null, null, null, null, null];
+
+		/* all items are stored in one array, this makes searching and switching much easier
+		items[0] = left_arm
+		items[1] = head
+		items[2] = armor
+		items[3] = right_arm
+		itmes[4 - 15] = bag
+		*/
+
 	}
 
-	switch_items(fromIndex, toIndex) {
-		console.log("switching "+fromIndex+" to "+toIndex);
+	switchItems(fromIndex, toIndex) {
+		var player = this;
+
+		console.log(player.name+" before switch:");
+
+		var fromItem = player.items[fromIndex];
+		var toItem = player.items[toIndex];
+
+
+		if (fromItem != null) {
+			console.log(fromItem.name);
+		} else {
+			console.log("null");
+		}
+		if (toItem != null) {
+			console.log(toItem.name);
+		} else {
+			console.log("null");
+		}
+		
+
+		//check to see if items can be switched, if so;
+		player.items[fromIndex] = toItem;
+		player.items[toIndex] = fromItem;
+
+
+		console.log(player.name+" after switch:");
+		if (player.items[fromIndex] != null) {
+			console.log(player.items[fromIndex].name);
+		} else {
+			console.log("null");
+		}
+		if (player.items[toIndex] != null) {
+			console.log(player.items[toIndex].name);
+		} else {
+			console.log("null");
+		}
 	}
 }
 
@@ -201,17 +241,17 @@ class Game {
 	sendContent() {
 		var game = this;
 		game.shuffle();
-		console.log(game.monsters);
+		//console.log(game.monsters);
 
 		game.players.forEach(function(player) {
-			for(var i = 0; i < STARTING_HAND; i++) {
-				player.bag.push(game.draw());
+			for(var i = 4; i < 4 + STARTING_HAND; i++) {
+				player.items[i] = game.draw();
 			}
 
 			player.socket.emit("ready", {
 				usernames : game.getUsernames(),
 				current_player : game.currentPlayer,
-				items : player.bag,
+				items : player.items,
 				monster : game.monsters[game.currentMonster]
 			});	
 		});
@@ -268,6 +308,24 @@ class Game {
 
 		//Round
 		return Math.round(value);
+	}
+
+	switchItems(player, fromIndex, toIndex) {
+		var game = this;
+		//console.log(player);
+		//console.log(fromItem);
+		//console.log(toItem);
+		var foundPlayer = game.findPlayer(player);
+		console.log(foundPlayer);
+		foundPlayer.switchItems(fromIndex, toIndex);
+	}
+
+	findPlayer(player) {
+		for(var i = 0; i < this.players.length; i++) {
+			if(this.players[i].name == player) {
+				return this.players[i];
+			}
+		}
 	}
 }
 
