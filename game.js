@@ -46,7 +46,6 @@ class GameMaker {
 
 	constructor(server) {
 		this.server = server;
-
 		this.games = [ ];
 	}
 
@@ -154,20 +153,18 @@ class Game {
 		return ready;
 	}
 
-	getMonsters() {
+	createMonstersDeck() {
 		var game = this;
 		Factory.getMonsters().then(function(monsters) {
-			//console.log(monsters);
 			monsters.forEach(function(monster) {
-				var m = Factory.createMonster(monster, game);
-				//console.log(m);
-				game.monsters.push(m);
+				game.monsters.push(Factory.createMonster(monster, game));
 			});
-			console.log(game.monsters);
+			return game.getItems();
 		});
+
 	}
 
-	getItems() {
+	createItemsDeck() {
 		var game = this;
 		Factory.getItems().then(function(items) {
 			items.forEach(function(item) {
@@ -190,32 +187,28 @@ class Game {
 			}//TODO: TEMP
 
 			game.shuffle();
-			/*
-			game.players.forEach(function(player) {
-				for(var i = 0; i < STARTING_HAND; i++) {
-					player.bag.push(game.draw());
-				}
-				
-				//player.socket.emit("ready", {
-				//	usernames : game.getUsernames(),
-				//	items : player.bag,
-				//	monster : this.monsters
-				//});
-				
-			});*/
+
+			return game.sendContent();
 		});
 	}
 
 	sendContent() {
 		var game = this;
-		console.log(game.monsters);
-		console.log(game.items);
+		game.players.forEach(function(player) {
+			for(var i = 0; i < STARTING_HAND; i++) {
+				player.bag.push(game.draw());
+			}	
+			player.socket.emit("ready", {
+				usernames : game.getUsernames(),
+				items : player.bag,
+				monster : game.monsters
+				});	
+			});
 	}
 
 	start() {
 		var game = this;
-		async.waterfall([game.getMonsters, game.getItems, game.sendContent]);
-		//game.getMonsters();
+		game.createMonstersDeck();
 		/*
 		Factory.getMonsters().then(function(monsters) {
 			//console.log(monsters);
