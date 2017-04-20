@@ -124,6 +124,14 @@ class Player {
 		this.socket = null;
 		this.bag = [ ];
 		this.level = 1;
+		this.l_arm = null;
+		this.head = null;
+		this.armor = null;
+		this.r_arm = null;
+	}
+
+	switch_items(fromIndex, toIndex) {
+		console.log("switching "+fromIndex+" to "+toIndex);
 	}
 }
 

@@ -16,6 +16,10 @@ var screenCellSize = screenWidth / numCells;
 
 var found_items = [];
 
+var SWITCHING_ITEMS = false;
+var SWITCH_BOX_FROM = -1;
+var SWITCH_BOX_TO = -1;
+
 $(window).on("load", function() {getSession();});
 
 // ////////////////////
@@ -84,13 +88,22 @@ function updateCurrentPlayer(p) {
 function initClicks() {
 	$(".box").click(function(e) {
 		if ($(e.target).hasClass("list-item")) {
-
+			//this space is left blank on purpose
 		} else {
 			if ($(this).hasClass("active")) {
 				$(".box").removeClass("active");
+				unfadeBoxes();
+				clearSwitchBox();
 			} else {
-				$(".box").removeClass("active");
-				$(this).addClass("active");
+				if (SWITCHING_ITEMS) {
+					SWITCH_BOX_TO = $(this).data("index");
+					attemptSwitch();
+				} else {
+					$(".box").removeClass("active");
+					$(this).addClass("active");
+					fadeBoxes();
+					unfadeBox($(this));
+				}
 			}
 		}
 	});
@@ -149,11 +162,31 @@ function updateBoxMenu(b, type) {
 	}
 }
 
+function fadeBoxes() {
+	$(".box").addClass("fade");
+}
+
+function unfadeBoxes() {
+	$(".box").removeClass("fade");
+}
+
+function unfadeBox(e) {
+	e.removeClass("fade");
+}
+
+function clearSwitchBox() {
+	SWITCHING_ITEMS = false;
+	SWITCH_BOX_FROM = -1;
+	SWITCH_BOX_TO = -1;
+}
+
 // ////////////////////
 // B O X   M E N U
 // //////////////////////////////////////////
 function switchItems(e) {
-	alert(":)");
+	SWITCHING_ITEMS = true;
+	SWITCH_BOX_FROM = e.parent().parent().data("index");
+	alert("attempting switch from "+ SWITCH_BOX_FROM);
 }
 
 function dropItem(e) {
@@ -184,5 +217,16 @@ function updateScreen(monster) {
 				$(".screen-cell[data-x="+j+"][data-y="+i+"]").css("background-color", monster.sprite[i][j]);
 			}
 		}
+	}
+}
+
+// ////////////////////
+// S O C K E T
+// //////////////////////////////////////////
+function attemptSwitch() {
+	if (SWITCH_BOX_FROM != -1 && SWITCH_BOX_TO != -1) {
+		console.log("attempting switch from "+ SWITCH_BOX_FROM + " to " + SWITCH_BOX_TO);
+
+		socket.emit("switch_item", { "switch_from" : SWITCH_BOX_FROM, "switch_to" : SWITCH_BOX_TO });
 	}
 }

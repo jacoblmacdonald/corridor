@@ -555,6 +555,10 @@ a:link {
     z-index: 100; }
     .box.active .box-menu {
       display: block; }
+  .box.fade {
+    opacity: 0.3; }
+    .box.fade:hover {
+      opacity: 1; }
   .box .box-level {
     position: absolute;
     bottom: -2;
