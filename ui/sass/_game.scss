@@ -17,6 +17,10 @@
 
 		p {
 			color:white;
+
+			&.active {
+				color:#0088F0;
+			}
 		}
 	}
 }

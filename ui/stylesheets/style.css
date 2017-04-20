@@ -542,6 +542,8 @@ a:link {
     text-align: left; }
     .game-c .players-side-bar p {
       color: white; }
+      .game-c .players-side-bar p.active {
+        color: #0088F0; }
 
 .box {
   width: 80px;

@@ -198,63 +198,20 @@ class Game {
 		game.players.forEach(function(player) {
 			for(var i = 0; i < STARTING_HAND; i++) {
 				player.bag.push(game.draw());
-			}	
+			}
+
 			player.socket.emit("ready", {
 				usernames : game.getUsernames(),
+				current_player : game.currentPlayer,
 				items : player.bag,
 				monster : game.monsters[game.currentMonster]
-				});	
-			});
+			});	
+		});
 	}
 
 	start() {
 		var game = this;
 		game.createMonstersDeck();
-		/*
-		Factory.getMonsters().then(function(monsters) {
-			//console.log(monsters);
-			monsters.forEach(function(monster) {
-				var m = Factory.createMonster(monster, game);
-				//console.log(m);
-				game.monsters.push(m);
-			});
-		});
-
-		Factory.getItems().then(function(items) {
-			items.forEach(function(item) {
-				game.items.push(Factory.createItem(item, game));
-			});
-			for(var i = game.items.length - 1; i >= 0; i--) {
-				var clone;
-				clone = JSON.parse(JSON.stringify(game.items[i]));
-				game.items.push(clone);
-				clone = JSON.parse(JSON.stringify(game.items[i]));
-				game.items.push(clone);
-				clone = JSON.parse(JSON.stringify(game.items[i]));
-				game.items.push(clone);
-				clone = JSON.parse(JSON.stringify(game.items[i]));
-				game.items.push(clone);
-				clone = JSON.parse(JSON.stringify(game.items[i]));
-				game.items.push(clone);
-				clone = JSON.parse(JSON.stringify(game.items[i]));
-				game.items.push(clone);
-			}//TODO: TEMP
-
-			game.shuffle();
-
-			game.players.forEach(function(player) {
-				for(var i = 0; i < STARTING_HAND; i++) {
-					player.bag.push(game.draw());
-				}
-				
-				player.socket.emit("ready", {
-					usernames : game.getUsernames(),
-					items : player.bag,
-					monster : this.monsters
-				});
-				
-			});
-		}); */
 	}
 
 	shuffle() {

@@ -47,20 +47,22 @@ socket.on("ready", function(message) {
 	console.log(message.usernames);
 	console.log(message.items);
 	console.log(message.monster);
+	console.log(message.current_player);
 	ALL_USERS = message.usernames;
-	loadPage(message.items, message.monster);
+	loadPage(message.items, message.monster, message.current_player);
 });
 
 // ////////////////////
 // I N I T (FRONTEND)
 // ///////////////////////////////////////
 
-function loadPage(items, monster) {
+function loadPage(items, monster, current_player) {
 	initClicks();
 	populatePlayers();
 	initBoxes();
 	initScreen();
 	updateScreen(monster);
+	updateCurrentPlayer(current_player);
 
 	for (var i = 0; i < items.length; i++) {
 		addItemToBag(items[i]);
@@ -69,8 +71,14 @@ function loadPage(items, monster) {
 
 function populatePlayers() {
 	for (var i = 0; i < ALL_USERS.length; i++) {
-		$(".players-side-bar").append("<p class='v-small'>"+ALL_USERS[i]+"</p>");
+		$(".players-side-bar").append("<p class='v-small p-"+i+"'>"+ALL_USERS[i]+"</p>");
 	}
+}
+
+function updateCurrentPlayer(p) {
+	$(".players-side-bar p").removeClass("active");
+	$(".p-"+p).addClass("active");
+
 }
 
 function initClicks() {
