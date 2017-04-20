@@ -159,7 +159,7 @@ class Game {
 			monsters.forEach(function(monster) {
 				game.monsters.push(Factory.createMonster(monster, game));
 			});
-			return game.getItems();
+			return game.createItemsDeck();
 		});
 
 	}
@@ -186,14 +186,15 @@ class Game {
 				game.items.push(clone);
 			}//TODO: TEMP
 
-			game.shuffle();
-
 			return game.sendContent();
 		});
 	}
 
 	sendContent() {
 		var game = this;
+		game.shuffle();
+		console.log(game.monsters);
+
 		game.players.forEach(function(player) {
 			for(var i = 0; i < STARTING_HAND; i++) {
 				player.bag.push(game.draw());
@@ -201,7 +202,7 @@ class Game {
 			player.socket.emit("ready", {
 				usernames : game.getUsernames(),
 				items : player.bag,
-				monster : game.monsters
+				monster : game.monsters[game.currentMonster]
 				});	
 			});
 	}
@@ -257,13 +258,20 @@ class Game {
 	}
 
 	shuffle() {
-		var temp = [ ];
+		var tempItems = [ ];
+		var tempMonsters = [ ];
 		while(this.items.length) {
 			var index = Math.floor(Math.random() * this.items.length);
-			temp.push(this.items[index]);
+			tempItems.push(this.items[index]);
 			this.items.splice(index, 1);
 		}
-		this.items = temp;
+		while(this.monsters.length) {
+			var index = Math.floor(Math.random() * this.monsters.length);
+			tempMonsters.push(this.monsters[index]);
+			this.monsters.splice(index, 1);
+		}
+		this.items = tempItems;
+		this.monsters = tempMonsters;
 	}
 
 	draw() {
