@@ -4,6 +4,8 @@
 "use strict"; 
 const r = require('./api/rethinkdb');
 
+const async = require("async");
+
 const itemRanges = {
 	"low" : [ 1, 3 ],
 	"med" : [ 4, 6 ],
@@ -16,7 +18,8 @@ const monsterRanges = {
 	"med" : [ 7, 10 ],
 	"high" : [ 11, 14 ],
 	"higher" : [ 15, 18 ],
-	"highest" : [ 19, 22 ]
+	"highest" : [ 19, 22 ],
+	"wild" : [3, 22]
 };
 
 const GameState = {
@@ -82,6 +85,10 @@ class Factory {
 		return r.db("Corridor").table("Items").filter({published: true}).run();
 	}
 
+	static getMonsters() {
+		return r.db("Corridor").table("Monsters").filter({published:true}).run();
+	}
+
 	static createItem(itemJSON, game) {
 		return new Item(
 			itemJSON.id,
@@ -92,6 +99,21 @@ class Factory {
 			itemJSON.sprite,
 			game
 		);
+	}
+
+	static createMonster(monsterJSON, game) {
+		var m = new Monster(
+			monsterJSON.id,
+			monsterJSON.description,
+			monsterJSON.range,
+			monsterJSON.buff_lvl,
+			monsterJSON.buff_class,
+			monsterJSON.num_treasures,
+			monsterJSON.sprite,
+			game
+		);
+		//console.log(m);
+		return m;
 	}
 }
 
@@ -115,6 +137,8 @@ class Game {
 			return new Player(username);
 		});
 		this.items = [ ];
+		this.monsters = [ ];
+		this.currentMonster = 0;
 		this.itemIndex = 0;
 		this.state = GameState.SETUP;
 		this.currentPlayer = 0;
@@ -130,8 +154,78 @@ class Game {
 		return ready;
 	}
 
+	getMonsters() {
+		var game = this;
+		Factory.getMonsters().then(function(monsters) {
+			//console.log(monsters);
+			monsters.forEach(function(monster) {
+				var m = Factory.createMonster(monster, game);
+				//console.log(m);
+				game.monsters.push(m);
+			});
+			console.log(game.monsters);
+		});
+	}
+
+	getItems() {
+		var game = this;
+		Factory.getItems().then(function(items) {
+			items.forEach(function(item) {
+				game.items.push(Factory.createItem(item, game));
+			});
+			for(var i = game.items.length - 1; i >= 0; i--) {
+				var clone;
+				clone = JSON.parse(JSON.stringify(game.items[i]));
+				game.items.push(clone);
+				clone = JSON.parse(JSON.stringify(game.items[i]));
+				game.items.push(clone);
+				clone = JSON.parse(JSON.stringify(game.items[i]));
+				game.items.push(clone);
+				clone = JSON.parse(JSON.stringify(game.items[i]));
+				game.items.push(clone);
+				clone = JSON.parse(JSON.stringify(game.items[i]));
+				game.items.push(clone);
+				clone = JSON.parse(JSON.stringify(game.items[i]));
+				game.items.push(clone);
+			}//TODO: TEMP
+
+			game.shuffle();
+			/*
+			game.players.forEach(function(player) {
+				for(var i = 0; i < STARTING_HAND; i++) {
+					player.bag.push(game.draw());
+				}
+				
+				//player.socket.emit("ready", {
+				//	usernames : game.getUsernames(),
+				//	items : player.bag,
+				//	monster : this.monsters
+				//});
+				
+			});*/
+		});
+	}
+
+	sendContent() {
+		var game = this;
+		console.log(game.monsters);
+		console.log(game.items);
+	}
+
 	start() {
 		var game = this;
+		async.waterfall([game.getMonsters, game.getItems, game.sendContent]);
+		//game.getMonsters();
+		/*
+		Factory.getMonsters().then(function(monsters) {
+			//console.log(monsters);
+			monsters.forEach(function(monster) {
+				var m = Factory.createMonster(monster, game);
+				//console.log(m);
+				game.monsters.push(m);
+			});
+		});
+
 		Factory.getItems().then(function(items) {
 			items.forEach(function(item) {
 				game.items.push(Factory.createItem(item, game));
@@ -158,12 +252,15 @@ class Game {
 				for(var i = 0; i < STARTING_HAND; i++) {
 					player.bag.push(game.draw());
 				}
+				
 				player.socket.emit("ready", {
 					usernames : game.getUsernames(),
-					items : player.bag
+					items : player.bag,
+					monster : this.monsters
 				});
+				
 			});
-		});
+		}); */
 	}
 
 	shuffle() {
@@ -226,22 +323,20 @@ class Item {
  	}
 }
 
-// class Monster {
+class Monster {
 
-// 	constructor(id, name, level, description, range, debuff_amount, debuff_job, item_reward, sprite, game) {
-// 		this.id = id;
-// 		this.name = name;
-// 		this.level = level;
-// 		this.description = description;
-// 		this.range = range;
-// 		this.debuff_amount = debuff_amount;
-// 		this.debuff_job = debuff_job;
-// 		this.item_reward = item_reward;
-// 		this.sprite = sprite;
+	constructor(name, description, range, debuff_amount, debuff_job, item_reward, sprite, game) {
+		this.name = name;
+ 		this.description = description;
+ 		this.range = range;
+ 		this.debuff_amount = debuff_amount;
+		this.debuff_job = debuff_job;
+ 		this.item_reward = item_reward;
+ 		this.sprite = sprite;
 
-// 		// this.value = Game.getValueFromRange(monsterRanges[range], game);
-//  	}
-// }
+		this.value = game.getValueFromRange(monsterRanges[range], game);
+ 	}
+}
 
 class Job {
 

@@ -43,6 +43,7 @@ function getId() {
 socket.on("ready", function(message) {
 	console.log(message.usernames);
 	console.log(message.items);
+	console.log(message.monster);
 	ALL_USERS = message.usernames;
 	loadPage(message.items);
 });
