@@ -9,5 +9,10 @@
 		width:$screen-width;
 		height:$screen-width;
 		background-color: $screen-color;
+
+		.screen-cell {
+			float:left;
+			pointer-events:none;
+		}
 	}
 }

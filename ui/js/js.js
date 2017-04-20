@@ -11,6 +11,9 @@ var boxWidth = 80 - 4;
 var numCells = 30;
 var boxCellSize = boxWidth / numCells;
 
+var screenWidth = 300;
+var screenCellSize = screenWidth / numCells;
+
 var found_items = [];
 
 $(window).on("load", function() {getSession();});
@@ -45,17 +48,19 @@ socket.on("ready", function(message) {
 	console.log(message.items);
 	console.log(message.monster);
 	ALL_USERS = message.usernames;
-	loadPage(message.items);
+	loadPage(message.items, message.monster);
 });
 
 // ////////////////////
 // I N I T (FRONTEND)
 // ///////////////////////////////////////
 
-function loadPage(items) {
+function loadPage(items, monster) {
 	initClicks();
 	populatePlayers();
 	initBoxes();
+	initScreen();
+	updateScreen(monster);
 
 	for (var i = 0; i < items.length; i++) {
 		addItemToBag(items[i]);
@@ -149,4 +154,27 @@ function dropItem(e) {
 
 function deployItem(e) {
 
+}
+
+// ////////////////////
+// S C R E E N
+// //////////////////////////////////////////
+function initScreen() {
+	console.log("creating screen");
+	for (var i = 0; i < numCells; i++) {
+		for (var j = 0; j < numCells; j++) {
+			$(".screen").append("<div class='screen-cell' data-x='"+j+"' data-y='"+i+"' style='width:"+screenCellSize+";height:"+screenCellSize+";'></div>");
+		}
+	}
+}
+
+function updateScreen(monster) {
+	console.log("updating screen with: "+monster.name);
+	for (var i = 0; i < numCells; i++) {
+		for (var j = 0; j < numCells; j++) {
+			if (i < monster.sprite.length) {
+				$(".screen-cell[data-x="+j+"][data-y="+i+"]").css("background-color", monster.sprite[i][j]);
+			}
+		}
+	}
 }
