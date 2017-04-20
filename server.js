@@ -5,7 +5,7 @@ const express = require("express");
 const app = express();
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const chat = require('./chat/Chat-Backend');
+const chat = require('./chat/socket');
 const passportSocketIo = require('passport.socketio');
 const cookieParser = require('cookie-parser');
 const routes = require('./routes');
@@ -18,15 +18,13 @@ const r = require('./api/rethinkdb');
 var http = require('http').Server(app);
 var server = require('socket.io')(http);
 
-var Matchmaker = require("./matchmaker");
+var Matchmaker = require("./game/matchmaker");
 var matchmaker = new Matchmaker(server);
-var Gamemaker = require("./game");
+var Gamemaker = require("./game/game");
 var gamemaker = new Gamemaker(server);
 
 server.on("connection", function(client) {
   
-	console.log(client.id + " connected");
-
 	/**
 	 * Please keep this cleaner...
 	 */
@@ -34,33 +32,35 @@ server.on("connection", function(client) {
 	// ^ encapsulate pl0x
 
 
+	var username = client.request.user['id'];
+	console.log(username + " connected");
 
  	
  	//Load the matchmaking screen
     client.on("loaded", function(message) {
-        matchmaker.onUserLoaded(message.username, this);
+        matchmaker.onUserLoaded(username, this);
     });
 
 	//Create a game
 	client.on("create", function(message) {
-		matchmaker.onLobbyCreated(message.username);
+		matchmaker.onLobbyCreated(username);
 	});
 
 	//Join a game
 	client.on("join", function(message) {
 		//console.log("attempting join");
-		matchmaker.onLobbyJoined(message.username, message.hostname);
+		matchmaker.onLobbyJoined(username, message.hostname);
 	});
 
 	//Start a game
 	client.on("start", function(message) {
-	    var lobby = matchmaker.onGameStarted(message.username);
+	    var lobby = matchmaker.onGameStarted(username);
 	    gamemaker.onGameStarted(lobby.id, lobby.getUsernames());
 	});
 
     //Setup a game
     client.on("setup", function(message) {
-    	gamemaker.onSetup(message.gameId, message.username, client);
+    	gamemaker.onSetup(message.gameId, username, client);
     });
 
 	//Do something (in game)
