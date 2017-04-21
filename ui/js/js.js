@@ -109,8 +109,20 @@ function initClicks() {
 		}
 	});
 
+	$(".game-c").click(function(e) {
+		if ($(e.target).hasClass("box") || $(e.target).hasClass("list-item")) {
+
+		} else {
+			clearSwitchBox();
+			unfadeBoxes();
+			$(".box").removeClass("active");
+		}
+		
+	});
+
 	$(document).on('click', ".list-switch" , function() {
     	switchItems($(this));
+    	$(this).parent().parent().removeClass("active");
 	});
 
 	$(document).on('click', ".list-drop" , function() {
@@ -146,14 +158,23 @@ function initBoxes() {
 }
 
 function updateBox(b, sprite) {
-	for (var i = 0; i < numCells; i++) {
-		for (var j = 0; j < numCells; j++) {
-			if (i < sprite.length) {
-				$(".box-cell[data-x="+j+"][data-y="+i+"]", b).css("background-color", sprite[i][j]);
+	if (sprite == null) {
+		for (var i = 0; i < numCells; i++) {
+			for (var j = 0; j < numCells; j++) {
+				$(".box-cell[data-x="+j+"][data-y="+i+"]", b).css("background-color", "#111");
 			}
 		}
+		updateBoxMenu(b, "this");
+	} else {
+		for (var i = 0; i < numCells; i++) {
+			for (var j = 0; j < numCells; j++) {
+				if (i < sprite.length) {
+					$(".box-cell[data-x="+j+"][data-y="+i+"]", b).css("background-color", sprite[i][j]);
+				}
+			}
+		}
+		updateBoxMenu(b, "this");
 	}
-	updateBoxMenu(b, "this");
 }
 
 function updateBoxMenu(b, type) {
@@ -181,12 +202,27 @@ function clearSwitchBox() {
 	SWITCH_BOX_TO = -1;
 }
 
+function updateItem(message) {
+	if (message.fromItem == null) {
+		updateBox($(".box[data-index='"+message.fromIndex+"'"), null);
+	} else {
+		updateBox($(".box[data-index='"+message.fromIndex+"'"), message.fromItem.sprite);
+	}
+	
+	if (message.toItem == null) {
+		updateBox($(".box[data-index='"+message.toIndex+"'"), null);
+	} else {
+		updateBox($(".box[data-index='"+message.toIndex+"'"), message.toItem.sprite);
+	}
+}
+
 // ////////////////////
 // B O X   M E N U
 // //////////////////////////////////////////
 function switchItems(e) {
 	SWITCHING_ITEMS = true;
 	SWITCH_BOX_FROM = e.parent().parent().data("index");
+	e
 	//alert("attempting switch from "+ SWITCH_BOX_FROM);
 }
 
@@ -232,4 +268,19 @@ function attemptSwitch() {
 
 		//socket.emit("setup", { "gameId" : getId(), "username" : CURRENT_USER });
 	}
+	clearSwitchBox();
+	//unfadeBoxes();
+	$(".box").removeClass("active");
 }
+
+socket.on("give_switch", function(message) {
+	//alert("got switch");
+	$(".box").removeClass("active");
+	unfadeBoxes();
+	clearSwitchBox();
+	console.log(message.fromIndex);
+	console.log(message.fromItem);
+	console.log(message.toIndex);
+	console.log(message.toItem);
+	updateItem(message);
+});

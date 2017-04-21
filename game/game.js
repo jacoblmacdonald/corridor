@@ -123,7 +123,7 @@ class Player {
 
 		this.socket = null;
 		this.level = 1;
-		this.items = [null, null, null, null, null, null, null, null, null ,null, null, null, null, null, null];
+		this.items = [null, null, null, null, null, null, null, null, null ,null, null, null, null, null, null, null];
 
 		/* all items are stored in one array, this makes searching and switching much easier
 		items[0] = left_arm
@@ -155,7 +155,6 @@ class Player {
 			console.log("null");
 		}
 		
-
 		//check to see if items can be switched, if so;
 		player.items[fromIndex] = toItem;
 		player.items[toIndex] = fromItem;
@@ -172,6 +171,8 @@ class Player {
 		} else {
 			console.log("null");
 		}
+
+		player.socket.emit("give_switch", {fromIndex:fromIndex, fromItem:player.items[fromIndex], toIndex:toIndex, toItem:player.items[toIndex]});
 	}
 }
 
