@@ -69,6 +69,14 @@ server.on("connection", function(client) {
 			console.log("switching, "+game);
 			game.switchItems(username, message.switch_from, message.switch_to);
 			});
+
+		//drop item
+		client.on("drop_item", function(message) {
+			console.log(message);
+			var game = gamemaker.findGame(message.gameId);
+			console.log("switching, "+game);
+			game.dropItem(username, message.drop_item);
+		});
 	} 	
 });
 //body parser middleware

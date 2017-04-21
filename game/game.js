@@ -174,6 +174,13 @@ class Player {
 
 		player.socket.emit("give_switch", {fromIndex:fromIndex, fromItem:player.items[fromIndex], toIndex:toIndex, toItem:player.items[toIndex]});
 	}
+
+	dropItem(item) {
+		var player = this;
+		player.items[item] = null;
+
+		player.socket.emit("item_dropped", {item:item});
+	}
 }
 
 class Game {
@@ -309,6 +316,13 @@ class Game {
 
 		//Round
 		return Math.round(value);
+	}
+
+	dropItem(player, item) {
+		var game = this;
+		var foundPlayer = game.findPlayer(player);
+		console.log(foundPlayer);
+		foundPlayer.dropItem(item);
 	}
 
 	switchItems(player, fromIndex, toIndex) {

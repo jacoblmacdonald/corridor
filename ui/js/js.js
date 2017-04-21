@@ -127,6 +127,8 @@ function initClicks() {
 
 	$(document).on('click', ".list-drop" , function() {
     	dropItem($(this));
+    	$(this).parent().parent().removeClass("active");
+    	unfadeBoxes();
 	});
 
 	$(document).on('click', ".list-use" , function() {
@@ -216,18 +218,24 @@ function updateItem(message) {
 	}
 }
 
+function updateDropItem(index) {
+	updateBox($(".box[data-index='"+index+"'"), null);
+}
+
 // ////////////////////
 // B O X   M E N U
 // //////////////////////////////////////////
 function switchItems(e) {
 	SWITCHING_ITEMS = true;
 	SWITCH_BOX_FROM = e.parent().parent().data("index");
-	e
+	//e
 	//alert("attempting switch from "+ SWITCH_BOX_FROM);
 }
 
 function dropItem(e) {
-
+	console.log(e);
+	var i = $(e).parent().parent().data("index");
+	attemptDrop(i);
 }
 
 function deployItem(e) {
@@ -260,6 +268,10 @@ function updateScreen(monster) {
 // ////////////////////
 // S O C K E T
 // //////////////////////////////////////////
+function attemptDrop(i) {
+	socket.emit("drop_item", {"gameId" :getId(), "drop_item": i});
+}
+
 function attemptSwitch() {
 	if (SWITCH_BOX_FROM != -1 && SWITCH_BOX_TO != -1) {
 		//console.log("attempting switch from "+ SWITCH_BOX_FROM + " to " + SWITCH_BOX_TO);
@@ -283,4 +295,9 @@ socket.on("give_switch", function(message) {
 	console.log(message.toIndex);
 	console.log(message.toItem);
 	updateItem(message);
+});
+
+socket.on("item_dropped", function(message) {
+	console.log(message);
+	updateDropItem(message.item);
 });
