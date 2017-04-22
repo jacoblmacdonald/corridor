@@ -4,7 +4,8 @@
 	text-align:center;
 
 	.content-c {
-		width:$content-width;
+		//width:$content-width;
+		width:600px;
 		display:inline-block;
 		height:100%;
 	}
@@ -17,6 +18,10 @@
 
 		p {
 			color:white;
+
+			&.active {
+				color:#0088F0;
+			}
 		}
 	}
 }
@@ -33,6 +38,14 @@
 		z-index:100;
 		.box-menu{
 			display:block;
+		}
+	}
+
+	&.fade {
+		opacity:0.3;
+
+		&:hover {
+			opacity:1;
 		}
 	}
 

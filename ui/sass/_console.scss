@@ -40,6 +40,10 @@
 		.right {
 			color:white;
 			float:right;
+
+			.otuAmt {
+				color:green;
+			}
 		}
 	}
 
@@ -74,6 +78,7 @@
 			.class-row {
 				width:100%;
 				overflow:hidden;
+				margin-bottom: 10px;
 
 				.left {
 					float:left;
@@ -85,7 +90,8 @@
 					color:white;
 				}
 			}
-			.race-row {
+
+			.otu-item-row {
 				width:100%;
 				overflow:hidden;
 
@@ -111,7 +117,7 @@
 			margin-right:$box-margin;
 			margin-bottom:$box-margin;
 
-			&:nth-child(6), &:nth-child(12) {
+			&:nth-child(7), &:nth-child(14) {
 				margin-right:0px;
 			}
 		}

@@ -5,7 +5,7 @@ const express = require("express");
 const app = express();
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const chat = require('./chat/Chat-Backend');
+const chat = require('./chat/socket');
 const passportSocketIo = require('passport.socketio');
 const cookieParser = require('cookie-parser');
 const routes = require('./routes');
@@ -18,55 +18,74 @@ const r = require('./api/rethinkdb');
 var http = require('http').Server(app);
 var server = require('socket.io')(http);
 
-var Matchmaker = require("./matchmaker");
+var Matchmaker = require("./game/matchmaker");
 var matchmaker = new Matchmaker(server);
-var Gamemaker = require("./game");
+var Gamemaker = require("./game/game");
 var gamemaker = new Gamemaker(server);
 
 server.on("connection", function(client) {
   
-	console.log(client.id + " connected");
-
-	/**
-	 * Please keep this cleaner...
-	 */
 	chat(client, server);
-	// ^ encapsulate pl0x
 
+	var username = client.request.user['id'];
+	var loggedIn = client.request.user['logged_in'];
 
+	if(loggedIn){
+		//Load the matchmaking screen
+	    client.on("loaded", function(message) {
+	        matchmaker.onUserLoaded(username, this);
+	    });
 
- 	
- 	//Load the matchmaking screen
-    client.on("loaded", function(message) {
-        matchmaker.onUserLoaded(message.username, this);
-    });
+		//Create a game
+		client.on("create", function(message) {
+			matchmaker.onLobbyCreated(username);
+		});
 
-	//Create a game
-	client.on("create", function(message) {
-		matchmaker.onLobbyCreated(message.username);
-	});
+		//Join a game
+		client.on("join", function(message) {
+			//console.log("attempting join");
+			matchmaker.onLobbyJoined(username, message.hostname);
+		});
 
-	//Join a game
-	client.on("join", function(message) {
-		//console.log("attempting join");
-		matchmaker.onLobbyJoined(message.username, message.hostname);
-	});
+		//Start a game
+		client.on("start", function(message) {
+		    var lobby = matchmaker.onGameStarted(username);
+		    gamemaker.onGameStarted(lobby.id, lobby.getUsernames());
+		});
 
-	//Start a game
-	client.on("start", function(message) {
-	    var lobby = matchmaker.onGameStarted(message.username);
-	    gamemaker.onGameStarted(lobby.id, lobby.getUsernames());
-	});
+	    //Setup a game
+	    client.on("setup", function(message) {
+	    	gamemaker.onSetup(message.gameId, username, client);
+	    });
 
-    //Setup a game
-    client.on("setup", function(message) {
-    	gamemaker.onSetup(message.gameId, message.username, client);
-    });
+		//Do something (in game)
+		client.on("action", function(message) {
+			game.receive(message, client);
+		});
 
-	//Do something (in game)
-	client.on("action", function(message) {
-		game.receive(message, client);
-	});
+		//switch item
+		client.on("switch_item", function(message) {
+			var game = gamemaker.findGame(message.gameId);
+			console.log("switching, "+game);
+			game.switchItems(username, message.switch_from, message.switch_to);
+			});
+
+		//drop item
+		client.on("drop_item", function(message) {
+			console.log(message);
+			var game = gamemaker.findGame(message.gameId);
+			console.log("switching, "+game);
+			game.dropItem(username, message.drop_item);
+		});
+
+		//use item
+		client.on("use_item", function(message) {
+			console.log(message);
+			var game = gamemaker.findGame(message.gameId);
+			console.log("switching, "+game);
+			game.useItem(username, message.used_item);
+		});
+	} 	
 });
 //body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }))

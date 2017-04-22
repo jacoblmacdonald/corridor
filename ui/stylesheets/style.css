@@ -532,7 +532,7 @@ a:link {
   height: 100vh;
   text-align: center; }
   .game-c .content-c {
-    width: 505px;
+    width: 600px;
     display: inline-block;
     height: 100%; }
   .game-c .players-side-bar {
@@ -542,6 +542,8 @@ a:link {
     text-align: left; }
     .game-c .players-side-bar p {
       color: white; }
+      .game-c .players-side-bar p.active {
+        color: #0088F0; }
 
 .box {
   width: 80px;
@@ -553,6 +555,10 @@ a:link {
     z-index: 100; }
     .box.active .box-menu {
       display: block; }
+  .box.fade {
+    opacity: 0.3; }
+    .box.fade:hover {
+      opacity: 1; }
   .box .box-level {
     position: absolute;
     bottom: -2;
@@ -592,12 +598,30 @@ a:link {
   text-align: center;
   width: 100%;
   margin-bottom: 30px;
-  border: 2px solid white; }
+  border: 2px solid white;
+  overflow: hidden; }
   .screen-c .screen {
-    display: inline-block;
     width: 300px;
     height: 300px;
-    background-color: #141414; }
+    background-color: #141414;
+    float: left; }
+    .screen-c .screen .screen-cell {
+      float: left;
+      pointer-events: none; }
+  .screen-c .screen-info-c {
+    float: left;
+    width: calc(300px - 6px);
+    text-align: left;
+    padding: 5px; }
+    .screen-c .screen-info-c p {
+      color: white;
+      padding-left: 5px; }
+      .screen-c .screen-info-c p.monster-lvl {
+        margin-bottom: 5px; }
+      .screen-c .screen-info-c p.monster-name {
+        margin-bottom: 10px; }
+      .screen-c .screen-info-c p.monster-desc {
+        color: #b7b7b7; }
 
 .main-button {
   width: 100%;
@@ -630,6 +654,8 @@ a:link {
     .console-c .power-row .right {
       color: white;
       float: right; }
+      .console-c .power-row .right .otuAmt {
+        color: green; }
   .console-c .build-row {
     width: 100%;
     overflow: hidden;
@@ -650,20 +676,21 @@ a:link {
       width: 250px; }
       .console-c .build-row .build-info .class-row {
         width: 100%;
-        overflow: hidden; }
+        overflow: hidden;
+        margin-bottom: 10px; }
         .console-c .build-row .build-info .class-row .left {
           float: left;
           color: white; }
         .console-c .build-row .build-info .class-row .right {
           float: right;
           color: white; }
-      .console-c .build-row .build-info .race-row {
+      .console-c .build-row .build-info .otu-item-row {
         width: 100%;
         overflow: hidden; }
-        .console-c .build-row .build-info .race-row .left {
+        .console-c .build-row .build-info .otu-item-row .left {
           float: left;
           color: white; }
-        .console-c .build-row .build-info .race-row .right {
+        .console-c .build-row .build-info .otu-item-row .right {
           float: right;
           color: white; }
   .console-c .bag-row {
@@ -673,5 +700,5 @@ a:link {
       float: left;
       margin-right: 5px;
       margin-bottom: 5px; }
-      .console-c .bag-row .box:nth-child(6), .console-c .bag-row .box:nth-child(12) {
+      .console-c .bag-row .box:nth-child(7), .console-c .bag-row .box:nth-child(14) {
         margin-right: 0px; }

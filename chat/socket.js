@@ -1,11 +1,3 @@
-/**
- * Created by MatiMaster on 4/19/2017.
- */
-/**
- * Created by MatiMaster on 4/12/2017.
- */
-
-
 var chatChannels = {'Main':[], 'Channel-1':[]};
 var usersToChannels = {};
 const r = require('../api/rethinkdb');
@@ -75,7 +67,5 @@ function handleChat(client, io){
 
 
 }
-
-
 
 module.exports = handleChat;
