@@ -84,6 +84,12 @@ function updateCurrentPlayer(p) {
 	$(".players-side-bar p").removeClass("active");
 	$(".p-"+p).addClass("active");
 
+	console.log($(".p-"+p).html());
+	if ($(".p-"+p).html() == CURRENT_USER) {
+		setAttacKMode();
+	} else {
+		setIdleMode();
+	}
 }
 
 function initClicks() {
@@ -143,6 +149,22 @@ function initClicks() {
 function addItemToBag(item) {
 	updateBox($(".bag-box.empty").first(), item.sprite);
 	$(".bag-box.empty").first().removeClass("empty");
+}
+
+function setAttacKMode() {
+	$(".main-button p").html("ATTACK");
+}
+
+function setIdleMode() {
+	$(".main-button p").html("ready");
+}
+
+function updateLevel(i) {
+	$(".name-row .right").html("lvl: "+i);
+}
+
+function updateTotalPower(i) {
+	$(".power-row .right").html(i);
 }
 
 // ////////////////////
@@ -295,9 +317,13 @@ socket.on("give_switch", function(message) {
 	console.log(message.toIndex);
 	console.log(message.toItem);
 	updateItem(message);
+	updateLevel(message.level);
+	updateTotalPower(message.totalPower);
 });
 
 socket.on("item_dropped", function(message) {
 	console.log(message);
 	updateDropItem(message.item);
+	updateLevel(message.level);
+	updateTotalPower(message.totalPower);
 });

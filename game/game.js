@@ -123,7 +123,13 @@ class Player {
 
 		this.socket = null;
 		this.level = 1;
-		this.items = [null, null, null, null, null, null, null, null, null ,null, null, null, null, null, null, null];
+		this.totalPower = 1;
+		this.items = [null, null, null, null, null, null, null, null, null ,null, null, null, null, null, null, null, null, null];
+		this.class = "none";
+		this.activeOTUS = [ ]
+		// store a list of all OTUs used by player in current round.
+		// use this to sum up additional buff from these items
+		// clear this list and its buff after each round
 
 		/* all items are stored in one array, this makes searching and switching much easier
 		items[0] = left_arm
@@ -137,49 +143,42 @@ class Player {
 
 	switchItems(fromIndex, toIndex) {
 		var player = this;
-
-		console.log(player.name+" before switch:");
-
 		var fromItem = player.items[fromIndex];
 		var toItem = player.items[toIndex];
-
-
-		if (fromItem != null) {
-			console.log(fromItem.name);
-		} else {
-			console.log("null");
-		}
-		if (toItem != null) {
-			console.log(toItem.name);
-		} else {
-			console.log("null");
-		}
 		
 		//check to see if items can be switched, if so;
 		player.items[fromIndex] = toItem;
 		player.items[toIndex] = fromItem;
 
+		player.updateTotalPower();
 
-		console.log(player.name+" after switch:");
-		if (player.items[fromIndex] != null) {
-			console.log(player.items[fromIndex].name);
-		} else {
-			console.log("null");
-		}
-		if (player.items[toIndex] != null) {
-			console.log(player.items[toIndex].name);
-		} else {
-			console.log("null");
-		}
-
-		player.socket.emit("give_switch", {fromIndex:fromIndex, fromItem:player.items[fromIndex], toIndex:toIndex, toItem:player.items[toIndex]});
+		player.socket.emit("give_switch", {fromIndex:fromIndex, fromItem:player.items[fromIndex], toIndex:toIndex, toItem:player.items[toIndex], level:player.level, totalPower:player.totalPower});
 	}
 
 	dropItem(item) {
 		var player = this;
 		player.items[item] = null;
 
-		player.socket.emit("item_dropped", {item:item});
+		player.updateTotalPower();
+
+		player.socket.emit("item_dropped", {item:item, level:player.level, totalPower:player.totalPower});
+	}
+
+	updateTotalPower() {
+		var player = this;
+		player.totalPower = player.level; //plus other things
+		//items[0].level +
+		//items[1].level + 
+		//items[2].level +
+		//items[3].level +
+		//all deployed otus 
+		//
+		//of course, need to check if these items are null first :P
+		for (var i = 0; i < 4; i++) {
+			if (player.items[i] != null) {
+				player.totalPower += player.items[i].value;
+			}
+		}
 	}
 }
 
