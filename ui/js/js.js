@@ -7,6 +7,7 @@ var ALL_USERS = [];
 
 var ITEM_LIST = ["switch", "drop"];
 var OTU_LIST = ["use", "switch", "drop"];
+var CLASS_LIST = ["change-class", "switch", "drop"];
 
 var boxWidth = 80 - 4;
 var numCells = 30;
@@ -146,6 +147,12 @@ function initClicks() {
     	unfadeBoxes();
     	deployItem($(this));
 	});
+
+	$(document).on('click', ".list-change-class" , function() {
+		$(this).parent().parent().removeClass("active");
+    	unfadeBoxes();
+    	changeClass($(this));
+	});
 }
 
 // ////////////////////
@@ -175,6 +182,10 @@ function updateTotalPower(i, j) {
 	} else {
 		$(".power-row .right").html(i);
 	}
+}
+
+function updateClass(i) {
+	$(".class-row .right").html(i);
 }
 
 // ////////////////////
@@ -226,11 +237,15 @@ function updateBoxMenu(b, type) {
 	$(".box-menu", b).html("");
 	if (type == "otu") {
 		for (var i = 0; i < OTU_LIST.length; i++) {
-			$(".box-menu", b).append("<p class='v-small list-item list-"+OTU_LIST[i]+"'>"+OTU_LIST[i]+"</p>")
+			$(".box-menu", b).append("<p class='v-small list-item list-"+OTU_LIST[i]+"'>"+OTU_LIST[i]+"</p>");
+		}
+	} else if (type == "class"){
+		for (var i = 0; i < CLASS_LIST.length; i++) {
+			$(".box-menu", b).append("<p class='v-small list-item list-"+CLASS_LIST[i]+"'>"+CLASS_LIST[i]+"</p>");
 		}
 	} else {
 		for (var i = 0; i < ITEM_LIST.length; i++) {
-			$(".box-menu", b).append("<p class='v-small list-item list-"+ITEM_LIST[i]+"'>"+ITEM_LIST[i]+"</p>")
+			$(".box-menu", b).append("<p class='v-small list-item list-"+ITEM_LIST[i]+"'>"+ITEM_LIST[i]+"</p>");
 		}
 	}
 }
@@ -292,6 +307,12 @@ function deployItem(e) {
 	attemptUse(i);
 }
 
+//uses same protocol as use otu item
+function changeClass(e) {
+	var i = $(e).parent().parent().data("index");
+	attemptUse(i);
+}
+
 // ////////////////////
 // S C R E E N
 // //////////////////////////////////////////
@@ -343,6 +364,8 @@ function attemptSwitch() {
 	$(".box").removeClass("active");
 }
 
+//message.item is usually just an index in the below functions
+
 socket.on("give_switch", function(message) {
 	//alert("got switch");
 	$(".box").removeClass("active");
@@ -370,4 +393,10 @@ socket.on("item_used", function(message) {
 	updateLevel(message.level);
 	updateTotalPower(message.totalPower, message.otuAmt);
 	addOTU(message.itemName, message.itemAmt);
+});
+
+socket.on("class_changed", function(message) {
+	console.log(message);
+	updateDropItem(message.item);
+	updateClass(message.class);
 });

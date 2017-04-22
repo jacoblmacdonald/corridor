@@ -168,15 +168,31 @@ class Player {
 	useItem(item) {
 		var player = this;
 
-		//if player can use this item
-		player.currentOTUAmt += player.items[item].value;
-		var otuName = player.items[item].name;
-		var otuAmt = player.items[item].value;
-		player.items[item] = null;
+		if (player.items[item].type = "class") {
+			if (player.items[item].name = "Wizard Class") {
+				player.class = "Wizard";
+			} else if (player.items[item].name = "Warrior Class") { 
+				player.class = "Warrior";
+			} else if (player.items[item].name = "Troll Class") { 
+				player.class = "Troll";
+			} else if (player.items[item].name = "Priest Class") { 
+				player.class = "Priest";
+			}
+			
+			player.items[item] = null;
 
-		player.updateTotalPower();
+			player.socket.emit("class_changed", {item:item, itemName:otuName, itemAmt:otuAmt, level:player.level, totalPower:player.totalPower, otuAmt:player.currentOTUAmt, class:player.class});
+		} else {
+			//if player can use this item
+			player.currentOTUAmt += player.items[item].value;
+			var otuName = player.items[item].name;
+			var otuAmt = player.items[item].value;
+			player.items[item] = null;
 
-		player.socket.emit("item_used", {item:item, itemName:otuName, itemAmt:otuAmt, level:player.level, totalPower:player.totalPower, otuAmt:player.currentOTUAmt});
+			player.updateTotalPower();
+
+			player.socket.emit("item_used", {item:item, itemName:otuName, itemAmt:otuAmt, level:player.level, totalPower:player.totalPower, otuAmt:player.currentOTUAmt});
+		}
 	}
 
 	updateTotalPower() {
