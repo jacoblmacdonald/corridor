@@ -126,7 +126,7 @@ class Player {
 		this.totalPower = 1;
 		this.items = [null, null, null, null, null, null, null, null, null ,null, null, null, null, null, null, null, null, null];
 		this.class = "none";
-		this.activeOTUS = [ ]
+		this.currentOTUAmt = 0;
 		// store a list of all OTUs used by player in current round.
 		// use this to sum up additional buff from these items
 		// clear this list and its buff after each round
@@ -152,7 +152,7 @@ class Player {
 
 		player.updateTotalPower();
 
-		player.socket.emit("give_switch", {fromIndex:fromIndex, fromItem:player.items[fromIndex], toIndex:toIndex, toItem:player.items[toIndex], level:player.level, totalPower:player.totalPower});
+		player.socket.emit("give_switch", {fromIndex:fromIndex, fromItem:player.items[fromIndex], toIndex:toIndex, toItem:player.items[toIndex], level:player.level, totalPower:player.totalPower, otuAmt:player.currentOTUAmt});
 	}
 
 	dropItem(item) {
@@ -161,19 +161,27 @@ class Player {
 
 		player.updateTotalPower();
 
-		player.socket.emit("item_dropped", {item:item, level:player.level, totalPower:player.totalPower});
+		player.socket.emit("item_dropped", {item:item, level:player.level, totalPower:player.totalPower, otuAmt:player.currentOTUAmt});
+	}
+
+	//for OTUS
+	useItem(item) {
+		var player = this;
+
+		//if player can use this item
+		player.currentOTUAmt += player.items[item].value;
+		var otuName = player.items[item].name;
+		var otuAmt = player.items[item].value;
+		player.items[item] = null;
+
+		player.updateTotalPower();
+
+		player.socket.emit("item_used", {item:item, itemName:otuName, itemAmt:otuAmt, level:player.level, totalPower:player.totalPower, otuAmt:player.currentOTUAmt});
 	}
 
 	updateTotalPower() {
 		var player = this;
 		player.totalPower = player.level; //plus other things
-		//items[0].level +
-		//items[1].level + 
-		//items[2].level +
-		//items[3].level +
-		//all deployed otus 
-		//
-		//of course, need to check if these items are null first :P
 		for (var i = 0; i < 4; i++) {
 			if (player.items[i] != null) {
 				player.totalPower += player.items[i].value;
@@ -322,6 +330,13 @@ class Game {
 		var foundPlayer = game.findPlayer(player);
 		console.log(foundPlayer);
 		foundPlayer.dropItem(item);
+	}
+
+	useItem(player, item) {
+		var game= this;
+		var foundPlayer = game.findPlayer(player);
+		console.log(foundPlayer);
+		foundPlayer.useItem(item);
 	}
 
 	switchItems(player, fromIndex, toIndex) {

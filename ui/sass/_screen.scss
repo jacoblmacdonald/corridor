@@ -3,16 +3,42 @@
 	width:100%;
 	margin-bottom:$large-margin;
 	border:2px solid white;
+	overflow:hidden;
 
 	.screen {
 		//display:inline-block;
 		width:$screen-width;
 		height:$screen-width;
 		background-color: $screen-color;
+		float:left;
 
 		.screen-cell {
 			float:left;
 			pointer-events:none;
+		}
+	}
+
+	.screen-info-c {
+		float:left;
+		width:calc(#{$screen-width} - 6px);
+		text-align:left;
+		padding:5px;
+
+		p {
+			color:white;
+			padding-left:5px;
+			
+			&.monster-lvl {
+				margin-bottom:5px;
+			}
+
+			&.monster-name {
+				margin-bottom:10px;
+			}
+
+			&.monster-desc {
+				color:#b7b7b7;
+			}
 		}
 	}
 }

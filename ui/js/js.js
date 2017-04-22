@@ -6,6 +6,7 @@ var CURRENT_USER = "";
 var ALL_USERS = [];
 
 var ITEM_LIST = ["switch", "drop"];
+var OTU_LIST = ["use", "switch", "drop"];
 
 var boxWidth = 80 - 4;
 var numCells = 30;
@@ -67,11 +68,14 @@ function loadPage(items, monster, current_player) {
 	initScreen();
 	updateScreen(monster);
 	updateCurrentPlayer(current_player);
+	clearOTUS();
 
 	for (var i = 4; i < 10; i++) { //dont hard code pls
 		//console.log(items.length);
 		addItemToBag(items[i]);
 	}
+
+	$(".name-row .left").html(CURRENT_USER);
 }
 
 function populatePlayers() {
@@ -138,6 +142,8 @@ function initClicks() {
 	});
 
 	$(document).on('click', ".list-use" , function() {
+		$(this).parent().parent().removeClass("active");
+    	unfadeBoxes();
     	deployItem($(this));
 	});
 }
@@ -147,7 +153,7 @@ function initClicks() {
 // //////////////////////////////////////////
 
 function addItemToBag(item) {
-	updateBox($(".bag-box.empty").first(), item.sprite);
+	updateBox($(".bag-box.empty").first(), item.sprite, item.type);
 	$(".bag-box.empty").first().removeClass("empty");
 }
 
@@ -163,8 +169,23 @@ function updateLevel(i) {
 	$(".name-row .right").html("lvl: "+i);
 }
 
-function updateTotalPower(i) {
-	$(".power-row .right").html(i);
+function updateTotalPower(i, j) {
+	if (j > 0) {
+		$(".power-row .right").html(i+"<span class='v-large otuAmt'> ("+j+")</span>");
+	} else {
+		$(".power-row .right").html(i);
+	}
+}
+
+// ////////////////////
+// O T U  I T E M  R O W
+// //////////////////////////////////////////
+function clearOTUS() {
+	$(".otu-item-row").remove();
+}
+
+function addOTU(name, val) {
+	$(".build-info").append("<div class='otu-item-row'><p class='left v-small'>"+name+"</p><p class='right v-small'>"+val+"</p></div>");
 }
 
 // ////////////////////
@@ -181,14 +202,14 @@ function initBoxes() {
 	});
 }
 
-function updateBox(b, sprite) {
+function updateBox(b, sprite, type) {
 	if (sprite == null) {
 		for (var i = 0; i < numCells; i++) {
 			for (var j = 0; j < numCells; j++) {
 				$(".box-cell[data-x="+j+"][data-y="+i+"]", b).css("background-color", "#111");
 			}
 		}
-		updateBoxMenu(b, "this");
+		updateBoxMenu(b, type);
 	} else {
 		for (var i = 0; i < numCells; i++) {
 			for (var j = 0; j < numCells; j++) {
@@ -197,14 +218,20 @@ function updateBox(b, sprite) {
 				}
 			}
 		}
-		updateBoxMenu(b, "this");
+		updateBoxMenu(b, type);
 	}
 }
 
 function updateBoxMenu(b, type) {
 	$(".box-menu", b).html("");
-	for (var i = 0; i < ITEM_LIST.length; i++) {
-		$(".box-menu", b).append("<p class='v-small list-item list-"+ITEM_LIST[i]+"'>"+ITEM_LIST[i]+"</p>")
+	if (type == "otu") {
+		for (var i = 0; i < OTU_LIST.length; i++) {
+			$(".box-menu", b).append("<p class='v-small list-item list-"+OTU_LIST[i]+"'>"+OTU_LIST[i]+"</p>")
+		}
+	} else {
+		for (var i = 0; i < ITEM_LIST.length; i++) {
+			$(".box-menu", b).append("<p class='v-small list-item list-"+ITEM_LIST[i]+"'>"+ITEM_LIST[i]+"</p>")
+		}
 	}
 }
 
@@ -228,20 +255,20 @@ function clearSwitchBox() {
 
 function updateItem(message) {
 	if (message.fromItem == null) {
-		updateBox($(".box[data-index='"+message.fromIndex+"'"), null);
+		updateBox($(".box[data-index='"+message.fromIndex+"'"), null, null);
 	} else {
-		updateBox($(".box[data-index='"+message.fromIndex+"'"), message.fromItem.sprite);
+		updateBox($(".box[data-index='"+message.fromIndex+"'"), message.fromItem.sprite, message.fromItem.type);
 	}
 	
 	if (message.toItem == null) {
-		updateBox($(".box[data-index='"+message.toIndex+"'"), null);
+		updateBox($(".box[data-index='"+message.toIndex+"'"), null, null);
 	} else {
-		updateBox($(".box[data-index='"+message.toIndex+"'"), message.toItem.sprite);
+		updateBox($(".box[data-index='"+message.toIndex+"'"), message.toItem.sprite, message.toItem.type);
 	}
 }
 
 function updateDropItem(index) {
-	updateBox($(".box[data-index='"+index+"'"), null);
+	updateBox($(".box[data-index='"+index+"'"), null, null);
 }
 
 // ////////////////////
@@ -261,7 +288,8 @@ function dropItem(e) {
 }
 
 function deployItem(e) {
-
+	var i = $(e).parent().parent().data("index");
+	attemptUse(i);
 }
 
 // ////////////////////
@@ -285,6 +313,10 @@ function updateScreen(monster) {
 			}
 		}
 	}
+
+	$(".monster-lvl").html("level "+monster.value);
+	$(".monster-name").html(monster.name);
+	$(".monster-desc").html(monster.description);
 }
 
 // ////////////////////
@@ -292,6 +324,10 @@ function updateScreen(monster) {
 // //////////////////////////////////////////
 function attemptDrop(i) {
 	socket.emit("drop_item", {"gameId" :getId(), "drop_item": i});
+}
+
+function attemptUse(i) {
+	socket.emit("use_item", {"gameId" :getId(), "used_item": i});
 }
 
 function attemptSwitch() {
@@ -318,12 +354,20 @@ socket.on("give_switch", function(message) {
 	console.log(message.toItem);
 	updateItem(message);
 	updateLevel(message.level);
-	updateTotalPower(message.totalPower);
+	updateTotalPower(message.totalPower, message.otuAmt);
 });
 
 socket.on("item_dropped", function(message) {
 	console.log(message);
 	updateDropItem(message.item);
 	updateLevel(message.level);
-	updateTotalPower(message.totalPower);
+	updateTotalPower(message.totalPower, message.otuAmt);
+});
+
+socket.on("item_used", function(message) {
+	console.log(message);
+	updateDropItem(message.item);
+	updateLevel(message.level);
+	updateTotalPower(message.totalPower, message.otuAmt);
+	addOTU(message.itemName, message.itemAmt);
 });
