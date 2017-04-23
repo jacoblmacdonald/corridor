@@ -36,10 +36,6 @@
 		.login-title {
 			margin-bottom:$small-margin;
 			color:white;
-
-			.error {
-				color:red;
-			}
 		}
 
 		input {
@@ -86,10 +82,6 @@
 			&:focus {
 				outline:none;
 			}
-		}
-
-		.login-error {
-			color:red;
 		}
 	}
 }

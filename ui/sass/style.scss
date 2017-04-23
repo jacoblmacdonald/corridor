@@ -38,7 +38,14 @@ $build-info-width: ($box-width * 3) + ($box-margin * 2);
 // //////////////////////////////////////////
 $bk-color:							#111;
 $screen-color:						#141414;
-$placeholder-color:					#444;		
+$placeholder-color:					#444;
+$gray:								#b7b7b7;
+$red:								#FF0000;
+$highlight:							#00FF00;
+$warrior: 							#AA5555;
+$wizard: 							#5555AA;
+$troll: 							#55AA55;
+$priest: 							#AAAA55;
 
 // ////////////////////
 // F O N T S
@@ -71,6 +78,34 @@ $placeholder-color:					#444;
 .v-tiny {
 	font-family:v-small;
 	font-size:20px;
+}
+
+.gray {
+	color: $gray !important;
+}
+
+.red {
+	color: $red !important;
+}
+
+.highlight {
+	color: $highlight !important;
+}
+
+.Warrior {
+	color: $warrior !important;
+}
+
+.Wizard {
+	color: $wizard !important;
+}
+
+.Troll {
+	color: $troll !important;
+}
+
+.Priest {
+	color: $priest !important;
 }
 
 // ////////////////////

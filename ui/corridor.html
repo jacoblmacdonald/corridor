@@ -5,9 +5,17 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
  	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
  	<script src="ui/js/js.js"></script>
+ 	<script src="ui/js/login.js"></script>
  	<!--<script src="ui/js/corridor.js"></script>-->
 </head>
 <body>
+	<div id="loader">
+		<div class="login-c">
+			<div class="content-c">
+				<div class="title-c"></div>
+			</div>
+		</div>
+	</div>
 	<div class="game-c">
 		<div class="content-c">
 
@@ -20,46 +28,47 @@
 			<div class="screen-c">
 				<div class="screen"></div>
 				<div class="screen-info-c">
-					<p class="v-small monster-lvl"></p>
+					<p class="v-small monster-lvl"><span class="lvl"></span><span class="v-small troll-debuff"> (-2)</span></p>
 					<p class="v-small monster-name"></p>
-					<p class="v-small monster-desc"></p>
+					<p class="v-small gray monster-desc"></p>
+					<p class="v-small monster-reward"></p>
 				</div>
 			</div>
 
 			<!-- START CONSOLE -->
 			<div class="main-button">
-				<p class="v-large">next action</p>
+				<p class="v-large">ready</p>
 			</div>
 			<div class="console-c">
 				<div class="name-row">
 					<p class="left v-small">charactar name</p>
-					<p class="right v-small">lvl: 0</p>
+					<p class="right v-small">lvl: 1</p>
 				</div>
 				<div class="power-row">
 					<p class="left v-large">total power</p>
-					<p class="right v-large">0</p>
+					<p class="right v-large">1</p>
 				</div>
 				<div class="build-row">
 					<div class="build-body">
 						<div class="body-col">
 							<div class="box" data-index="0">
-								<div class="box-level"><p class="v-small">5</p></div>
+								<div class="box-level"><p class="v-small"></p></div>
 								<div class="box-menu"></div>
 							</div>
 						</div>
 						<div class="body-col">
 							<div class="box" data-index="1">
-								<div class="box-level"><p class="v-small">5</p></div>
+								<div class="box-level"><p class="v-small"></p></div>
 								<div class="box-menu"></div>
 							</div>
 							<div class="box" data-index="2">
-								<div class="box-level"><p class="v-small">5</p></div>
+								<div class="box-level"><p class="v-small"></p></div>
 								<div class="box-menu"></div>
 							</div>
 						</div>
-						<div class="body-col" data-index="3">
-							<div class="box last-body-box">
-								<div class="box-level"><p class="v-small">5</p></div>
+						<div class="body-col">
+							<div class="box last-body-box" data-index="3">
+								<div class="box-level"><p class="v-small"></p></div>
 								<div class="box-menu"></div>
 							</div>
 						</div>
@@ -78,61 +87,61 @@
 					</div>
 				</div>
 				<div class="bag-row">
-					<div class="box bag-box empty bag-0" data-index="4">
-						<div class="box-level"><p class="v-small">5</p></div>
+					<div class="box bag-box bag-0" data-index="4">
+						<div class="box-level"><p class="v-small"></p></div>
 						<div class="box-menu"></div>
 					</div>
-					<div class="box bag-box empty bag-1" data-index="5">
-						<div class="box-level"><p class="v-small">5</p></div>
+					<div class="box bag-box bag-1" data-index="5">
+						<div class="box-level"><p class="v-small"></p></div>
 						<div class="box-menu"></div>
 					</div>
-					<div class="box bag-box empty bag-2" data-index="6">
-						<div class="box-level"><p class="v-small">5</p></div>
+					<div class="box bag-box bag-2" data-index="6">
+						<div class="box-level"><p class="v-small"></p></div>
 						<div class="box-menu"></div>
 					</div>
-					<div class="box bag-box empty bag-3" data-index="7">
-						<div class="box-level"><p class="v-small">5</p></div>
+					<div class="box bag-box bag-3" data-index="7">
+						<div class="box-level"><p class="v-small"></p></div>
 						<div class="box-menu"></div>
 					</div>
-					<div class="box bag-box empty bag-4" data-index="8">
-						<div class="box-level"><p class="v-small">5</p></div>
+					<div class="box bag-box bag-4" data-index="8">
+						<div class="box-level"><p class="v-small"></p></div>
 						<div class="box-menu"></div>
 					</div>
-					<div class="box bag-box empty bag-5" data-index="9">
-						<div class="box-level"><p class="v-small">5</p></div>
+					<div class="box bag-box bag-5 last-in-row" data-index="9">
+						<div class="box-level"><p class="v-small"></p></div>
 						<div class="box-menu"></div>
 					</div>
 
-					<div class="box bag-box empty bag-6 last-in-row" data-index="10">
-						<div class="box-level"><p class="v-small">5</p></div>
+					<div class="box bag-box bag-6 last-in-row" data-index="10">
+						<div class="box-level"><p class="v-small"></p></div>
 						<div class="box-menu"></div>
 					</div>
-					<div class="box bag-box empty bag-2nd-row  bag-7" data-index="11">
-						<div class="box-level"><p class="v-small">5</p></div>
+					<div class="box bag-box bag-2nd-row  bag-7" data-index="11">
+						<div class="box-level"><p class="v-small"></p></div>
 						<div class="box-menu"></div>
 					</div>
-					<div class="box bag-box empty bag-2nd-row  bag-8" data-index="12">
-						<div class="box-level"><p class="v-small">5</p></div>
+					<div class="box bag-box bag-2nd-row  bag-8" data-index="12">
+						<div class="box-level"><p class="v-small"></p></div>
 						<div class="box-menu"></div>
 					</div>
-					<div class="box bag-box empty bag-2nd-row  bag-9" data-index="13">
-						<div class="box-level"><p class="v-small">5</p></div>
+					<div class="box bag-box bag-2nd-row  bag-9" data-index="13">
+						<div class="box-level"><p class="v-small"></p></div>
 						<div class="box-menu"></div>
 					</div>
-					<div class="box bag-box empty bag-2nd-row  bag-10" data-index="14">
-						<div class="box-level"><p class="v-small">5</p></div>
+					<div class="box bag-box bag-2nd-row  bag-10" data-index="14">
+						<div class="box-level"><p class="v-small"></p></div>
 						<div class="box-menu"></div>
 					</div>
-					<div class="box bag-box empty bag-2nd-row  bag-11" data-index="15">
-						<div class="box-level"><p class="v-small">5</p></div>
+					<div class="box bag-box bag-2nd-row  bag-11" data-index="15">
+						<div class="box-level"><p class="v-small"></p></div>
 						<div class="box-menu"></div>
 					</div>
-					<div class="box bag-box empty bag-2nd-row  bag-12" data-index="16">
-						<div class="box-level"><p class="v-small">5</p></div>
+					<div class="box bag-box bag-2nd-row  bag-12 last-in-row" data-index="16">
+						<div class="box-level"><p class="v-small"></p></div>
 						<div class="box-menu"></div>
 					</div>
-					<div class="box bag-box empty bag-2nd-row  bag-13 last-in-row" data-index="17">
-						<div class="box-level"><p class="v-small">5</p></div>
+					<div class="box bag-box bag-2nd-row  bag-13 last-in-row" data-index="17">
+						<div class="box-level"><p class="v-small"></p></div>
 						<div class="box-menu"></div>
 					</div>
 				</div>

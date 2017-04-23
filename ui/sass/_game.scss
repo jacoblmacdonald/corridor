@@ -1,3 +1,19 @@
+#loader {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: $bk-color;
+	z-index: 999;
+	transition: opacity 0.5s ease-in-out;
+}
+
+body.loaded #loader {
+	opacity: 0;
+	pointer-events: none;
+}
+
 .game-c {
 	width:100vw;
 	height:100vh;
@@ -16,11 +32,19 @@
 		left:0;
 		text-align:left;
 
-		p {
-			color:white;
+		div {
+			margin-bottom: 40px;
 
-			&.active {
-				color:#0088F0;
+			p {
+				color: $gray;
+
+				&.username {
+					color: white;
+				}
+			}
+
+			&.active .username {
+				color: $highlight;
 			}
 		}
 	}
@@ -33,6 +57,12 @@
 	border:2px solid white;
 	position:relative;
 	z-index:1;
+
+	svg {
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+	}
 
 	&.active {
 		z-index:100;
@@ -71,12 +101,15 @@
 
 	.box-menu {
 		display:none;
-		width:100px;
-		height:100px;
+		// width:100px;
+		// height:100px;
 		background-color: $screen-color;
 		position:absolute;
 		left:calc(100% + 2px);
-		top:-2px;
+		// top:-2px;
+		bottom: -2px;
+		padding: 30px;
+		width: 180px;
 		//z-index:100;
 
 		p {
