@@ -1,7 +1,8 @@
+"use strict";
+
 //////////////////////////////////////////////
 // GENERAL GAME CONSTANTS / ENUMS
 //////////////////////////////////////////////
-"use strict"; 
 const r = require('../api/rethinkdb');
 
 const async = require("async");
@@ -37,6 +38,8 @@ const ItemType = {
 };
 
 const STARTING_HAND = 6;
+const MAX_LEVEL = 10;
+const WIZARD_REROLL_CHANCE = 0.5;
 
 //////////////////////////////////////////////
 // GENERAL GAME CLASSES
@@ -66,7 +69,7 @@ class GameMaker {
 	}
 
 	onGameStarted(gameId, usernames) {
-		this.games.push(new Game(gameId, usernames));
+		this.games.push(new Game(this, gameId, usernames));
 	}
 
 	onSetup(gameId, username, socket) {
@@ -74,6 +77,14 @@ class GameMaker {
 		this.addUserToGame(game, username, socket);
 		if(game.isReady()) {
 			game.start();
+		}
+	}
+
+	destroy(gameId) {
+		for(var i = 0; i < this.games.length; i++) {
+			if(this.games[i].id == gameId) {
+				this.games.splice(i, 1);
+			}
 		}
 	}
 }
@@ -111,8 +122,29 @@ class Factory {
 			monsterJSON.sprite,
 			game
 		);
-		//console.log(m);
 		return m;
+	}
+
+	static wizardRoll(item, game) {
+		if(Math.random() > WIZARD_REROLL_CHANCE) {
+			item.range = "wild";
+			item.value = game.getValueFromRange(itemRanges[item.range]);
+			item.rerolled = true;
+		}
+	}
+
+	static convertSpriteToSVG(sprite) {
+		var svg = "";
+		svg += "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
+		svg += "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">";
+		svg += "<svg version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"30\" height=\"30\" viewBox=\"0 0 30 30\">";
+		for(var i = 0; i < sprite.length; i++) {
+			for(var j = 0; j < sprite[i].length; j++) {
+				svg += "<rect x=\"" + j + "\" y=\"" + i + "\" width=\"1\" height=\"1\" style=\"fill:" + sprite[i][j] + ";\"/>";
+			}
+		}
+		svg += "</svg>";
+		return svg;
 	}
 }
 
@@ -141,18 +173,46 @@ class Player {
 
 	}
 
-	switchItems(fromIndex, toIndex) {
+	levelUp() {
+		return ++this.level == MAX_LEVEL;
+	}
+
+	levelDown() {
+		if(this.level != 1) { this.level--; }
+	}
+
+	getAttackPower() {
+		return this.totalPower + this.currentOTUAmt;
+	}
+
+	switchItems(fromIndex, toIndex) {		
 		var player = this;
 		var fromItem = player.items[fromIndex];
 		var toItem = player.items[toIndex];
 		
-		//check to see if items can be switched, if so;
-		player.items[fromIndex] = toItem;
-		player.items[toIndex] = fromItem;
+		if(
+			(fromItem != null && (
+				(toIndex == 0 && fromItem.type != "1 hand") ||
+				(toIndex == 1 && fromItem.type != "head") ||
+				(toIndex == 2 && fromItem.type != "armor") ||
+				(toIndex == 3 && fromItem.type != "1 hand")
+			)) || (toItem != null && (
+				(fromIndex == 0 && toItem.type != "1 hand") ||
+				(fromIndex == 1 && toItem.type != "head") ||
+				(fromIndex == 2 && toItem.type != "armor") ||
+				(fromIndex == 3 && toItem.type != "1 hand")
+			))
+		) {
+			player.socket.emit("refuse_switch");
+		}
+		else {
+			player.items[fromIndex] = toItem;
+			player.items[toIndex] = fromItem;
 
-		player.updateTotalPower();
+			player.updateTotalPower();
 
-		player.socket.emit("give_switch", {fromIndex:fromIndex, fromItem:player.items[fromIndex], toIndex:toIndex, toItem:player.items[toIndex], level:player.level, totalPower:player.totalPower, otuAmt:player.currentOTUAmt});
+			player.socket.emit("give_switch", {fromIndex:fromIndex, fromItem:player.items[fromIndex], toIndex:toIndex, toItem:player.items[toIndex], level:player.level, totalPower:player.totalPower, otuAmt:player.currentOTUAmt});
+		}
 	}
 
 	dropItem(item) {
@@ -165,23 +225,33 @@ class Player {
 	}
 
 	//for OTUS
-	useItem(item) {
+	useItem(item, game) {
 		var player = this;
 
-		if (player.items[item].type = "class") {
-			if (player.items[item].name = "Wizard Class") {
+		if (player.items[item].type == "class") {
+			if (player.items[item].name == "Wizard Class") {
 				player.class = "Wizard";
-			} else if (player.items[item].name = "Warrior Class") { 
+			} else if (player.items[item].name == "Warrior Class") { 
 				player.class = "Warrior";
-			} else if (player.items[item].name = "Troll Class") { 
+			} else if (player.items[item].name == "Troll Class") { 
 				player.class = "Troll";
-			} else if (player.items[item].name = "Priest Class") { 
+			} else if (player.items[item].name == "Priest Class") { 
 				player.class = "Priest";
 			}
 			
 			player.items[item] = null;
 
-			player.socket.emit("class_changed", {item:item, itemName:otuName, itemAmt:otuAmt, level:player.level, totalPower:player.totalPower, otuAmt:player.currentOTUAmt, class:player.class});
+			if(player.class == "Wizard") {
+				player.items.forEach(function(item) {
+					if(item != null) {
+						Factory.wizardRoll(item, game);
+					}
+				});
+			}
+
+			player.updateTotalPower();
+
+			player.socket.emit("class_changed", {items:player.items, totalPower:player.totalPower, otuAmt:player.currentOTUAmt, class:player.class});
 		} else {
 			//if player can use this item
 			player.currentOTUAmt += player.items[item].value;
@@ -197,10 +267,13 @@ class Player {
 
 	updateTotalPower() {
 		var player = this;
-		player.totalPower = player.level; //plus other things
+		player.totalPower = player.level;
 		for (var i = 0; i < 4; i++) {
 			if (player.items[i] != null) {
 				player.totalPower += player.items[i].value;
+				if(player.class == "Warrior") {
+					player.totalPower++;
+				}
 			}
 		}
 	}
@@ -208,7 +281,8 @@ class Player {
 
 class Game {
 
-	constructor(id, usernames) {
+	constructor(gamemaker, id, usernames) {
+		this.gamemaker = gamemaker;
 		this.id = id;
 
 		this.players = usernames.map(function(username) {
@@ -272,7 +346,6 @@ class Game {
 	sendContent() {
 		var game = this;
 		game.shuffle();
-		//console.log(game.monsters);
 
 		game.players.forEach(function(player) {
 			for(var i = 4; i < 4 + STARTING_HAND; i++) {
@@ -280,11 +353,30 @@ class Game {
 			}
 
 			player.socket.emit("ready", {
-				usernames : game.getUsernames(),
 				current_player : game.currentPlayer,
 				items : player.items,
 				monster : game.monsters[game.currentMonster]
-			});	
+			});
+
+			game.sendPlayers();
+		});
+	}
+
+	sendPlayers() {
+		var game = this;
+		this.players.forEach(function(player) {
+			player.socket.emit("update_players", {
+				"players" : game.players.map(function(player) {
+					return {
+						"name" : player.name,
+						"level" : player.level,
+						"totalPower" : player.totalPower,
+						"currentOTUAmt" : player.currentOTUAmt,
+						"class" : player.class
+					};
+				}),
+				"currentPlayer" : game.currentPlayer
+			});
 		});
 	}
 
@@ -341,28 +433,88 @@ class Game {
 		return Math.round(value);
 	}
 
+	nextPlayer() {
+		this.players[this.currentPlayer].currentOTUAmt = 0;
+		this.currentPlayer = ++this.currentPlayer % this.players.length;
+	}
+
+	nextMonster() {
+		this.currentMonster = ++this.currentMonster % this.monsters.length;
+	}
+
+	attack(player) {
+		var player = this.findPlayer(player);
+		var monster = this.monsters[this.currentMonster];
+		var success;
+		if(player.class == "Troll") {
+			monster.value -= 2;
+		}
+		if(player.getAttackPower() > monster.value) {
+			for(var i = 0; i < monster.item_reward; i++) {
+				for(var j = 4; j < player.items.length; j++) {
+					if(player.items[j] == null) {
+						if(player.class == "Wizard") {
+							player.items[j] = Factory.wizardRoll(this.draw(), this);
+						}
+						else {
+							player.items[j] = this.draw();
+						}
+						break;
+					}
+				}
+			}
+			if(player.levelUp()) {
+				this.players.forEach(function(p) {
+					p.socket.emit("victory", { "winner" : player.name, "level" : MAX_LEVEL });
+				});
+				this.gamemaker.destroy(this.id);
+				return;
+			}
+			player.updateTotalPower();
+			this.nextMonster();
+			success = true;
+		}
+		else {
+			player.levelDown();
+			player.updateTotalPower();
+			success = false;
+		}
+		this.nextPlayer();
+		var game = this;
+		this.players.forEach(function(player) {
+			player.socket.emit("attack_result", {
+				success : success,
+				items : player.items,
+				level : player.level,
+				totalPower : player.totalPower,
+				otuAmt : player.currentOTUAmt,
+				monster : game.monsters[game.currentMonster],
+				currentPlayer : game.currentPlayer
+			});
+		});
+
+		this.sendPlayers();
+	}
+
 	dropItem(player, item) {
 		var game = this;
 		var foundPlayer = game.findPlayer(player);
-		console.log(foundPlayer);
 		foundPlayer.dropItem(item);
+		game.sendPlayers();
 	}
 
 	useItem(player, item) {
-		var game= this;
+		var game = this;
 		var foundPlayer = game.findPlayer(player);
-		console.log(foundPlayer);
-		foundPlayer.useItem(item);
+		foundPlayer.useItem(item, game);
+		game.sendPlayers();
 	}
 
 	switchItems(player, fromIndex, toIndex) {
 		var game = this;
-		//console.log(player);
-		//console.log(fromItem);
-		//console.log(toItem);
 		var foundPlayer = game.findPlayer(player);
-		console.log(foundPlayer);
 		foundPlayer.switchItems(fromIndex, toIndex);
+		game.sendPlayers();
 	}
 
 	findPlayer(player) {
@@ -388,7 +540,9 @@ class Item {
 		this.use_by = use_by;
 		this.sprite = sprite;
 
-		this.value = game.getValueFromRange(itemRanges[range]);
+		this.rerolled = false;
+		this.value = game.getValueFromRange(itemRanges[this.range]);
+		this.svg = Factory.convertSpriteToSVG(this.sprite);
  	}
 }
 
@@ -403,11 +557,17 @@ class Monster {
  		this.item_reward = item_reward;
  		this.sprite = sprite;
 
-		this.value = game.getValueFromRange(monsterRanges[range], game);
+		this.value = game.getValueFromRange(monsterRanges[this.range]);
+		this.svg = Factory.convertSpriteToSVG(this.sprite);
  	}
 }
 
 class Job {
+	//If Warrior, all items buff + 1
+	//If Wizard, chance to make any item wild
+	//If Troll, all monsters - 2
+	//If Priest, all OTUs known
+
 
 	constructor(id, name) {
 		this.id = id;

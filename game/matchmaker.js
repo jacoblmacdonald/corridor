@@ -84,7 +84,6 @@ class Matchmaker {
 	onLobbyJoined(username, hostname) {
 		var lobby = this.findLobby(hostname);
 		lobby.players.push(this.findUser(username));
-		//console.log(this.findUser(username)+"has joined");
         lobby.players.forEach(function(player) {
             player.socket.emit("joined", { usernames : lobby.getUsernames() });
         });
@@ -92,7 +91,6 @@ class Matchmaker {
 
 	onGameStarted(hostname) {
 		var lobby = this.findLobby(hostname);
-		//console.log(lobby);
 		lobby.players.forEach(function(player) {
 		    player.socket.emit("started", { gameId : lobby.id });
 		});
@@ -100,8 +98,6 @@ class Matchmaker {
 		this.users = this.users.filter(function(user) {
 			var keep = true;
 			lobby.players.forEach(function(player) {
-				console.log(user.name);
-				console.log(player.name);
 				if(user.name == player.name) {
 					keep = false;
 				}

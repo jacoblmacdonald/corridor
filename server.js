@@ -43,7 +43,6 @@ server.on("connection", function(client) {
 
 		//Join a game
 		client.on("join", function(message) {
-			//console.log("attempting join");
 			matchmaker.onLobbyJoined(username, message.hostname);
 		});
 
@@ -58,31 +57,26 @@ server.on("connection", function(client) {
 	    	gamemaker.onSetup(message.gameId, username, client);
 	    });
 
-		//Do something (in game)
-		client.on("action", function(message) {
-			game.receive(message, client);
-		});
+	    client.on("attack", function(message) {
+	    	var game = gamemaker.findGame(message.gameId);
+	    	game.attack(username);
+	    });
 
 		//switch item
 		client.on("switch_item", function(message) {
 			var game = gamemaker.findGame(message.gameId);
-			console.log("switching, "+game);
 			game.switchItems(username, message.switch_from, message.switch_to);
-			});
+		});
 
 		//drop item
 		client.on("drop_item", function(message) {
-			console.log(message);
 			var game = gamemaker.findGame(message.gameId);
-			console.log("switching, "+game);
 			game.dropItem(username, message.drop_item);
 		});
 
 		//use item
 		client.on("use_item", function(message) {
-			console.log(message);
 			var game = gamemaker.findGame(message.gameId);
-			console.log("switching, "+game);
 			game.useItem(username, message.used_item);
 		});
 	} 	
