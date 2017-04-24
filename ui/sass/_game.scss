@@ -79,6 +79,10 @@ body.loaded #loader {
 		}
 	}
 
+	&.flash-geen {
+		border:2px solid green;
+	}
+
 	.box-level {
 		position:absolute;
 		bottom:-2;

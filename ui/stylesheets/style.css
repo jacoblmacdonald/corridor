@@ -1,792 +1,549 @@
 @font-face {
   font-family: v-large;
-  src: url("../fonts/visitor1.ttf");
-}
+  src: url("../fonts/visitor1.ttf"); }
+
 @font-face {
   font-family: v-small;
-  src: url("../fonts/visitor2.ttf");
-}
-/* line 63, ../sass/style.scss */
+  src: url("../fonts/visitor2.ttf"); }
+
 .v-ultra {
   font-family: v-large;
-  font-size: 100px;
-}
+  font-size: 100px; }
 
-/* line 68, ../sass/style.scss */
 .v-large {
   font-family: v-large;
-  font-size: 50px;
-}
+  font-size: 50px; }
 
-/* line 73, ../sass/style.scss */
 .v-small {
   font-family: v-small;
-  font-size: 30px;
-}
+  font-size: 30px; }
 
-/* line 78, ../sass/style.scss */
 .v-tiny {
   font-family: v-small;
-  font-size: 20px;
-}
+  font-size: 20px; }
 
-/* line 83, ../sass/style.scss */
 .gray {
-  color: #b7b7b7 !important;
-}
+  color: #b7b7b7 !important; }
 
-/* line 87, ../sass/style.scss */
 .red {
-  color: #FF0000 !important;
-}
+  color: #FF0000 !important; }
 
-/* line 91, ../sass/style.scss */
 .highlight {
-  color: #00FF00 !important;
-}
+  color: #00FF00 !important; }
 
-/* line 95, ../sass/style.scss */
 .Warrior {
-  color: #AA5555 !important;
-}
+  color: #AA5555 !important; }
 
-/* line 99, ../sass/style.scss */
 .Wizard {
-  color: #5555AA !important;
-}
+  color: #5555AA !important; }
 
-/* line 103, ../sass/style.scss */
 .Troll {
-  color: #55AA55 !important;
-}
+  color: #55AA55 !important; }
 
-/* line 107, ../sass/style.scss */
 .Priest {
-  color: #AAAA55 !important;
-}
+  color: #AAAA55 !important; }
 
-/* line 114, ../sass/style.scss */
 body {
   background-color: #111;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizelegibility;
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
-}
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004); }
 
-/* line 122, ../sass/style.scss */
 * {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  margin: 0;
-}
-/* line 128, ../sass/style.scss */
-*::-webkit-scrollbar {
-  display: none;
-}
+  margin: 0; }
+  *::-webkit-scrollbar {
+    display: none; }
 
-/* line 134, ../sass/style.scss */
 a:link {
-  text-decoration: none;
-}
+  text-decoration: none; }
 
-/* line 139, ../sass/style.scss */
 .version-title {
   position: absolute;
   top: 0;
   left: 0;
-  color: white;
-}
+  color: white; }
 
-/* line 1, ../sass/_login.scss */
 .login-c {
   width: 100vw;
   height: 100vh;
-  text-align: center;
-}
-/* line 6, ../sass/_login.scss */
-.login-c .content-c {
-  width: 505px;
-  display: inline-block;
-  height: 100%;
-  text-align: left;
-}
-/* line 12, ../sass/_login.scss */
-.login-c .content-c .title-c {
-  margin-bottom: 30px;
-  margin-top: 100px;
-  width: 100%;
-  height: 100px;
-  overflow: hidden;
-  position: relative;
-  text-align: center;
-}
-/* line 23, ../sass/_login.scss */
-.login-c .content-c .title-c p {
-  position: absolute;
-  top: 100%;
-  width: 100%;
-}
-/* line 29, ../sass/_login.scss */
-.login-c .content-c .title-c p.active {
-  top: 0px;
-}
-/* line 36, ../sass/_login.scss */
-.login-c .content-c .login-title {
-  margin-bottom: 10px;
-  color: white;
-}
-/* line 41, ../sass/_login.scss */
-.login-c .content-c input {
-  background-color: #111;
-  border: none;
-  border-bottom: 1px solid white;
-  color: white;
-  cursor: pointer;
-  width: 100%;
-  margin-bottom: 20px;
-}
-/* line 50, ../sass/_login.scss */
-.login-c .content-c input::-webkit-input-placeholder {
-  color: #444;
-}
-/* line 53, ../sass/_login.scss */
-.login-c .content-c input::-moz-placeholder {
-  color: #444;
-}
-/* line 56, ../sass/_login.scss */
-.login-c .content-c input:-ms-input-placeholder {
-  color: #444;
-}
-/* line 59, ../sass/_login.scss */
-.login-c .content-c input:-moz-placeholder {
-  color: #444;
-}
-/* line 63, ../sass/_login.scss */
-.login-c .content-c input.login-submit {
-  border: 2px solid white;
-  height: 60px;
-  margin-bottom: 100px;
-}
-/* line 69, ../sass/_login.scss */
-.login-c .content-c input.signup-submit {
-  border: 2px solid white;
-  height: 60px;
-  margin-bottom: 100px;
-}
-/* line 75, ../sass/_login.scss */
-.login-c .content-c input.login-signup {
-  border: 2px solid white;
-  height: 40px;
-  width: 100%;
-  display: inline-block;
-}
-/* line 82, ../sass/_login.scss */
-.login-c .content-c input:focus {
-  outline: none;
-}
+  text-align: center; }
+  .login-c .content-c {
+    width: 505px;
+    display: inline-block;
+    height: 100%;
+    text-align: left; }
+    .login-c .content-c .title-c {
+      margin-bottom: 30px;
+      margin-top: 100px;
+      width: 100%;
+      height: 100px;
+      overflow: hidden;
+      position: relative;
+      text-align: center; }
+      .login-c .content-c .title-c p {
+        position: absolute;
+        top: 100%;
+        width: 100%; }
+        .login-c .content-c .title-c p.active {
+          top: 0px; }
+    .login-c .content-c .login-title {
+      margin-bottom: 10px;
+      color: white; }
+    .login-c .content-c input {
+      background-color: #111;
+      border: none;
+      border-bottom: 1px solid white;
+      color: white;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom: 20px; }
+      .login-c .content-c input::-webkit-input-placeholder {
+        color: #444; }
+      .login-c .content-c input::-moz-placeholder {
+        color: #444; }
+      .login-c .content-c input:-ms-input-placeholder {
+        color: #444; }
+      .login-c .content-c input:-moz-placeholder {
+        color: #444; }
+      .login-c .content-c input.login-submit {
+        border: 2px solid white;
+        height: 60px;
+        margin-bottom: 100px; }
+      .login-c .content-c input.signup-submit {
+        border: 2px solid white;
+        height: 60px;
+        margin-bottom: 100px; }
+      .login-c .content-c input.login-signup {
+        border: 2px solid white;
+        height: 40px;
+        width: 100%;
+        display: inline-block; }
+      .login-c .content-c input:focus {
+        outline: none; }
 
-/* line 1, ../sass/_matchmaking.scss */
 .matchmaking-c {
   width: 100%;
   height: 100vh;
   overflow: hidden;
-  position: relative;
-}
-/* line 7, ../sass/_matchmaking.scss */
-.matchmaking-c .options-c {
-  width: 400px;
-  height: 100%;
-  margin-top: 30px;
-  margin-left: 20px;
-  position: relative;
-  float: left;
-}
-/* line 15, ../sass/_matchmaking.scss */
-.matchmaking-c .options-c .sidebar-p {
-  color: white;
-}
-/* line 18, ../sass/_matchmaking.scss */
-.matchmaking-c .options-c .sidebar-p.has-margin {
-  margin-bottom: 20px;
-}
-/* line 23, ../sass/_matchmaking.scss */
-.matchmaking-c .options-c .create-game-button {
-  height: 40px;
-  width: 100%;
-  border: 2px solid white;
-  margin-bottom: 30px;
-  text-align: center;
-  cursor: pointer;
-}
-/* line 31, ../sass/_matchmaking.scss */
-.matchmaking-c .options-c .create-game-button p {
-  color: white;
-  line-height: calc(40px - 2px);
-}
-/* line 36, ../sass/_matchmaking.scss */
-.matchmaking-c .options-c .create-game-button.active {
-  border: 2px solid #444;
-}
-/* line 39, ../sass/_matchmaking.scss */
-.matchmaking-c .options-c .create-game-button.active p {
-  color: #444;
-}
-/* line 45, ../sass/_matchmaking.scss */
-.matchmaking-c .options-c .creator-buttons {
-  position: absolute;
-  bottom: 20px;
-  left: 0px;
-  width: 100%;
-}
-/* line 51, ../sass/_matchmaking.scss */
-.matchmaking-c .options-c .creator-buttons .create-monster-button {
-  height: 40px;
-  width: 100%;
-  border: 2px solid white;
-  margin-bottom: 20px;
-  text-align: center;
-  cursor: pointer;
-}
-/* line 59, ../sass/_matchmaking.scss */
-.matchmaking-c .options-c .creator-buttons .create-monster-button p {
-  color: white;
-  line-height: calc(40px - 2px);
-}
-/* line 65, ../sass/_matchmaking.scss */
-.matchmaking-c .options-c .creator-buttons .create-item-button {
-  height: 40px;
-  width: 100%;
-  border: 2px solid white;
-  margin-bottom: 20px;
-  text-align: center;
-  cursor: pointer;
-}
-/* line 73, ../sass/_matchmaking.scss */
-.matchmaking-c .options-c .creator-buttons .create-item-button p {
-  color: white;
-  line-height: calc(40px - 2px);
-}
-/* line 80, ../sass/_matchmaking.scss */
-.matchmaking-c .options-c .game-info-c {
-  display: none;
-}
-/* line 83, ../sass/_matchmaking.scss */
-.matchmaking-c .options-c .game-info-c.active {
-  display: block;
-}
-/* line 87, ../sass/_matchmaking.scss */
-.matchmaking-c .options-c .game-info-c .game-host {
-  color: white;
-  margin-bottom: 30px;
-  opacity: 0;
-}
-/* line 92, ../sass/_matchmaking.scss */
-.matchmaking-c .options-c .game-info-c .game-host.active {
-  opacity: 1;
-}
-/* line 97, ../sass/_matchmaking.scss */
-.matchmaking-c .options-c .game-info-c .game-player {
-  color: #444;
-  margin-bottom: 10px;
-  opacity: 0;
-}
-/* line 102, ../sass/_matchmaking.scss */
-.matchmaking-c .options-c .game-info-c .game-player.joined {
-  color: white;
-}
-/* line 106, ../sass/_matchmaking.scss */
-.matchmaking-c .options-c .game-info-c .game-player.active {
-  opacity: 1;
-}
-/* line 111, ../sass/_matchmaking.scss */
-.matchmaking-c .options-c .game-info-c .start-game-button {
-  height: 40px;
-  width: 100%;
-  border: 2px solid white;
-  margin-top: 30px;
-  text-align: center;
-  cursor: pointer;
-  opacity: 0;
-}
-/* line 120, ../sass/_matchmaking.scss */
-.matchmaking-c .options-c .game-info-c .start-game-button p {
-  color: white;
-  line-height: calc(40px - 2px);
-}
-/* line 125, ../sass/_matchmaking.scss */
-.matchmaking-c .options-c .game-info-c .start-game-button.active {
-  opacity: 1;
-}
-/* line 132, ../sass/_matchmaking.scss */
-.matchmaking-c .players-c {
-  width: 400px;
-  height: 100%;
-  margin-top: 30px;
-  margin-left: 40px;
-  position: relative;
-  float: left;
-}
-/* line 140, ../sass/_matchmaking.scss */
-.matchmaking-c .players-c .players-c-title {
-  margin-bottom: 30px;
-}
-/* line 143, ../sass/_matchmaking.scss */
-.matchmaking-c .players-c .players-c-title p {
-  color: white;
-}
-/* line 148, ../sass/_matchmaking.scss */
-.matchmaking-c .players-c .all-players {
-  width: 100%;
-  height: calc(100% - 100px);
-  overflow: scroll;
-}
-/* line 153, ../sass/_matchmaking.scss */
-.matchmaking-c .players-c .all-players .player {
-  width: 100%;
-  margin-bottom: 10px;
-  opacity: 0;
-}
-/* line 158, ../sass/_matchmaking.scss */
-.matchmaking-c .players-c .all-players .player p {
-  color: white;
-}
-/* line 161, ../sass/_matchmaking.scss */
-.matchmaking-c .players-c .all-players .player p .join {
-  background-color: #FF0000;
-  padding-left: 5px;
-  padding-right: 5px;
-  display: none;
-  margin-left: 10px;
-}
-/* line 168, ../sass/_matchmaking.scss */
-.matchmaking-c .players-c .all-players .player p .join.active {
-  display: inline-block;
-  cursor: pointer;
-}
-/* line 175, ../sass/_matchmaking.scss */
-.matchmaking-c .players-c .all-players .player.active {
-  opacity: 1;
-}
-/* line 182, ../sass/_matchmaking.scss */
-.matchmaking-c .logout-button {
-  height: 40px;
-  width: 150px;
-  position: absolute;
-  top: 30px;
-  right: 20px;
-  border: 2px solid white;
-  text-align: center;
-  cursor: pointer;
-}
-/* line 192, ../sass/_matchmaking.scss */
-.matchmaking-c .logout-button p {
-  color: white;
-  line-height: calc(40px - 2px);
-}
+  position: relative; }
+  .matchmaking-c .options-c {
+    width: 400px;
+    height: 100%;
+    margin-top: 30px;
+    margin-left: 20px;
+    position: relative;
+    float: left; }
+    .matchmaking-c .options-c .sidebar-p {
+      color: white; }
+      .matchmaking-c .options-c .sidebar-p.has-margin {
+        margin-bottom: 20px; }
+    .matchmaking-c .options-c .create-game-button {
+      height: 40px;
+      width: 100%;
+      border: 2px solid white;
+      margin-bottom: 30px;
+      text-align: center;
+      cursor: pointer; }
+      .matchmaking-c .options-c .create-game-button p {
+        color: white;
+        line-height: calc(40px - 2px); }
+      .matchmaking-c .options-c .create-game-button.active {
+        border: 2px solid #444; }
+        .matchmaking-c .options-c .create-game-button.active p {
+          color: #444; }
+    .matchmaking-c .options-c .creator-buttons {
+      position: absolute;
+      bottom: 20px;
+      left: 0px;
+      width: 100%; }
+      .matchmaking-c .options-c .creator-buttons .create-monster-button {
+        height: 40px;
+        width: 100%;
+        border: 2px solid white;
+        margin-bottom: 20px;
+        text-align: center;
+        cursor: pointer; }
+        .matchmaking-c .options-c .creator-buttons .create-monster-button p {
+          color: white;
+          line-height: calc(40px - 2px); }
+      .matchmaking-c .options-c .creator-buttons .create-item-button {
+        height: 40px;
+        width: 100%;
+        border: 2px solid white;
+        margin-bottom: 20px;
+        text-align: center;
+        cursor: pointer; }
+        .matchmaking-c .options-c .creator-buttons .create-item-button p {
+          color: white;
+          line-height: calc(40px - 2px); }
+    .matchmaking-c .options-c .game-info-c {
+      display: none; }
+      .matchmaking-c .options-c .game-info-c.active {
+        display: block; }
+      .matchmaking-c .options-c .game-info-c .game-host {
+        color: white;
+        margin-bottom: 30px;
+        opacity: 0; }
+        .matchmaking-c .options-c .game-info-c .game-host.active {
+          opacity: 1; }
+      .matchmaking-c .options-c .game-info-c .game-player {
+        color: #444;
+        margin-bottom: 10px;
+        opacity: 0; }
+        .matchmaking-c .options-c .game-info-c .game-player.joined {
+          color: white; }
+        .matchmaking-c .options-c .game-info-c .game-player.active {
+          opacity: 1; }
+      .matchmaking-c .options-c .game-info-c .start-game-button {
+        height: 40px;
+        width: 100%;
+        border: 2px solid white;
+        margin-top: 30px;
+        text-align: center;
+        cursor: pointer;
+        opacity: 0; }
+        .matchmaking-c .options-c .game-info-c .start-game-button p {
+          color: white;
+          line-height: calc(40px - 2px); }
+        .matchmaking-c .options-c .game-info-c .start-game-button.active {
+          opacity: 1; }
+  .matchmaking-c .players-c {
+    width: 400px;
+    height: 100%;
+    margin-top: 30px;
+    margin-left: 40px;
+    position: relative;
+    float: left; }
+    .matchmaking-c .players-c .players-c-title {
+      margin-bottom: 30px; }
+      .matchmaking-c .players-c .players-c-title p {
+        color: white; }
+    .matchmaking-c .players-c .all-players {
+      width: 100%;
+      height: calc(100% - 100px);
+      overflow: scroll; }
+      .matchmaking-c .players-c .all-players .player {
+        width: 100%;
+        margin-bottom: 10px;
+        opacity: 0; }
+        .matchmaking-c .players-c .all-players .player p {
+          color: white; }
+          .matchmaking-c .players-c .all-players .player p .join {
+            background-color: #FF0000;
+            padding-left: 5px;
+            padding-right: 5px;
+            display: none;
+            margin-left: 10px; }
+            .matchmaking-c .players-c .all-players .player p .join.active {
+              display: inline-block;
+              cursor: pointer; }
+        .matchmaking-c .players-c .all-players .player.active {
+          opacity: 1; }
+  .matchmaking-c .logout-button {
+    height: 40px;
+    width: 150px;
+    position: absolute;
+    top: 30px;
+    right: 20px;
+    border: 2px solid white;
+    text-align: center;
+    cursor: pointer; }
+    .matchmaking-c .logout-button p {
+      color: white;
+      line-height: calc(40px - 2px); }
 
-/* line 1, ../sass/_creator_sidebar.scss */
 .creator-content-c {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  min-width: 2000px;
-}
+  min-width: 2000px; }
 
-/* line 8, ../sass/_creator_sidebar.scss */
 .sidebar-c {
   float: left;
   width: 300px;
   height: 100%;
   margin-right: 40px;
   margin-left: 20px;
-  	/*
-  	.submit-button {
-  		height:$creator-button-height;
-  		width:100%;
-  		border:2px solid white;
-  		margin-bottom: $content-margin-small;
-  		text-align: center;
-  		cursor:pointer;
-  
-  		p {
-  			color:white;
-  			line-height: calc(50px - 2px);
-  		}
-  	}
-  
-  	.load-button {
-  		height:$creator-button-height;
-  		width:100%;
-  		border:2px solid white;
-  		margin-bottom: $content-margin-small;
-  		text-align: center;
-  		cursor:pointer;
-  
-  		p {
-  			color:white;
-  			line-height: calc(50px - 2px);
-  		}
-  	}
-  	*/
   /*
-  	.type-input {
-  		margin-top:10px;
-  
-  		p {
-  			display:inline-block;
-  			margin-left:10px;
-  			color:white;
-  		}
-  
-  		input[type="radio"] {
-   			display:none;
-  		}
-  
-  		.radio {
-  			margin-bottom:10px;
-  			overflow:hidden;
-  			cursor:pointer;
-  
-  			.checkbox {
-  				float:left;
-  				width:14px;
-  				height:14px;
-  				border:2px solid $placeholder-color;
-  				background-color:$bk-color;
-  			}
-  
-  			p {
-  				float:left;
-  				line-height:15px;
-  				color:$placeholder-color;
-  			}
-  
-  			&.active, &:hover {
-  
-  				.checkbox {
-  					border-color:white;
-  					background-color:white;
-  				}
-  
-  				p {
-  					color:white;
-  				}
-  			}
-  		}
-  	}*/
-}
-/* line 16, ../sass/_creator_sidebar.scss */
-.sidebar-c .sidebar-top {
-  height: calc(100% - ((2 * 50px) + (2 * 20px)));
-}
-/* line 50, ../sass/_creator_sidebar.scss */
-.sidebar-c input {
-  background-color: #111;
-  border: none;
-  border-bottom: 1px solid white;
-  color: white;
-  cursor: pointer;
-  margin-bottom: 20px;
-}
-/* line 58, ../sass/_creator_sidebar.scss */
-.sidebar-c input::-webkit-input-placeholder {
-  color: #444;
-}
-/* line 61, ../sass/_creator_sidebar.scss */
-.sidebar-c input::-moz-placeholder {
-  color: #444;
-}
-/* line 64, ../sass/_creator_sidebar.scss */
-.sidebar-c input:-ms-input-placeholder {
-  color: #444;
-}
-/* line 67, ../sass/_creator_sidebar.scss */
-.sidebar-c input:-moz-placeholder {
-  color: #444;
-}
-/* line 72, ../sass/_creator_sidebar.scss */
-.sidebar-c .sidebar-title {
-  color: white;
-  margin-bottom: 20px;
-}
-/* line 77, ../sass/_creator_sidebar.scss */
-.sidebar-c .sidebar-p {
-  color: white;
-}
-/* line 82, ../sass/_creator_sidebar.scss */
-.sidebar-c .radio-container {
-  width: 100%;
-  overflow: hidden;
-  margin-bottom: 20px;
-}
-/* line 87, ../sass/_creator_sidebar.scss */
-.sidebar-c .radio-container .type-c {
-  float: left;
-  width: 50%;
-}
-/* line 92, ../sass/_creator_sidebar.scss */
-.sidebar-c .radio-container .range-c {
-  float: left;
-  width: 50%;
-}
-/* line 97, ../sass/_creator_sidebar.scss */
-.sidebar-c .radio-container .classes-c {
-  float: left;
-  width: 100%;
-}
-/* line 102, ../sass/_creator_sidebar.scss */
-.sidebar-c .radio-container .buff-c {
-  float: left;
-  width: 50%;
-}
-/* line 106, ../sass/_creator_sidebar.scss */
-.sidebar-c .radio-container .buff-c .buff-amt-p {
-  color: #444;
-}
-/* line 109, ../sass/_creator_sidebar.scss */
-.sidebar-c .radio-container .buff-c .buff-amt-p.active {
-  color: white;
-}
-/* line 114, ../sass/_creator_sidebar.scss */
-.sidebar-c .radio-container .buff-c input {
-  width: 100%;
-  border-bottom: 1px solid #444;
-  color: #444;
-  pointer-events: none;
-}
-/* line 120, ../sass/_creator_sidebar.scss */
-.sidebar-c .radio-container .buff-c input.active {
-  color: white;
-  border-bottom: 1px solid white;
-  pointer-events: all;
-}
-/* line 128, ../sass/_creator_sidebar.scss */
-.sidebar-c .radio-container .type-input, .sidebar-c .radio-container .range-input, .sidebar-c .radio-container .buff-input, .sidebar-c .radio-container .class-input {
-  margin-top: 10px;
-}
-/* line 131, ../sass/_creator_sidebar.scss */
-.sidebar-c .radio-container .type-input p, .sidebar-c .radio-container .range-input p, .sidebar-c .radio-container .buff-input p, .sidebar-c .radio-container .class-input p {
-  display: inline-block;
-  margin-left: 10px;
-  color: white;
-}
-/* line 137, ../sass/_creator_sidebar.scss */
-.sidebar-c .radio-container .type-input input[type="radio"], .sidebar-c .radio-container .range-input input[type="radio"], .sidebar-c .radio-container .buff-input input[type="radio"], .sidebar-c .radio-container .class-input input[type="radio"] {
-  display: none;
-}
-/* line 141, ../sass/_creator_sidebar.scss */
-.sidebar-c .radio-container .type-input .radio, .sidebar-c .radio-container .range-input .radio, .sidebar-c .radio-container .buff-input .radio, .sidebar-c .radio-container .class-input .radio {
-  margin-bottom: 10px;
-  overflow: hidden;
-  cursor: pointer;
-}
-/* line 146, ../sass/_creator_sidebar.scss */
-.sidebar-c .radio-container .type-input .radio .checkbox, .sidebar-c .radio-container .range-input .radio .checkbox, .sidebar-c .radio-container .buff-input .radio .checkbox, .sidebar-c .radio-container .class-input .radio .checkbox {
-  float: left;
-  width: 14px;
-  height: 14px;
-  border: 2px solid #444;
-  background-color: #111;
-}
-/* line 154, ../sass/_creator_sidebar.scss */
-.sidebar-c .radio-container .type-input .radio p, .sidebar-c .radio-container .range-input .radio p, .sidebar-c .radio-container .buff-input .radio p, .sidebar-c .radio-container .class-input .radio p {
-  float: left;
-  line-height: 15px;
-  color: #444;
-}
-/* line 162, ../sass/_creator_sidebar.scss */
-.sidebar-c .radio-container .type-input .radio.active .checkbox, .sidebar-c .radio-container .type-input .radio:hover .checkbox, .sidebar-c .radio-container .range-input .radio.active .checkbox, .sidebar-c .radio-container .range-input .radio:hover .checkbox, .sidebar-c .radio-container .buff-input .radio.active .checkbox, .sidebar-c .radio-container .buff-input .radio:hover .checkbox, .sidebar-c .radio-container .class-input .radio.active .checkbox, .sidebar-c .radio-container .class-input .radio:hover .checkbox {
-  border-color: white;
-  background-color: white;
-}
-/* line 167, ../sass/_creator_sidebar.scss */
-.sidebar-c .radio-container .type-input .radio.active p, .sidebar-c .radio-container .type-input .radio:hover p, .sidebar-c .radio-container .range-input .radio.active p, .sidebar-c .radio-container .range-input .radio:hover p, .sidebar-c .radio-container .buff-input .radio.active p, .sidebar-c .radio-container .buff-input .radio:hover p, .sidebar-c .radio-container .class-input .radio.active p, .sidebar-c .radio-container .class-input .radio:hover p {
-  color: white;
-}
-/* line 222, ../sass/_creator_sidebar.scss */
-.sidebar-c .color-selector {
-  width: 100%;
-  padding-top: 10px;
-  border-top: 2px solid white;
-}
-/* line 227, ../sass/_creator_sidebar.scss */
-.sidebar-c .color-selector .color {
-  cursor: pointer;
-}
-/* line 231, ../sass/_creator_sidebar.scss */
-.sidebar-c .color-selector .eraser {
-  color: #444;
-  cursor: pointer;
-}
-/* line 236, ../sass/_creator_sidebar.scss */
-.sidebar-c .color-selector .eraser:hover, .sidebar-c .color-selector .eraser.active {
-  color: white;
-}
+	.submit-button {
+		height:$creator-button-height;
+		width:100%;
+		border:2px solid white;
+		margin-bottom: $content-margin-small;
+		text-align: center;
+		cursor:pointer;
 
-/* line 1, ../sass/_creator_screen.scss */
+		p {
+			color:white;
+			line-height: calc(50px - 2px);
+		}
+	}
+
+	.load-button {
+		height:$creator-button-height;
+		width:100%;
+		border:2px solid white;
+		margin-bottom: $content-margin-small;
+		text-align: center;
+		cursor:pointer;
+
+		p {
+			color:white;
+			line-height: calc(50px - 2px);
+		}
+	}
+	*/
+  /*
+	.type-input {
+		margin-top:10px;
+
+		p {
+			display:inline-block;
+			margin-left:10px;
+			color:white;
+		}
+
+		input[type="radio"] {
+ 			display:none;
+		}
+
+		.radio {
+			margin-bottom:10px;
+			overflow:hidden;
+			cursor:pointer;
+
+			.checkbox {
+				float:left;
+				width:14px;
+				height:14px;
+				border:2px solid $placeholder-color;
+				background-color:$bk-color;
+			}
+
+			p {
+				float:left;
+				line-height:15px;
+				color:$placeholder-color;
+			}
+
+			&.active, &:hover {
+
+				.checkbox {
+					border-color:white;
+					background-color:white;
+				}
+
+				p {
+					color:white;
+				}
+			}
+		}
+	}*/ }
+  .sidebar-c .sidebar-top {
+    height: calc(100% - ((2 * 50px) + (2 * 20px))); }
+  .sidebar-c input {
+    background-color: #111;
+    border: none;
+    border-bottom: 1px solid white;
+    color: white;
+    cursor: pointer;
+    margin-bottom: 20px; }
+    .sidebar-c input::-webkit-input-placeholder {
+      color: #444; }
+    .sidebar-c input::-moz-placeholder {
+      color: #444; }
+    .sidebar-c input:-ms-input-placeholder {
+      color: #444; }
+    .sidebar-c input:-moz-placeholder {
+      color: #444; }
+  .sidebar-c .sidebar-title {
+    color: white;
+    margin-bottom: 20px; }
+  .sidebar-c .sidebar-p {
+    color: white; }
+  .sidebar-c .radio-container {
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 20px; }
+    .sidebar-c .radio-container .type-c {
+      float: left;
+      width: 50%; }
+    .sidebar-c .radio-container .range-c {
+      float: left;
+      width: 50%; }
+    .sidebar-c .radio-container .classes-c {
+      float: left;
+      width: 100%; }
+    .sidebar-c .radio-container .buff-c {
+      float: left;
+      width: 50%; }
+      .sidebar-c .radio-container .buff-c .buff-amt-p {
+        color: #444; }
+        .sidebar-c .radio-container .buff-c .buff-amt-p.active {
+          color: white; }
+      .sidebar-c .radio-container .buff-c input {
+        width: 100%;
+        border-bottom: 1px solid #444;
+        color: #444;
+        pointer-events: none; }
+        .sidebar-c .radio-container .buff-c input.active {
+          color: white;
+          border-bottom: 1px solid white;
+          pointer-events: all; }
+    .sidebar-c .radio-container .type-input, .sidebar-c .radio-container .range-input, .sidebar-c .radio-container .buff-input, .sidebar-c .radio-container .class-input {
+      margin-top: 10px; }
+      .sidebar-c .radio-container .type-input p, .sidebar-c .radio-container .range-input p, .sidebar-c .radio-container .buff-input p, .sidebar-c .radio-container .class-input p {
+        display: inline-block;
+        margin-left: 10px;
+        color: white; }
+      .sidebar-c .radio-container .type-input input[type="radio"], .sidebar-c .radio-container .range-input input[type="radio"], .sidebar-c .radio-container .buff-input input[type="radio"], .sidebar-c .radio-container .class-input input[type="radio"] {
+        display: none; }
+      .sidebar-c .radio-container .type-input .radio, .sidebar-c .radio-container .range-input .radio, .sidebar-c .radio-container .buff-input .radio, .sidebar-c .radio-container .class-input .radio {
+        margin-bottom: 10px;
+        overflow: hidden;
+        cursor: pointer; }
+        .sidebar-c .radio-container .type-input .radio .checkbox, .sidebar-c .radio-container .range-input .radio .checkbox, .sidebar-c .radio-container .buff-input .radio .checkbox, .sidebar-c .radio-container .class-input .radio .checkbox {
+          float: left;
+          width: 14px;
+          height: 14px;
+          border: 2px solid #444;
+          background-color: #111; }
+        .sidebar-c .radio-container .type-input .radio p, .sidebar-c .radio-container .range-input .radio p, .sidebar-c .radio-container .buff-input .radio p, .sidebar-c .radio-container .class-input .radio p {
+          float: left;
+          line-height: 15px;
+          color: #444; }
+        .sidebar-c .radio-container .type-input .radio.active .checkbox, .sidebar-c .radio-container .type-input .radio:hover .checkbox, .sidebar-c .radio-container .range-input .radio.active .checkbox, .sidebar-c .radio-container .range-input .radio:hover .checkbox, .sidebar-c .radio-container .buff-input .radio.active .checkbox, .sidebar-c .radio-container .buff-input .radio:hover .checkbox, .sidebar-c .radio-container .class-input .radio.active .checkbox, .sidebar-c .radio-container .class-input .radio:hover .checkbox {
+          border-color: white;
+          background-color: white; }
+        .sidebar-c .radio-container .type-input .radio.active p, .sidebar-c .radio-container .type-input .radio:hover p, .sidebar-c .radio-container .range-input .radio.active p, .sidebar-c .radio-container .range-input .radio:hover p, .sidebar-c .radio-container .buff-input .radio.active p, .sidebar-c .radio-container .buff-input .radio:hover p, .sidebar-c .radio-container .class-input .radio.active p, .sidebar-c .radio-container .class-input .radio:hover p {
+          color: white; }
+  .sidebar-c .color-selector {
+    width: 100%;
+    padding-top: 10px;
+    border-top: 2px solid white; }
+    .sidebar-c .color-selector .color {
+      cursor: pointer; }
+    .sidebar-c .color-selector .eraser {
+      color: #444;
+      cursor: pointer; }
+    .sidebar-c .color-selector .eraser:hover, .sidebar-c .color-selector .eraser.active {
+      color: white; }
+
 .creator-c {
   float: left;
   padding: 40px;
   margin-right: 20px;
   position: relative;
-  height: 100vh;
-}
-/* line 8, ../sass/_creator_screen.scss */
-.creator-c .creator {
-  width: 500px;
-  height: 500px;
-  background-color: #141414;
-  overflow: hidden;
-}
-/* line 14, ../sass/_creator_screen.scss */
-.creator-c .creator .cell {
-  float: left;
-  cursor: pointer;
-}
-/* line 20, ../sass/_creator_screen.scss */
-.creator-c p {
-  color: white;
-}
-/* line 24, ../sass/_creator_screen.scss */
-.creator-c textarea {
-  position: absolute;
-  left: 40px;
-  bottom: 20px;
-  width: calc(100% - 80px);
-  background-color: #111;
-  border: 2px solid white;
-  height: calc(100vh - (500px + 120px));
-  color: white;
-  cursor: pointer;
-}
-/* line 35, ../sass/_creator_screen.scss */
-.creator-c textarea::-webkit-input-placeholder {
-  color: #444;
-}
-/* line 38, ../sass/_creator_screen.scss */
-.creator-c textarea::-moz-placeholder {
-  color: #444;
-}
-/* line 41, ../sass/_creator_screen.scss */
-.creator-c textarea:-ms-input-placeholder {
-  color: #444;
-}
-/* line 44, ../sass/_creator_screen.scss */
-.creator-c textarea:-moz-placeholder {
-  color: #444;
-}
+  height: 100vh; }
+  .creator-c .creator {
+    width: 500px;
+    height: 500px;
+    background-color: #141414;
+    overflow: hidden; }
+    .creator-c .creator .cell {
+      float: left;
+      cursor: pointer; }
+  .creator-c p {
+    color: white; }
+  .creator-c textarea {
+    position: absolute;
+    left: 40px;
+    bottom: 20px;
+    width: calc(100% - 80px);
+    background-color: #111;
+    border: 2px solid white;
+    height: calc(100vh - (500px + 120px));
+    color: white;
+    cursor: pointer; }
+    .creator-c textarea::-webkit-input-placeholder {
+      color: #444; }
+    .creator-c textarea::-moz-placeholder {
+      color: #444; }
+    .creator-c textarea:-ms-input-placeholder {
+      color: #444; }
+    .creator-c textarea:-moz-placeholder {
+      color: #444; }
 
-/* line 50, ../sass/_creator_screen.scss */
 .creator-screen-c {
   float: left;
   padding: 40px;
   position: relative;
   height: 100vh;
-  padding-top: 240px;
-}
-/* line 57, ../sass/_creator_screen.scss */
-.creator-screen-c p {
-  color: white;
-}
-/* line 61, ../sass/_creator_screen.scss */
-.creator-screen-c .screen {
-  width: 300px;
-  height: 300px;
-  background-color: #141414;
-  margin-bottom: 18px;
-  z-index: 1;
-}
-/* line 68, ../sass/_creator_screen.scss */
-.creator-screen-c .screen .screen-cell {
-  float: left;
-  pointer-events: none;
-}
-/* line 74, ../sass/_creator_screen.scss */
-.creator-screen-c .box {
-  width: 80px;
-  height: 80px;
-  position: relative;
-  background-color: #141414;
-  z-index: 1;
-}
-/* line 82, ../sass/_creator_screen.scss */
-.creator-screen-c .box .box-level {
-  position: absolute;
-  bottom: -2;
-  right: -2;
-  width: 30px;
-  height: 30px;
-  border: 2px solid white;
-  text-align: center;
-}
-/* line 91, ../sass/_creator_screen.scss */
-.creator-screen-c .box .box-level p {
-  line-height: calc(30px - 2px);
-  width: 29px;
-  color: white;
-}
-/* line 98, ../sass/_creator_screen.scss */
-.creator-screen-c .box .box-cell {
-  float: left;
-  pointer-events: none;
-}
-/* line 104, ../sass/_creator_screen.scss */
-.creator-screen-c .buttons-c {
-  width: calc(100% - 80px);
-  position: absolute;
-  top: 60;
-  left: 40px;
-  z-index: 10;
-}
-/* line 112, ../sass/_creator_screen.scss */
-.creator-screen-c .buttons-c .submit-button {
-  height: 50px;
-  width: 100%;
-  border: 2px solid white;
-  margin-bottom: 20px;
-  text-align: center;
-  cursor: pointer;
-}
-/* line 120, ../sass/_creator_screen.scss */
-.creator-screen-c .buttons-c .submit-button p {
-  color: white;
-  line-height: calc(50px - 2px);
-}
-/* line 126, ../sass/_creator_screen.scss */
-.creator-screen-c .buttons-c .load-button {
-  height: 50px;
-  width: 100%;
-  border: 2px solid white;
-  margin-bottom: 20px;
-  text-align: center;
-  cursor: pointer;
-}
-/* line 134, ../sass/_creator_screen.scss */
-.creator-screen-c .buttons-c .load-button p {
-  color: white;
-  line-height: calc(50px - 2px);
-}
-/* line 140, ../sass/_creator_screen.scss */
-.creator-screen-c .buttons-c .load-window {
-  height: 0px;
-  width: 100%;
-  transition: height 0.2s;
-  padding-left: 5px;
-  background-color: rgba(0, 0, 0, 0.8);
-  overflow-y: scroll;
-}
-/* line 148, ../sass/_creator_screen.scss */
-.creator-screen-c .buttons-c .load-window.active {
-  height: 606px;
-}
-/* line 152, ../sass/_creator_screen.scss */
-.creator-screen-c .buttons-c .load-window .load-item {
-  color: white;
-}
+  padding-top: 240px; }
+  .creator-screen-c p {
+    color: white; }
+  .creator-screen-c .screen {
+    width: 300px;
+    height: 300px;
+    background-color: #141414;
+    margin-bottom: 18px;
+    z-index: 1; }
+    .creator-screen-c .screen .screen-cell {
+      float: left;
+      pointer-events: none; }
+  .creator-screen-c .box {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    background-color: #141414;
+    z-index: 1; }
+    .creator-screen-c .box .box-level {
+      position: absolute;
+      bottom: -2;
+      right: -2;
+      width: 30px;
+      height: 30px;
+      border: 2px solid white;
+      text-align: center; }
+      .creator-screen-c .box .box-level p {
+        line-height: calc(30px - 2px);
+        width: 29px;
+        color: white; }
+    .creator-screen-c .box .box-cell {
+      float: left;
+      pointer-events: none; }
+  .creator-screen-c .buttons-c {
+    width: calc(100% - 80px);
+    position: absolute;
+    top: 60;
+    left: 40px;
+    z-index: 10; }
+    .creator-screen-c .buttons-c .submit-button {
+      height: 50px;
+      width: 100%;
+      border: 2px solid white;
+      margin-bottom: 20px;
+      text-align: center;
+      cursor: pointer; }
+      .creator-screen-c .buttons-c .submit-button p {
+        color: white;
+        line-height: calc(50px - 2px); }
+    .creator-screen-c .buttons-c .load-button {
+      height: 50px;
+      width: 100%;
+      border: 2px solid white;
+      margin-bottom: 20px;
+      text-align: center;
+      cursor: pointer; }
+      .creator-screen-c .buttons-c .load-button p {
+        color: white;
+        line-height: calc(50px - 2px); }
+    .creator-screen-c .buttons-c .load-window {
+      height: 0px;
+      width: 100%;
+      transition: height 0.2s;
+      padding-left: 5px;
+      background-color: rgba(0, 0, 0, 0.8);
+      overflow-y: scroll; }
+      .creator-screen-c .buttons-c .load-window.active {
+        height: 606px; }
+      .creator-screen-c .buttons-c .load-window .load-item {
+        color: white; }
 
-/* line 1, ../sass/_game.scss */
 #loader {
   position: fixed;
   top: 0;
@@ -795,316 +552,218 @@ a:link {
   height: 100%;
   background-color: #111;
   z-index: 999;
-  transition: opacity 0.5s ease-in-out;
-}
+  transition: opacity 0.5s ease-in-out; }
 
-/* line 12, ../sass/_game.scss */
 body.loaded #loader {
   opacity: 0;
-  pointer-events: none;
-}
+  pointer-events: none; }
 
-/* line 17, ../sass/_game.scss */
 .game-c {
   width: 100vw;
   height: 100vh;
-  text-align: center;
-}
-/* line 22, ../sass/_game.scss */
-.game-c .content-c {
-  width: 600px;
-  display: inline-block;
-  height: 100%;
-}
-/* line 29, ../sass/_game.scss */
-.game-c .players-side-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  text-align: left;
-}
-/* line 35, ../sass/_game.scss */
-.game-c .players-side-bar div {
-  margin-bottom: 40px;
-}
-/* line 38, ../sass/_game.scss */
-.game-c .players-side-bar div p {
-  color: #b7b7b7;
-}
-/* line 41, ../sass/_game.scss */
-.game-c .players-side-bar div p.username {
-  color: white;
-}
-/* line 46, ../sass/_game.scss */
-.game-c .players-side-bar div.active .username {
-  color: #00FF00;
-}
+  text-align: center; }
+  .game-c .content-c {
+    width: 600px;
+    display: inline-block;
+    height: 100%; }
+  .game-c .players-side-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: left; }
+    .game-c .players-side-bar div {
+      margin-bottom: 40px; }
+      .game-c .players-side-bar div p {
+        color: #b7b7b7; }
+        .game-c .players-side-bar div p.username {
+          color: white; }
+      .game-c .players-side-bar div.active .username {
+        color: #00FF00; }
 
-/* line 53, ../sass/_game.scss */
 .box {
   width: 80px;
   height: 80px;
   border: 2px solid white;
   position: relative;
-  z-index: 1;
-}
-/* line 61, ../sass/_game.scss */
-.box svg {
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-/* line 67, ../sass/_game.scss */
-.box.active {
-  z-index: 100;
-}
-/* line 69, ../sass/_game.scss */
-.box.active .box-menu {
-  display: block;
-}
-/* line 74, ../sass/_game.scss */
-.box.fade {
-  opacity: 0.3;
-}
-/* line 77, ../sass/_game.scss */
-.box.fade:hover {
-  opacity: 1;
-}
-/* line 82, ../sass/_game.scss */
-.box .box-level {
-  position: absolute;
-  bottom: -2;
-  right: -2;
-  width: 30px;
-  height: 30px;
-  border: 2px solid white;
-}
-/* line 90, ../sass/_game.scss */
-.box .box-level p {
-  line-height: calc(30px - 2px);
-  width: 29px;
-  color: white;
-}
-/* line 97, ../sass/_game.scss */
-.box .box-cell {
-  float: left;
-  pointer-events: none;
-}
-/* line 102, ../sass/_game.scss */
-.box .box-menu {
-  display: none;
-  background-color: #141414;
-  position: absolute;
-  left: calc(100% + 2px);
-  bottom: -2px;
-  padding: 30px;
-  width: 180px;
-}
-/* line 115, ../sass/_game.scss */
-.box .box-menu p {
-  color: white;
-  cursor: pointer;
-}
-/* line 121, ../sass/_game.scss */
-.box.bag-box.bag-2nd-row .box-menu {
-  top: auto;
-  bottom: -2px;
-}
-/* line 126, ../sass/_game.scss */
-.box.bag-box.last-in-row .box-menu {
-  left: auto;
-  right: calc(100% + 2px);
-}
-/* line 134, ../sass/_game.scss */
-.box.last-body-box .box-menu {
-  left: auto;
-  right: calc(100% + 2px);
-}
+  z-index: 1; }
+  .box svg {
+    width: 100%;
+    height: 100%;
+    pointer-events: none; }
+  .box.active {
+    z-index: 100; }
+    .box.active .box-menu {
+      display: block; }
+  .box.fade {
+    opacity: 0.3; }
+    .box.fade:hover {
+      opacity: 1; }
+  .box.flash-geen {
+    border: 2px solid green; }
+  .box .box-level {
+    position: absolute;
+    bottom: -2;
+    right: -2;
+    width: 30px;
+    height: 30px;
+    border: 2px solid white; }
+    .box .box-level p {
+      line-height: calc(30px - 2px);
+      width: 29px;
+      color: white; }
+  .box .box-cell {
+    float: left;
+    pointer-events: none; }
+  .box .box-menu {
+    display: none;
+    background-color: #141414;
+    position: absolute;
+    left: calc(100% + 2px);
+    bottom: -2px;
+    padding: 30px;
+    width: 180px; }
+    .box .box-menu p {
+      color: white;
+      cursor: pointer; }
+  .box.bag-box.bag-2nd-row .box-menu {
+    top: auto;
+    bottom: -2px; }
+  .box.bag-box.last-in-row .box-menu {
+    left: auto;
+    right: calc(100% + 2px); }
+  .box.last-body-box .box-menu {
+    left: auto;
+    right: calc(100% + 2px); }
 
-/* line 1, ../sass/_screen.scss */
 .screen-c {
   text-align: center;
   width: 100%;
   margin-bottom: 30px;
   border: 2px solid white;
   overflow: hidden;
-}
-/* line 8, ../sass/_screen.scss */
-.screen-c .screen {
-  width: 300px;
-  height: 300px;
-  background-color: #141414;
-  float: left;
-}
-/* line 15, ../sass/_screen.scss */
-.screen-c .screen svg {
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-/* line 21, ../sass/_screen.scss */
-.screen-c .screen .screen-cell {
-  float: left;
-  pointer-events: none;
-}
-/* line 27, ../sass/_screen.scss */
-.screen-c .screen-info-c {
-  float: left;
-  width: calc(300px - 6px);
-  text-align: left;
-  padding: 5px;
-}
-/* line 33, ../sass/_screen.scss */
-.screen-c .screen-info-c p {
-  color: white;
-  padding-left: 5px;
-}
-/* line 37, ../sass/_screen.scss */
-.screen-c .screen-info-c p.monster-lvl {
-  margin-bottom: 5px;
-}
-/* line 40, ../sass/_screen.scss */
-.screen-c .screen-info-c p.monster-lvl .troll-debuff {
-  display: none;
-}
-/* line 43, ../sass/_screen.scss */
-.screen-c .screen-info-c p.monster-lvl .troll-debuff.Troll {
-  display: inline;
-}
-/* line 49, ../sass/_screen.scss */
-.screen-c .screen-info-c p.monster-name {
-  margin-bottom: 10px;
-}
-/* line 53, ../sass/_screen.scss */
-.screen-c .screen-info-c p.monster-desc {
-  margin-bottom: 10px;
-}
+  height: 300px; }
+  .screen-c.flash-green {
+    border: 2px solid green; }
+  .screen-c.flash-red {
+    border: 2px solid red; }
+  .screen-c .screen-text {
+    text-align: center;
+    width: 100%;
+    color: white;
+    display: none;
+    padding-top: 100px; }
+    .screen-c .screen-text.active {
+      display: block; }
+  .screen-c .screen {
+    width: 300px;
+    height: 300px;
+    background-color: #141414;
+    float: left; }
+    .screen-c .screen svg {
+      width: 100%;
+      height: 100%;
+      pointer-events: none; }
+    .screen-c .screen .screen-cell {
+      float: left;
+      pointer-events: none; }
+    .screen-c .screen.hidden {
+      display: none; }
+  .screen-c .screen-info-c {
+    float: left;
+    width: calc(300px - 6px);
+    text-align: left;
+    padding: 5px; }
+    .screen-c .screen-info-c p {
+      color: white;
+      padding-left: 5px; }
+      .screen-c .screen-info-c p.monster-lvl {
+        margin-bottom: 5px; }
+        .screen-c .screen-info-c p.monster-lvl .troll-debuff {
+          display: none; }
+          .screen-c .screen-info-c p.monster-lvl .troll-debuff.Troll {
+            display: inline; }
+      .screen-c .screen-info-c p.monster-name {
+        margin-bottom: 10px; }
+      .screen-c .screen-info-c p.monster-desc {
+        margin-bottom: 10px; }
+    .screen-c .screen-info-c.hidden {
+      display: none; }
 
-/* line 1, ../sass/_console.scss */
 .main-button {
   width: 100%;
   height: 60px;
   border: 2px solid white;
-  margin-bottom: 10px;
-}
-/* line 7, ../sass/_console.scss */
-.main-button p {
-  color: white;
-  line-height: 60px;
-}
+  margin-bottom: 10px; }
+  .main-button p {
+    color: white;
+    line-height: 60px; }
 
-/* line 13, ../sass/_console.scss */
 .console-c {
   width: 100%;
   height: calc(100vh - 420px);
-  overflow: scroll;
-}
-/* line 18, ../sass/_console.scss */
-.console-c .name-row {
-  width: 100%;
-  overflow: hidden;
-}
-/* line 22, ../sass/_console.scss */
-.console-c .name-row .left {
-  color: white;
-  float: left;
-}
-/* line 26, ../sass/_console.scss */
-.console-c .name-row .right {
-  color: white;
-  float: right;
-}
-/* line 32, ../sass/_console.scss */
-.console-c .power-row {
-  width: 100%;
-  overflow: hidden;
-}
-/* line 36, ../sass/_console.scss */
-.console-c .power-row .left {
-  color: white;
-  float: left;
-}
-/* line 40, ../sass/_console.scss */
-.console-c .power-row .right {
-  color: white;
-  float: right;
-}
-/* line 44, ../sass/_console.scss */
-.console-c .power-row .right .otuAmt {
-  color: #00FF00;
-}
-/* line 50, ../sass/_console.scss */
-.console-c .build-row {
-  width: 100%;
-  overflow: hidden;
-  margin-bottom: 10px;
-}
-/* line 55, ../sass/_console.scss */
-.console-c .build-row .build-body {
-  float: left;
-  overflow: hidden;
-}
-/* line 59, ../sass/_console.scss */
-.console-c .build-row .build-body .body-col {
-  float: left;
-  width: 80px;
-  margin-right: 5px;
-}
-/* line 64, ../sass/_console.scss */
-.console-c .build-row .build-body .body-col:first-child, .console-c .build-row .build-body .body-col:last-child {
-  padding-top: calc(80px / 2);
-}
-/* line 68, ../sass/_console.scss */
-.console-c .build-row .build-body .body-col:nth-child(2) .box:first-child {
-  margin-bottom: 5px;
-}
-/* line 73, ../sass/_console.scss */
-.console-c .build-row .build-info {
-  float: right;
-  width: 250px;
-}
-/* line 78, ../sass/_console.scss */
-.console-c .build-row .build-info .class-row {
-  width: 100%;
-  overflow: hidden;
-  margin-bottom: 10px;
-}
-/* line 83, ../sass/_console.scss */
-.console-c .build-row .build-info .class-row .left {
-  float: left;
-  color: white;
-}
-/* line 88, ../sass/_console.scss */
-.console-c .build-row .build-info .class-row .right {
-  float: right;
-  color: white;
-}
-/* line 94, ../sass/_console.scss */
-.console-c .build-row .build-info .otu-item-row {
-  width: 100%;
-  overflow: hidden;
-}
-/* line 98, ../sass/_console.scss */
-.console-c .build-row .build-info .otu-item-row .left {
-  float: left;
-  color: white;
-}
-/* line 103, ../sass/_console.scss */
-.console-c .build-row .build-info .otu-item-row .right {
-  float: right;
-  color: white;
-}
-/* line 111, ../sass/_console.scss */
-.console-c .bag-row {
-  width: 100%;
-}
-/* line 115, ../sass/_console.scss */
-.console-c .bag-row .box {
-  float: left;
-  margin-right: 5px;
-  margin-bottom: 5px;
-}
-/* line 120, ../sass/_console.scss */
-.console-c .bag-row .box:nth-child(7), .console-c .bag-row .box:nth-child(14) {
-  margin-right: 0px;
-}
+  overflow: scroll; }
+  .console-c .name-row {
+    width: 100%;
+    overflow: hidden; }
+    .console-c .name-row .left {
+      color: white;
+      float: left; }
+    .console-c .name-row .right {
+      color: white;
+      float: right; }
+  .console-c .power-row {
+    width: 100%;
+    overflow: hidden; }
+    .console-c .power-row .left {
+      color: white;
+      float: left; }
+    .console-c .power-row .right {
+      color: white;
+      float: right; }
+      .console-c .power-row .right .otuAmt {
+        color: #00FF00; }
+  .console-c .build-row {
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 10px; }
+    .console-c .build-row .build-body {
+      float: left;
+      overflow: hidden; }
+      .console-c .build-row .build-body .body-col {
+        float: left;
+        width: 80px;
+        margin-right: 5px; }
+        .console-c .build-row .build-body .body-col:first-child, .console-c .build-row .build-body .body-col:last-child {
+          padding-top: calc(80px / 2); }
+        .console-c .build-row .build-body .body-col:nth-child(2) .box:first-child {
+          margin-bottom: 5px; }
+    .console-c .build-row .build-info {
+      float: right;
+      width: 250px; }
+      .console-c .build-row .build-info .class-row {
+        width: 100%;
+        overflow: hidden;
+        margin-bottom: 10px; }
+        .console-c .build-row .build-info .class-row .left {
+          float: left;
+          color: white; }
+        .console-c .build-row .build-info .class-row .right {
+          float: right;
+          color: white; }
+      .console-c .build-row .build-info .otu-item-row {
+        width: 100%;
+        overflow: hidden; }
+        .console-c .build-row .build-info .otu-item-row .left {
+          float: left;
+          color: white; }
+        .console-c .build-row .build-info .otu-item-row .right {
+          float: right;
+          color: white; }
+  .console-c .bag-row {
+    width: 100%; }
+    .console-c .bag-row .box {
+      float: left;
+      margin-right: 5px;
+      margin-bottom: 5px; }
+      .console-c .bag-row .box:nth-child(7), .console-c .bag-row .box:nth-child(14) {
+        margin-right: 0px; }

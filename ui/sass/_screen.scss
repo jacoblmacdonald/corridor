@@ -4,6 +4,27 @@
 	margin-bottom:$large-margin;
 	border:2px solid white;
 	overflow:hidden;
+	height:$screen-width;
+
+	&.flash-green {
+		border:2px solid green;
+	}
+
+	&.flash-red {
+		border:2px solid red;
+	}
+
+	.screen-text {
+		text-align:center;
+		width:100%;
+		color:white;
+		display:none;
+		padding-top:100px;
+
+		&.active {
+			display:block;
+		}
+	}
 
 	.screen {
 		//display:inline-block;
@@ -21,6 +42,10 @@
 		.screen-cell {
 			float:left;
 			pointer-events:none;
+		}
+
+		&.hidden {
+			display:none;
 		}
 	}
 
@@ -53,6 +78,10 @@
 			&.monster-desc {
 				margin-bottom:10px;
 			}
+		}
+
+		&.hidden {
+			display:none;
 		}
 	}
 }
