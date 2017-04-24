@@ -286,6 +286,10 @@ function updateBox(b, item) {
 			$("svg", b).remove();
 		}
 		$(".box-level p", b).html("");
+		b.removeClass("high");
+		b.removeClass("med");
+		b.removeClass("low");
+		b.removeClass("wild");
 		updateBoxMenu(b, null);
 	} else {
 		if(!USE_SVGS) {
@@ -307,7 +311,19 @@ function updateBox(b, item) {
 					$(".box-level p", b).html("?").addClass("Wizard");
 				}
 				else {
-					$(".box-level p", b).html("?");
+					if (item.range = "low") {
+						$(".box-level p", b).html("L");
+						b.addClass("low");
+					} else if (item.range = "med") {
+						$(".box-level p", b).html("M");
+						b.addClass("med");
+					} else if (item.range = "high") {
+						$(".box-level p", b).html("H");
+						b.addClass("high");
+					} else if (item.range = "wild") {
+						$(".box-level p", b).html("W");
+						b.addClass("wild");
+					}
 				}
 			}
 			else {
@@ -482,12 +498,17 @@ function attemptSwitch() {
 //message.item is usually just an index in the below functions
 
 socket.on("attack_result", function(message) {
-	updateLevel(message.level);
-	updateTotalPower(message.totalPower, message.otuAmt);
-	updateScreen(message.monster);
-	clearOTUS();
-	updateBag(message.items);
-	// alert(message.success ? "Monster Defeated" : "Player Defeated");//TODO: add some UI for this
+	//updateLevel(message.level);
+	//updateTotalPower(message.totalPower, message.otuAmt);
+	//updateScreen(message.monster);
+	//clearOTUS();
+	//updateBag(message.items);
+	//alert(message.success ? "Monster Defeated" : "Player Defeated");//TODO: add some UI for this
+	if (message.success) {
+		showMonsterDefeatAnimation(message);
+	} else {
+		showPlayerDefeatAnimation(message);
+	}
 });
 
 socket.on("update_players", function(message) {
@@ -532,3 +553,139 @@ socket.on("class_changed", function(message) {
 socket.on("victory", function(message) {
 	endGame(message.winner, message.level);
 });
+
+// ////////////////////
+// A N I M A T I O N S
+// //////////////////////////////////////////
+function clearColor() {
+	$(".screen-c").removeClass("flash-green");
+	$(".box").removeClass("flash-green");
+	$(".screen-c").removeClass("flash-red");
+	$(".box").removeClass("flash-red");
+}
+
+function setGreen() {
+	$(".screen-c").addClass("flash-green");
+	$(".box").addClass("flash-green");
+}
+
+function setRed() {
+	$(".screen-c").addClass("flash-red");
+	$(".box").addClass("flash-green");
+}
+
+function hideScreen(text) {
+	$(".screen-text").html(text);
+	$(".screen-text").addClass("active");
+	$(".screen").addClass("hidden");
+	$(".screen-info-c").addClass("hidden");
+
+}
+
+function showScreen() {
+	$(".screen-text").removeClass("active");
+	$(".screen").removeClass("hidden");
+	$(".screen-info-c").removeClass("hidden");
+}
+
+function showMonsterDefeatAnimation(message) {
+	var animTime = 100;
+	hideScreen("monster defeated");
+	setGreen();
+	setTimeout(function() {
+		clearColor();
+	}, animTime);
+	setTimeout(function() {
+		setGreen();
+	}, animTime * 2);
+	setTimeout(function() {
+		clearColor();
+	}, animTime * 3);
+	setTimeout(function() {
+		setGreen();
+	}, animTime * 4);
+	setTimeout(function() {
+		clearColor();
+	}, animTime * 5);
+	setTimeout(function() {
+		setGreen();
+	}, animTime * 6);
+	setTimeout(function() {
+		clearColor();
+	}, animTime * 7);
+	setTimeout(function() {
+		setGreen();
+	}, animTime * 8);
+	setTimeout(function() {
+		clearColor();
+	}, animTime * 9);
+	setTimeout(function() {
+		setGreen();
+	}, animTime * 10);
+	setTimeout(function() {
+		clearColor();
+	}, animTime * 11);
+	setTimeout(function() {
+		setGreen();
+	}, animTime * 12);
+	setTimeout(function() {
+		clearColor();
+		showScreen();
+		updateLevel(message.level);
+		updateTotalPower(message.totalPower, message.otuAmt);
+		updateScreen(message.monster);
+		clearOTUS();
+		updateBag(message.items);
+	}, animTime * 13);
+}
+
+function showPlayerDefeatAnimation(message) {
+	var animTime = 100;
+	hideScreen("player defeated");
+	setRed();
+	setTimeout(function() {
+		clearColor();
+	}, animTime);
+	setTimeout(function() {
+		setRed();
+	}, animTime * 2);
+	setTimeout(function() {
+		clearColor();
+	}, animTime * 3);
+	setTimeout(function() {
+		setRed();
+	}, animTime * 4);
+	setTimeout(function() {
+		clearColor();
+	}, animTime * 5);
+	setTimeout(function() {
+		setRed();
+	}, animTime * 6);
+	setTimeout(function() {
+		clearColor();
+	}, animTime * 7);
+	setTimeout(function() {
+		setRed();
+	}, animTime * 8);
+	setTimeout(function() {
+		clearColor();
+	}, animTime * 9);
+	setTimeout(function() {
+		setRed();
+	}, animTime * 10);
+	setTimeout(function() {
+		clearColor();
+	}, animTime * 11);
+	setTimeout(function() {
+		setRed();
+	}, animTime * 12);
+	setTimeout(function() {
+		clearColor();
+		showScreen();
+		updateLevel(message.level);
+		updateTotalPower(message.totalPower, message.otuAmt);
+		updateScreen(message.monster);
+		clearOTUS();
+		updateBag(message.items);
+	}, animTime * 13);
+}

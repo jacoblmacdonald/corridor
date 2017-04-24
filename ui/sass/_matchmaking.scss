@@ -194,4 +194,63 @@
 			line-height: calc(#{$small-button-height} - 2px);
 		}
 	}
+
+	#ChatBox1 {
+		position:absolute;
+		width:400px;
+		height:500px;
+		bottom:0;
+		right:0;
+		border:2px solid white;
+		overflow:scroll;
+
+		.ChatBox1-Users {
+			display:none;
+		}
+
+		.ChatBox1-Channels {
+			display:none;
+		}
+
+		.ChatBox1-History {
+			height:100%;
+			
+
+			.ChatMessage {
+				font-family: v-small;
+				color:white;
+			}
+		}
+
+		.ChatBox1-Chat {
+			position:absolute;
+			left:0;
+			bottom:0;
+
+			.ChatBox1-InputBox {
+
+				button {
+					border:2px solid white;
+					background:initial; 
+					font-family: v-small;
+					font-size: 20px;
+					color:white;
+					padding:0px;
+					height:30px;
+					width:60px;
+				}
+
+				input {
+					border:2px solid white;
+					background:initial;
+					font-family: v-small;
+					font-size: 20px;
+					color:white;
+					padding:0px;
+					height:30px;
+					width:320px;
+				}
+			}
+		}
+	}
 }
