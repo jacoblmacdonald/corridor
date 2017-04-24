@@ -577,8 +577,10 @@ body.loaded #loader {
         color: #b7b7b7; }
         .game-c .players-side-bar div p.username {
           color: white; }
-      .game-c .players-side-bar div.active .username {
-        color: #00FF00; }
+      .game-c .players-side-bar div.active {
+        margin-left: 30px; }
+        .game-c .players-side-bar div.active .username {
+          color: #00FF00; }
 
 .box {
   width: 80px;
@@ -611,6 +613,22 @@ body.loaded #loader {
       line-height: calc(30px - 2px);
       width: 29px;
       color: white; }
+  .box.low .box-level {
+    border: 2px solid cyan; }
+    .box.low .box-level p {
+      color: cyan; }
+  .box.med .box-level {
+    border: 2px solid green; }
+    .box.med .box-level p {
+      color: green; }
+  .box.high .box-level {
+    border: 2px solid orange; }
+    .box.high .box-level p {
+      color: orange; }
+  .box.wild .box-level {
+    border: 2px solid red; }
+    .box.wild .box-level p {
+      color: red; }
   .box .box-cell {
     float: left;
     pointer-events: none; }
@@ -625,6 +643,8 @@ body.loaded #loader {
     .box .box-menu p {
       color: white;
       cursor: pointer; }
+      .box .box-menu p.list-item:hover {
+        color: green; }
   .box.bag-box.bag-2nd-row .box-menu {
     top: auto;
     bottom: -2px; }

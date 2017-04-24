@@ -43,8 +43,12 @@ body.loaded #loader {
 				}
 			}
 
-			&.active .username {
-				color: $highlight;
+			&.active {
+				margin-left:30px;
+
+				.username {
+					color: $highlight;
+				}
 			}
 		}
 	}
@@ -98,6 +102,30 @@ body.loaded #loader {
 		}
 	}
 
+	&.low .box-level {
+		border:2px solid cyan;
+
+		p { color:cyan;}
+	}
+
+	&.med .box-level {
+		border:2px solid green;
+
+		p { color:green;}
+	}
+
+	&.high .box-level {
+		border:2px solid orange;
+
+		p { color:orange;}
+	}
+
+	&.wild .box-level {
+		border:2px solid red;
+
+		p { color:red;}
+	}
+
 	.box-cell {
 		float:left;
 		pointer-events:none;
@@ -119,6 +147,10 @@ body.loaded #loader {
 		p {
 			color:white;
 			cursor:pointer;
+
+			&.list-item:hover {
+				color:green;
+			}
 		}
 	}
 

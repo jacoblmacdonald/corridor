@@ -286,6 +286,10 @@ function updateBox(b, item) {
 			$("svg", b).remove();
 		}
 		$(".box-level p", b).html("");
+		b.removeClass("high");
+		b.removeClass("med");
+		b.removeClass("low");
+		b.removeClass("wild");
 		updateBoxMenu(b, null);
 	} else {
 		if(!USE_SVGS) {
@@ -307,7 +311,19 @@ function updateBox(b, item) {
 					$(".box-level p", b).html("?").addClass("Wizard");
 				}
 				else {
-					$(".box-level p", b).html("?");
+					if (item.range = "low") {
+						$(".box-level p", b).html("L");
+						b.addClass("low");
+					} else if (item.range = "med") {
+						$(".box-level p", b).html("M");
+						b.addClass("med");
+					} else if (item.range = "high") {
+						$(".box-level p", b).html("H");
+						b.addClass("high");
+					} else if (item.range = "wild") {
+						$(".box-level p", b).html("W");
+						b.addClass("wild");
+					}
 				}
 			}
 			else {
