@@ -463,7 +463,9 @@ a:link {
   .sidebar-c .color-selector {
     width: 100%;
     padding-top: 10px;
-    border-top: 2px solid white; }
+    border-top: 2px solid white;
+    height: 357px;
+    overflow: scroll; }
     .sidebar-c .color-selector .color {
       cursor: pointer; }
     .sidebar-c .color-selector .eraser {

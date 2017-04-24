@@ -9,7 +9,30 @@ var types = ["otu","1 hand","2 hand", "head", "armor"];
 var ranges = ["low","med","high", "wild"];
 var classes = ["all","warrior","wizard", "troll", "priest"];
 var colors = [
-"#ffffff","#b5b5b5","#FF0000", "#FF9900", "#FFCC00", "#FFFF00", "#B2FF00", "#66FF00", "#33FF70", "#00FFE1", "#0088F0", "#0011FF", "#7534ff"];
+	"#ffffff",
+	"#b5b5b5",
+	"#FF0000", 
+	"#FF9900", 
+	"#FFCC00",
+	"#FFFF00", 
+	"#B2FF00", 
+	"#66FF00", 
+	"#33FF70", 
+	"#256F5B",
+	"#00FFE1",  
+	"#0088F0", 
+	"#0011FF", 
+	"#7534ff",
+	"#850017",
+	"#ffc0cb", 
+	"#8F305B",
+	"#8b4513", 
+	"#8d5524",
+	"#c68642",
+	"#e0ac69",
+	"#f1c27d",
+	"#ffdbac"
+];
 var bkColor = "#111";
 var screenColor = "#141414";
 var activeColor = "";
