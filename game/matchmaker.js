@@ -7,6 +7,7 @@ class User {
 		this.socket = socket;
 
 		this.isHost = false;
+		this.isInLobby = false;
 	}
 }
 
@@ -74,6 +75,7 @@ class Matchmaker {
 	onLobbyCreated(hostname) {
 		var user = this.findUser(hostname);
 		user.isHost = true;
+		user.isInLobby = true;
 
 		var lobby = new Lobby(user);
 		this.lobbies.push(lobby);
@@ -83,10 +85,14 @@ class Matchmaker {
 
 	onLobbyJoined(username, hostname) {
 		var lobby = this.findLobby(hostname);
-		lobby.players.push(this.findUser(username));
-        lobby.players.forEach(function(player) {
-            player.socket.emit("joined", { usernames : lobby.getUsernames() });
-        });
+		var user = this.findUser(username);
+		if(!user.isInLobby){
+			lobby.players.push(this.findUser(username));
+			user.isInLobby = true;
+        	lobby.players.forEach(function(player) {
+            	player.socket.emit("joined", { usernames : lobby.getUsernames() });
+        	});
+		}
 	}
 
 	onGameStarted(hostname) {
