@@ -8,6 +8,10 @@
 		color:white;
 		line-height: $main-button-height;
 	}
+
+	&.clicked {
+		color:gray;
+	}
 }
 
 .console-c {

@@ -510,6 +510,30 @@ class Game {
 		game.sendPlayers();
 	}
 
+	attackMonsterWithItem(player, item) {
+		var game = this;
+		var foundPlayer = game.findPlayer(player);
+		var monster = this.monsters[this.currentMonster];
+		monster.value -= foundPlayer.items[item].value;
+		foundPlayer.items[item] = null;
+
+		this.players.forEach(function(player) {
+			player.socket.emit("monster_attacked_with_item", {item:item, monsterVal:monster.value, usingPlayer:foundPlayer.name});
+		});
+	}
+
+	buffMonsterWithItem(player, item) {
+		var game = this;
+		var foundPlayer = game.findPlayer(player);
+		var monster = this.monsters[this.currentMonster];
+		monster.value += foundPlayer.items[item].value;
+		foundPlayer.items[item] = null;
+
+		this.players.forEach(function(player) {
+			player.socket.emit("monster_buffed_with_item", {item:item, monsterVal:monster.value, usingPlayer:foundPlayer.name});
+		});
+	}
+
 	switchItems(player, fromIndex, toIndex) {
 		var game = this;
 		var foundPlayer = game.findPlayer(player);

@@ -6,7 +6,7 @@ var CURRENT_USER = "";
 var CURRENT_CLASS = null;
 
 var ITEM_LIST = ["switch", "drop"];
-var OTU_LIST = ["use", "switch", "drop"];
+var OTU_LIST = ["buff-self", "attack-monster", "buff-monster", "switch", "drop"];
 var CLASS_LIST = ["change-class", "switch", "drop"];
 
 var boxWidth = 80 - 4;
@@ -82,16 +82,21 @@ function loadPage(items, monster, current_player) {
 	$(".name-row .left").html(CURRENT_USER);
 
 	$(".main-button").click(function() {
-		switch($(this).data("mode")) {
-		case "attack":
-			attack();
-			break;
-		case "idle":
-			setReadyMode();
-			break;
-		case "ready":
-			setIdleMode();
-			break;
+		if ($(this).hasClass("clicked")) {
+
+		} else {
+			$(this).addClass("clicked");
+			switch($(this).data("mode")) {
+			case "attack":
+				attack();
+				break;
+			case "idle":
+				setReadyMode();
+				break;
+			case "ready":
+				setIdleMode();
+				break;
+			}
 		}
 	});
 
@@ -186,10 +191,22 @@ function initClicks() {
     	unfadeBoxes();
 	});
 
-	$(document).on('click', ".list-use" , function() {
+	$(document).on('click', ".list-buff-self" , function() {
 		$(this).parent().parent().removeClass("active");
     	unfadeBoxes();
     	deployItem($(this));
+	});
+
+	$(document).on('click', ".list-attack-monster" , function() {
+		$(this).parent().parent().removeClass("active");
+    	unfadeBoxes();
+    	attackMonster($(this));
+	});
+
+	$(document).on('click', ".list-buff-monster" , function() {
+		$(this).parent().parent().removeClass("active");
+    	unfadeBoxes();
+    	buffMonster($(this));
 	});
 
 	$(document).on('click', ".list-change-class" , function() {
@@ -247,6 +264,10 @@ function endGame(winner, level) {
 		alert("PLAYER " + winner.toUpperCase + " HAS REACHED LEVEL " + level + "! YOU LOSE!");
 	}
 	window.location.href = "/";
+}
+
+function updateMonsterValue(val) {
+	$(".monster-lvl .lvl").text("level "+val);
 }
 
 // ////////////////////
@@ -432,6 +453,16 @@ function deployItem(e) {
 	attemptUse(i);
 }
 
+function attackMonster(e) {
+	var i = $(e).parent().parent().data("index");
+	attemptAttackMonster(i);
+}
+
+function buffMonster(e) {
+	var i = $(e).parent().parent().data("index");
+	attemptBuffMonster(i);
+}
+
 //uses same protocol as use otu item
 function changeClass(e) {
 	var i = $(e).parent().parent().data("index");
@@ -485,6 +516,14 @@ function attemptUse(i) {
 	socket.emit("use_item", {"gameId" :getId(), "used_item": i});
 }
 
+function attemptAttackMonster(i) {
+	socket.emit("attack_monster_with_item", {"gameId" :getId(), "used_item": i});
+}
+
+function attemptBuffMonster(i) {
+	socket.emit("buff_monster_with_item", {"gameId" :getId(), "used_item": i});
+}
+
 function attemptSwitch() {
 	if (SWITCH_BOX_FROM != -1 && SWITCH_BOX_TO != -1) {
 		socket.emit("switch_item", { "gameId" : getId(), "switch_from" : SWITCH_BOX_FROM, "switch_to" : SWITCH_BOX_TO });
@@ -504,6 +543,7 @@ socket.on("attack_result", function(message) {
 	//clearOTUS();
 	//updateBag(message.items);
 	//alert(message.success ? "Monster Defeated" : "Player Defeated");//TODO: add some UI for this
+	$(".main-button").removeClass("clicked");
 	if (message.success) {
 		showMonsterDefeatAnimation(message);
 	} else {
@@ -552,6 +592,16 @@ socket.on("class_changed", function(message) {
 
 socket.on("victory", function(message) {
 	endGame(message.winner, message.level);
+});
+
+socket.on("monster_attacked_with_item", function(message) {
+	console.log(message);
+	showMonsterAttackedAnimation(message);
+});
+
+socket.on("monster_buffed_with_item", function(message) {
+	console.log(message);
+	showMonsterBuffedAnimation(message);
 });
 
 // ////////////////////
@@ -687,5 +737,105 @@ function showPlayerDefeatAnimation(message) {
 		updateScreen(message.monster);
 		clearOTUS();
 		updateBag(message.items);
+	}, animTime * 13);
+}
+
+function showMonsterAttackedAnimation(message) {
+	var animTime = 100;
+	hideScreen("monster attacked by "+ message.usingPlayer);
+	setGreen();
+	setTimeout(function() {
+		clearColor();
+	}, animTime);
+	setTimeout(function() {
+		setGreen();
+	}, animTime * 2);
+	setTimeout(function() {
+		clearColor();
+	}, animTime * 3);
+	setTimeout(function() {
+		setGreen();
+	}, animTime * 4);
+	setTimeout(function() {
+		clearColor();
+	}, animTime * 5);
+	setTimeout(function() {
+		setGreen();
+	}, animTime * 6);
+	setTimeout(function() {
+		clearColor();
+	}, animTime * 7);
+	setTimeout(function() {
+		setGreen();
+	}, animTime * 8);
+	setTimeout(function() {
+		clearColor();
+	}, animTime * 9);
+	setTimeout(function() {
+		setGreen();
+	}, animTime * 10);
+	setTimeout(function() {
+		clearColor();
+	}, animTime * 11);
+	setTimeout(function() {
+		setGreen();
+	}, animTime * 12);
+	setTimeout(function() {
+		clearColor();
+		showScreen();
+		updateMonsterValue(message.monsterVal);
+		if (message.usingPlayer == CURRENT_USER) {
+			updateDropItem(message.item);
+		}
+	}, animTime * 13);
+}
+
+function showMonsterBuffedAnimation(message) {
+	var animTime = 100;
+	hideScreen("monster buffed by "+ message.usingPlayer);
+	setRed();
+	setTimeout(function() {
+		clearColor();
+	}, animTime);
+	setTimeout(function() {
+		setRed();
+	}, animTime * 2);
+	setTimeout(function() {
+		clearColor();
+	}, animTime * 3);
+	setTimeout(function() {
+		setRed();
+	}, animTime * 4);
+	setTimeout(function() {
+		clearColor();
+	}, animTime * 5);
+	setTimeout(function() {
+		setRed();
+	}, animTime * 6);
+	setTimeout(function() {
+		clearColor();
+	}, animTime * 7);
+	setTimeout(function() {
+		setRed();
+	}, animTime * 8);
+	setTimeout(function() {
+		clearColor();
+	}, animTime * 9);
+	setTimeout(function() {
+		setRed();
+	}, animTime * 10);
+	setTimeout(function() {
+		clearColor();
+	}, animTime * 11);
+	setTimeout(function() {
+		setRed();
+	}, animTime * 12);
+	setTimeout(function() {
+		clearColor();
+		showScreen();
+		updateMonsterValue(message.monsterVal);
+		if (message.usingPlayer == CURRENT_USER) {
+			updateDropItem(message.item);
+		}
 	}, animTime * 13);
 }
