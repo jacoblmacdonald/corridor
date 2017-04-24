@@ -756,6 +756,8 @@ body.loaded #loader {
   .main-button p {
     color: white;
     line-height: 60px; }
+  .main-button.clicked {
+    color: gray; }
 
 .console-c {
   width: 100%;

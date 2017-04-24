@@ -79,6 +79,18 @@ server.on("connection", function(client) {
 			var game = gamemaker.findGame(message.gameId);
 			game.useItem(username, message.used_item);
 		});
+
+		//attack monster with item
+		client.on("attack_monster_with_item", function(message) {
+			var game = gamemaker.findGame(message.gameId);
+			game.attackMonsterWithItem(username, message.used_item);
+		});
+
+		//buff monster with item
+		client.on("buff_monster_with_item", function(message) {
+			var game = gamemaker.findGame(message.gameId);
+			game.buffMonsterWithItem(username, message.used_item);
+		});
 	} 	
 });
 //body parser middleware
