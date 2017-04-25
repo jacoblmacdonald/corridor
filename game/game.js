@@ -612,6 +612,34 @@ class Game {
 		game.sendPlayers();
 	}
 
+	giveItem(player, fromIndex, toPlayer) {
+		var game = this;
+		var fromPlayer = game.findPlayer(player);
+		var newPlayer = game.findPlayer(toPlayer);
+		//console.log(fromPlayer.name+" give item "+fromIndex+ " to "+newPlayer.name);
+		var item = fromPlayer.items[fromIndex];
+
+		var newItemIndex = 0;
+		for(var j = 4; j < newPlayer.items.length; j++) {
+			if(newPlayer.items[j] == null) {
+				newPlayer.items[j] = item;
+				newItemIndex = j;
+				break;
+			}
+		}
+
+		fromPlayer.items[fromIndex] = null;
+
+		fromPlayer.updateTotalPower();
+
+		//fromPlayer.socket.emit("you_have_switched", {});
+
+		fromPlayer.socket.emit("you_gave", {fromIndex:fromIndex, level:fromPlayer.level, totalPower:fromPlayer.totalPower, otuAmt:fromPlayer.currentOTUAmt});
+
+		newPlayer.socket.emit("you_got", {items:newPlayer.items, fromPlayer:player, itemName:item.name});
+
+	}
+
 	findPlayer(player) {
 		for(var i = 0; i < this.players.length; i++) {
 			if(this.players[i].name == player) {

@@ -5,8 +5,8 @@ var socket = io();
 var CURRENT_USER = "";
 var CURRENT_CLASS = null;
 
-var ITEM_LIST = ["switch", "drop"];
-var OTU_LIST = ["buff-self", "attack-monster", "buff-monster", "switch", "drop"];
+var ITEM_LIST = ["switch", "drop", "give"];
+var OTU_LIST = ["buff-self", "attack-monster", "buff-monster", "switch", "give", "drop"];
 var CLASS_LIST = ["change-class", "switch", "drop"];
 
 var boxWidth = 80 - 4;
@@ -19,6 +19,7 @@ var screenCellSize = screenWidth / numCells;
 var found_items = [];
 
 var SWITCHING_ITEMS = false;
+var GIVING_ITEMS = false;
 var SWITCH_BOX_FROM = -1;
 var SWITCH_BOX_TO = -1;
 
@@ -127,10 +128,10 @@ function updateBag(items) {
 function populatePlayers(players, current_player) {
 	$(".players-side-bar").html("");
 	for (var i = 0; i < players.length; i++) {
-		var $player = $("<div class='p-" + i + "'></div>").appendTo($(".players-side-bar"));
-		$player.append("<p class='v-small username'>" + players[i].name + "<span>ready!</span></p>");
-		$player.append("<p class='v-small'>level " + players[i].level + (players[i].class != "none" ? " <span class='" + players[i].class + "'>" + players[i].class + "</span>" : "") + "</p>");
-		$player.append("<p class='v-small'>" + players[i].totalPower + (players[i].currentOTUAmt != 0 ? " <span class='highlight'>(+" + players[i].currentOTUAmt + ")</span>" : "") + " power</p>");
+		var $player = $("<div class='ppp xxx p-" + i + "' data-name='"+players[i].name+"'></div>").appendTo($(".players-side-bar"));
+		$player.append("<p class='xxx v-small username'>" + players[i].name + "<span class='xxx'>ready!</span></p>");
+		$player.append("<p class='v-small xxx'>level " + players[i].level + (players[i].class != "none" ? " <span class='xxx " + players[i].class + "'>" + players[i].class + "</span>" : "") + "</p>");
+		$player.append("<p class='xxx v-small'>" + players[i].totalPower + (players[i].currentOTUAmt != 0 ? " <span class='xxx highlight'>(+" + players[i].currentOTUAmt + ")</span>" : "") + " power</p>");
 	}
 	updateCurrentPlayer(current_player);
 }
@@ -139,7 +140,7 @@ function updateCurrentPlayer(p) {
 	$(".players-side-bar div").removeClass("active");
 	$(".p-" + p).addClass("active");
 
-	if ($(".p-" + p + " .username").html() == CURRENT_USER+"<span>ready!</span>") {
+	if ($(".p-" + p + " .username").html() == CURRENT_USER+"<span class=\"xxx\">ready!</span>") {
 		setAttacKMode();
 	} else {
 		setIdleMode();
@@ -150,7 +151,7 @@ function updatePlayerReady(name) {
 	console.log(name);
 	$(".players-side-bar div").each(function() {
 		console.log($(".username", $(this)).html());
-		if ($(".username", $(this)).html() == name+"<span>ready!</span>") {
+		if ($(".username", $(this)).html() == name+"<span class=\"xxx\">ready!</span>") {
 			$(".username", $(this)).addClass("active");
 		}
 	});
@@ -186,7 +187,7 @@ function initClicks() {
 	});
 
 	$(".game-c").click(function(e) {
-		if ($(e.target).hasClass("box") || $(e.target).hasClass("list-item")) {
+		if ($(e.target).hasClass("box") || $(e.target).hasClass("list-item") || $(e.target).hasClass("xxx")) {
 
 		} else {
 			clearSwitchBox();
@@ -196,10 +197,23 @@ function initClicks() {
 		
 	});
 
+	$(document).on('click', ".ppp" , function() {
+		if(GIVING_ITEMS) {
+			//alert("give");
+			attemptGive($(this).data("name"));
+		}
+	});
+
 	$(document).on('click', ".list-switch" , function() {
     	switchItems($(this));
     	$(this).parent().parent().removeClass("active");
 	});
+
+	$(document).on('click', ".list-give", function() {
+		$(this).parent().parent().removeClass("active");
+		giveItem($(this));
+    	//unfadeBoxes();
+	})
 
 	$(document).on('click', ".list-drop" , function() {
     	dropItem($(this));
@@ -432,6 +446,7 @@ function unfadeBox(e) {
 
 function clearSwitchBox() {
 	SWITCHING_ITEMS = false;
+	GIVIMG_ITEMS = false;
 	SWITCH_BOX_FROM = -1;
 	SWITCH_BOX_TO = -1;
 }
@@ -462,6 +477,12 @@ function switchItems(e) {
 	SWITCH_BOX_FROM = e.parent().parent().data("index");
 	//e
 	//alert("attempting switch from "+ SWITCH_BOX_FROM);
+}
+
+function giveItem(e) {
+	GIVING_ITEMS = true;
+	SWITCH_BOX_FROM = e.parent().parent().data("index");
+	console.log("SWITCH_BOX: "+SWITCH_BOX_FROM);
 }
 
 function dropItem(e) {
@@ -560,6 +581,14 @@ function attemptSwitch() {
 	$(".box").removeClass("active");
 }
 
+function attemptGive(name) {
+	if(SWITCH_BOX_FROM != -1) {
+		socket.emit("give_item", {"gameId": getId(), "switch_from": SWITCH_BOX_FROM, "toUser": name});
+	}
+	clearSwitchBox();
+	$(".box").removeClass("active");
+}
+
 //message.item is usually just an index in the below functions
 
 socket.on("attack_result", function(message) {
@@ -597,6 +626,20 @@ socket.on("give_switch", function(message) {
 	updateItem(message);
 	updateLevel(message.level);
 	updateTotalPower(message.totalPower, message.otuAmt);
+});
+
+socket.on("you_gave", function(message) {
+	$(".box").removeClass("active");
+	unfadeBoxes();
+	clearSwitchBox();
+	updateDropItem(message.fromIndex);
+	updateLevel(message.level);
+	updateTotalPower(message.totalPower, message.otuAmt);
+});
+
+socket.on("you_got", function(message) {
+	updateBag(message.items);
+	alert("You got "+message.itemName+" from "+message.fromPlayer);
 });
 
 socket.on("item_dropped", function(message) {
