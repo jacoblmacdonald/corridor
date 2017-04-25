@@ -75,6 +75,12 @@ server.on("connection", function(client) {
 			game.switchItems(username, message.switch_from, message.switch_to);
 		});
 
+		//give item
+		client.on("give_item", function(message) {
+			var game = gamemaker.findGame(message.gameId);
+			game.giveItem(username, message.switch_from, message.toUser);
+		});
+
 		//drop item
 		client.on("drop_item", function(message) {
 			var game = gamemaker.findGame(message.gameId);

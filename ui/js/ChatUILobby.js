@@ -117,7 +117,6 @@ function getChatUsers(){
     socket.emit("getChannelUsers");
 }
 function connectToChatChannel(channel){
-
     socket.emit("connectToChannel", channel);
 }
 
