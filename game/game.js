@@ -240,8 +240,8 @@ class Player {
 			refusedReason = "Cannot equip that item to the armor slot.";
 		}
 		if(
-			(toIndex >= 0 && toIndex <= 3 && fromItem != null && fromItem.use_by != "all" && fromItem.use_by != player.class) ||
-			(fromIndex >= 0 && fromIndex <= 3 && toItem != null && toItem.use_by != "all" && toItem.use_by != player.class)
+			(toIndex >= 0 && toIndex <= 3 && fromItem != null && fromItem.use_by != "all" && fromItem.use_by != player.class.toLowerCase()) ||
+			(fromIndex >= 0 && fromIndex <= 3 && toItem != null && toItem.use_by != "all" && toItem.use_by != player.class.toLowerCase())
 		) {
 			refusedReason = "Cannot equip that item as your current class.";
 		}
@@ -272,39 +272,47 @@ class Player {
 		var player = this;
 
 		if (player.items[item].type == "class") {
-			if (player.items[item].name == "Wizard Class") {
-				player.class = "Wizard";
-			} else if (player.items[item].name == "Warrior Class") { 
-				player.class = "Warrior";
-			} else if (player.items[item].name == "Troll Class") { 
-				player.class = "Troll";
-			} else if (player.items[item].name == "Priest Class") { 
-				player.class = "Priest";
+			var newClass = player.items[item].name.split(" ")[0];
+			if(
+				(player.items[0] != null && player.items[0].use_by != "all" && player.items[0].use_by != newClass) ||
+				(player.items[1] != null && player.items[1].use_by != "all" && player.items[1].use_by != newClass) ||
+				(player.items[2] != null && player.items[2].use_by != "all" && player.items[2].use_by != newClass) ||
+				(player.items[3] != null && player.items[3].use_by != "all" && player.items[3].use_by != newClass)
+			) {
+				player.socket.emit("refuse_switch", { "reason" : "An equipped item cannot be used as that class." });
 			}
+			else {
 			
-			player.items[item] = null;
+				player.class = newClass;
+				
+				player.items[item] = null;
 
-			if(player.class == "Wizard") {
-				player.items.forEach(function(item) {
-					if(item != null) {
-						Factory.wizardRoll(item, game);
-					}
-				});
+				if(player.class == "Wizard") {
+					player.items.forEach(function(item) {
+						if(item != null) {
+							Factory.wizardRoll(item, game);
+						}
+					});
+				}
+
+				player.updateTotalPower();
+
+				player.socket.emit("class_changed", {items:player.items, totalPower:player.totalPower, otuAmt:player.currentOTUAmt, class:player.class});
 			}
-
-			player.updateTotalPower();
-
-			player.socket.emit("class_changed", {items:player.items, totalPower:player.totalPower, otuAmt:player.currentOTUAmt, class:player.class});
 		} else {
-			//if player can use this item
-			player.currentOTUAmt += player.items[item].value;
-			var otuName = player.items[item].name;
-			var otuAmt = player.items[item].value;
-			player.items[item] = null;
+			if(player.items[item].use_by != "all" && player.items[item].use_by != player.class.toLowerCase()) {
+				player.socket.emit("refuse_switch", { "reason" : "Cannot use that item as your current class." });
+			}
+			else {
+				player.currentOTUAmt += player.items[item].value;
+				var otuName = player.items[item].name;
+				var otuAmt = player.items[item].value;
+				player.items[item] = null;
 
-			player.updateTotalPower();
+				player.updateTotalPower();
 
-			player.socket.emit("item_used", {item:item, itemName:otuName, itemAmt:otuAmt, level:player.level, totalPower:player.totalPower, otuAmt:player.currentOTUAmt});
+				player.socket.emit("item_used", {item:item, itemName:otuName, itemAmt:otuAmt, level:player.level, totalPower:player.totalPower, otuAmt:player.currentOTUAmt});
+			}
 		}
 	}
 
@@ -337,6 +345,7 @@ class Game {
 		this.itemIndex = 0;
 		this.state = GameState.SETUP;
 		this.currentPlayer = 0;
+		this.avgPlayerLevel = 1;
 	}
 
 	isReady() {
@@ -389,6 +398,8 @@ class Game {
 	sendContent() {
 		var game = this;
 		game.shuffle();
+
+		game.nextMonster();
 
 		game.players.forEach(function(player) {
 			for(var i = 4; i < 4 + STARTING_HAND; i++) {
@@ -450,6 +461,16 @@ class Game {
 			this.shuffle();
 			this.itemIndex = 0;
 		}
+		while(
+			(this.avgPlayerLevel <= 6 && this.items[this.itemIndex].range == "high") ||
+			(this.avgPlayerLevel <= 3 && this.items[this.itemIndex].range != "low")
+		) {
+			this.itemIndex++;
+			if(this.itemIndex == this.items.length) {
+				this.shuffle();
+				this.itemIndex = 0;
+			}
+		}
 		return this.items[this.itemIndex++];
 	}
 
@@ -460,9 +481,6 @@ class Game {
 	}
 
 	getValueFromRange(range) {
-		var avg_level = Math.floor(this.players.reduce(function(total_level, player) {
-			return total_level + player.level;
-		}, 0) / 4);
 		var min = range[0], max = range[1];
 
 		//For calculating value
@@ -470,10 +488,16 @@ class Game {
 		var value = Math.random() * (max - min) + min;
 
 		//Add average player level for scaling
-		value += avg_level;
+		value += this.avgPlayerLevel;
 
 		//Round
 		return Math.round(value);
+	}
+
+	updateAverageLevel() {
+		this.avgPlayerLevel = Math.floor(this.players.reduce(function(total_level, player) {
+			return total_level + player.level;
+		}, 0) / this.players.length);
 	}
 
 	nextPlayer() {
@@ -483,6 +507,12 @@ class Game {
 
 	nextMonster() {
 		this.currentMonster = ++this.currentMonster % this.monsters.length;
+		while(
+			(this.avgPlayerLevel <= 6 && this.monsters[this.currentMonster].range == "high") ||
+			(this.avgPlayerLevel <= 3 && this.monsters[this.currentMonster].range != "low")
+		) {
+			this.currentMonster = ++this.currentMonster % this.monsters.length;
+		}
 	}
 
 	attack(player) {
@@ -525,12 +555,14 @@ class Game {
 					this.gamemaker.destroy(this.id);
 					return;
 				}
+				this.updateAverageLevel();
 				player.updateTotalPower();
 				this.nextMonster();
 				success = true;
 			}
 			else {
 				player.levelDown();
+				this.updateAverageLevel();
 				player.updateTotalPower();
 				success = false;
 			}
@@ -584,25 +616,35 @@ class Game {
 	attackMonsterWithItem(player, item) {
 		var game = this;
 		var foundPlayer = game.findPlayer(player);
-		var monster = this.monsters[this.currentMonster];
-		monster.value -= foundPlayer.items[item].value;
-		foundPlayer.items[item] = null;
+		if(foundPlayer.items[item].use_by != "all" && foundPlayer.items[item].use_by != foundPlayer.class.toLowerCase()) {
+			foundPlayer.socket.emit("refuse_switch", { "reason" : "Cannot use that item as your current class." });
+		}
+		else {
+			var monster = this.monsters[this.currentMonster];
+			monster.value -= foundPlayer.items[item].value;
+			foundPlayer.items[item] = null;
 
-		this.players.forEach(function(player) {
-			player.socket.emit("monster_attacked_with_item", {item:item, monsterVal:monster.value, usingPlayer:foundPlayer.name});
-		});
+			this.players.forEach(function(player) {
+				player.socket.emit("monster_attacked_with_item", {item:item, monsterVal:monster.value, usingPlayer:foundPlayer.name});
+			});
+		}
 	}
 
 	buffMonsterWithItem(player, item) {
 		var game = this;
 		var foundPlayer = game.findPlayer(player);
-		var monster = this.monsters[this.currentMonster];
-		monster.value += foundPlayer.items[item].value;
-		foundPlayer.items[item] = null;
+		if(foundPlayer.items[item].use_by != "all" && foundPlayer.items[item].use_by != foundPlayer.class.toLowerCase()) {
+			foundPlayer.socket.emit("refuse_switch", { "reason" : "Cannot use that item as your current class." });
+		}
+		else {
+			var monster = this.monsters[this.currentMonster];
+			monster.value += foundPlayer.items[item].value;
+			foundPlayer.items[item] = null;
 
-		this.players.forEach(function(player) {
-			player.socket.emit("monster_buffed_with_item", {item:item, monsterVal:monster.value, usingPlayer:foundPlayer.name});
-		});
+			this.players.forEach(function(player) {
+				player.socket.emit("monster_buffed_with_item", {item:item, monsterVal:monster.value, usingPlayer:foundPlayer.name});
+			});
+		}
 	}
 
 	switchItems(player, fromIndex, toIndex) {
