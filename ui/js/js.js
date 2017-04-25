@@ -375,6 +375,10 @@ function updateBoxMenu(b, item) {
 	$(".box-menu", b).html("");
 	if(item != null) {
 		$(".box-menu", b).append("<p class='v-small'>" + item.name + "</p><br>");
+		//console.log(item.use_by);
+		if (item.use_by != "all") {
+			$(".box-menu", b).append("<p class='v-small'>" + item.use_by + " class only</p><br>");
+		}
 		if (item.type == "otu") {
 			$(".box-menu", b).append("<p class='v-small item-range'>range: " + item.range + "</p><br>");
 			for (var i = 0; i < OTU_LIST.length; i++) {
@@ -556,10 +560,11 @@ socket.on("update_players", function(message) {
 	populatePlayers(message.players, message.currentPlayer);
 });
 
-socket.on("refuse_switch", function() {
+socket.on("refuse_switch", function(message) {
 	$(".box").removeClass("active");
 	unfadeBoxes();
 	clearSwitchBox();
+	alert(message.reason);
 });
 
 socket.on("give_switch", function(message) {

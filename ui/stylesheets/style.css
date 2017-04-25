@@ -463,7 +463,9 @@ a:link {
   .sidebar-c .color-selector {
     width: 100%;
     padding-top: 10px;
-    border-top: 2px solid white; }
+    border-top: 2px solid white;
+    height: 357px;
+    overflow: scroll; }
     .sidebar-c .color-selector .color {
       cursor: pointer; }
     .sidebar-c .color-selector .eraser {
@@ -700,7 +702,8 @@ body.loaded #loader {
   margin-bottom: 30px;
   border: 2px solid white;
   overflow: hidden;
-  height: 300px; }
+  height: 300px;
+  margin-top: 10px; }
   .screen-c.flash-green {
     border: 2px solid green; }
   .screen-c.flash-red {

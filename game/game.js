@@ -189,21 +189,63 @@ class Player {
 		var player = this;
 		var fromItem = player.items[fromIndex];
 		var toItem = player.items[toIndex];
-		
+
+		var refusedReason = null;
+
+		if((toIndex == 0 || toIndex == 3) && fromItem != null && !(fromIndex == 0 || fromIndex == 3)) {
+			if(fromItem.type != "1 hand" && fromItem.type != "2 hand") {
+				refusedReason = "Cannot equip that item to a hand slot.";
+			}
+			else if(fromItem.type == "2 hand" && (
+				(toIndex == 0 && player.items[3] != null) ||
+				(toIndex == 3 && player.items[0] != null)
+			)) {
+				refusedReason = "Cannot equip a 2-handed weapon while holding another weapon";
+			}
+			else if(fromItem.type == "1 hand" && (
+				(toIndex == 0 && player.items[3].type != null && player.items[3].type == "2 hand") ||
+				(toIndex == 3 && player.items[0].type != null && player.items[0].type == "2 hand")
+			)) {
+				refusedReason = "Cannot equip a 1-handed weapon while holding a 2-handed weapon";
+			}
+		}
+		else if((fromIndex == 0 || fromIndex == 3) && toItem != null && !(toIndex == 0 || toIndex == 3)) {
+			if(toItem.type != "1 hand" && toItem.type != "2 hand") {
+				refusedReason = "Cannot equip that item to a hand slot.";
+			}
+			else if(toItem.type == "2 hand" && (
+				(fromIndex == 0 && player.items[3] != null) ||
+				(fromIndex == 3 && player.items[0] != null)
+			)) {
+				refusedReason = "Cannot equip a 2-handed weapon while holding another weapon";
+			}
+			else if(toItem.type == "1 hand" && (
+				(fromItem == 0 && player.items[3].type != null && player.items[3].type == "2 hand") ||
+				(fromItem == 3 && player.items[0].type != null && player.items[0].type == "2 hand")
+			)) {
+				refusedReason = "Cannot equip a 1-handed weapon while holding a 2-handed weapon";
+			}
+		}
 		if(
-			(fromItem != null && (
-				(toIndex == 0 && fromItem.type != "1 hand") ||
-				(toIndex == 1 && fromItem.type != "head") ||
-				(toIndex == 2 && fromItem.type != "armor") ||
-				(toIndex == 3 && fromItem.type != "1 hand")
-			)) || (toItem != null && (
-				(fromIndex == 0 && toItem.type != "1 hand") ||
-				(fromIndex == 1 && toItem.type != "head") ||
-				(fromIndex == 2 && toItem.type != "armor") ||
-				(fromIndex == 3 && toItem.type != "1 hand")
-			))
+			(toIndex == 1 && fromItem != null && fromItem.type != "head") ||
+			(fromIndex == 1 && toItem != null && toItem.type != "head")
 		) {
-			player.socket.emit("refuse_switch");
+			refusedReason = "Cannot equip that item to the head slot.";
+		}
+		else if(
+			(toIndex == 2 && fromItem != null && fromItem.type != "armor") ||
+			(fromIndex == 2 && toItem != null && toItem.type != "armor")
+		) {
+			refusedReason = "Cannot equip that item to the armor slot.";
+		}
+		if(
+			(toIndex >= 0 && toIndex <= 3 && fromItem != null && fromItem.use_by != "all" && fromItem.use_by != player.class) ||
+			(fromIndex >= 0 && fromIndex <= 3 && toItem != null && toItem.use_by != "all" && toItem.use_by != player.class)
+		) {
+			refusedReason = "Cannot equip that item as your current class.";
+		}
+		if(refusedReason) {
+			player.socket.emit("refuse_switch", { "reason" : refusedReason });
 		}
 		else {
 			player.items[fromIndex] = toItem;
