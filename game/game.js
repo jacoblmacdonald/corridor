@@ -203,8 +203,8 @@ class Player {
 				refusedReason = "Cannot equip a 2-handed weapon while holding another weapon";
 			}
 			else if(fromItem.type == "1 hand" && (
-				(toIndex == 0 && player.items[3].type != null && player.items[3].type == "2 hand") ||
-				(toIndex == 3 && player.items[0].type != null && player.items[0].type == "2 hand")
+				(toIndex == 0 && player.items[3] != null && player.items[3].type == "2 hand") ||
+				(toIndex == 3 && player.items[0] != null && player.items[0].type == "2 hand")
 			)) {
 				refusedReason = "Cannot equip a 1-handed weapon while holding a 2-handed weapon";
 			}
