@@ -345,6 +345,7 @@ class Game {
 		this.itemIndex = 0;
 		this.state = GameState.SETUP;
 		this.currentPlayer = 0;
+		this.avgPlayerLevel = 1;
 	}
 
 	isReady() {
@@ -397,6 +398,8 @@ class Game {
 	sendContent() {
 		var game = this;
 		game.shuffle();
+
+		game.nextMonster();
 
 		game.players.forEach(function(player) {
 			for(var i = 4; i < 4 + STARTING_HAND; i++) {
@@ -458,6 +461,16 @@ class Game {
 			this.shuffle();
 			this.itemIndex = 0;
 		}
+		while(
+			(this.avgPlayerLevel <= 6 && this.items[this.itemIndex].range == "high") ||
+			(this.avgPlayerLevel <= 3 && this.items[this.itemIndex].range != "low")
+		) {
+			this.itemIndex++;
+			if(this.itemIndex == this.items.length) {
+				this.shuffle();
+				this.itemIndex = 0;
+			}
+		}
 		return this.items[this.itemIndex++];
 	}
 
@@ -468,9 +481,6 @@ class Game {
 	}
 
 	getValueFromRange(range) {
-		var avg_level = Math.floor(this.players.reduce(function(total_level, player) {
-			return total_level + player.level;
-		}, 0) / 4);
 		var min = range[0], max = range[1];
 
 		//For calculating value
@@ -478,10 +488,16 @@ class Game {
 		var value = Math.random() * (max - min) + min;
 
 		//Add average player level for scaling
-		value += avg_level;
+		value += this.avgPlayerLevel;
 
 		//Round
 		return Math.round(value);
+	}
+
+	updateAverageLevel() {
+		this.avgPlayerLevel = Math.floor(this.players.reduce(function(total_level, player) {
+			return total_level + player.level;
+		}, 0) / this.players.length);
 	}
 
 	nextPlayer() {
@@ -491,6 +507,12 @@ class Game {
 
 	nextMonster() {
 		this.currentMonster = ++this.currentMonster % this.monsters.length;
+		while(
+			(this.avgPlayerLevel <= 6 && this.monsters[this.currentMonster].range == "high") ||
+			(this.avgPlayerLevel <= 3 && this.monsters[this.currentMonster].range != "low")
+		) {
+			this.currentMonster = ++this.currentMonster % this.monsters.length;
+		}
 	}
 
 	attack(player) {
@@ -533,12 +555,14 @@ class Game {
 					this.gamemaker.destroy(this.id);
 					return;
 				}
+				this.updateAverageLevel();
 				player.updateTotalPower();
 				this.nextMonster();
 				success = true;
 			}
 			else {
 				player.levelDown();
+				this.updateAverageLevel();
 				player.updateTotalPower();
 				success = false;
 			}
