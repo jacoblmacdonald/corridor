@@ -689,6 +689,14 @@ class Game {
 			}
 		}
 	}
+
+	gg() {
+		this.players.forEach(function(p) {
+			p.socket.emit("game_over", {message:"game over :("});
+		});
+		this.gamemaker.destroy(this.id);
+
+	}
 }
 
 //////////////////////////////////////////////

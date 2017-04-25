@@ -104,6 +104,11 @@ server.on("connection", function(client) {
 			var game = gamemaker.findGame(message.gameId);
 			game.buffMonsterWithItem(username, message.used_item);
 		});
+
+		client.on("gg", function(message) {
+			var game = gamemaker.findGame(message.gameId);
+			game.gg();
+		});
 	} 	
 });
 //body parser middleware

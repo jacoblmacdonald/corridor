@@ -186,6 +186,10 @@ function initClicks() {
 		}
 	});
 
+	$(".gg").click(function() {
+		socket.emit("gg", {gameId:getId()});
+	})
+
 	$(".game-c").click(function(e) {
 		if ($(e.target).hasClass("box") || $(e.target).hasClass("list-item") || $(e.target).hasClass("xxx")) {
 
@@ -294,6 +298,11 @@ function endGame(winner, level) {
 	else {
 		alert("PLAYER " + winner.toUpperCase + " HAS REACHED LEVEL " + level + "! YOU LOSE!");
 	}
+	window.location.href = "/";
+}
+
+function gameOver() {
+	alert("game over :(");
 	window.location.href = "/";
 }
 
@@ -661,6 +670,10 @@ socket.on("class_changed", function(message) {
 
 socket.on("victory", function(message) {
 	endGame(message.winner, message.level);
+});
+
+socket.on("game_over", function(message) {
+	gameOver();
 });
 
 socket.on("monster_attacked_with_item", function(message) {
