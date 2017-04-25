@@ -560,10 +560,11 @@ socket.on("update_players", function(message) {
 	populatePlayers(message.players, message.currentPlayer);
 });
 
-socket.on("refuse_switch", function() {
+socket.on("refuse_switch", function(message) {
 	$(".box").removeClass("active");
 	unfadeBoxes();
 	clearSwitchBox();
+	alert(message.reason);
 });
 
 socket.on("give_switch", function(message) {
