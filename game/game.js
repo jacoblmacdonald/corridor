@@ -562,6 +562,9 @@ class Game {
 		var game = this;
 		var foundPlayer = game.findPlayer(player);
 		foundPlayer.ready = true;
+		this.players.forEach(function(player) {
+			player.socket.emit("player_is_ready", {playerName:foundPlayer.name});
+		});
 	}
 
 	dropItem(player, item) {

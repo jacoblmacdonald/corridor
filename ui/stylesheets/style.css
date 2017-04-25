@@ -618,6 +618,12 @@ body.loaded #loader {
         color: #b7b7b7; }
         .game-c .players-side-bar div p.username {
           color: white; }
+          .game-c .players-side-bar div p.username span {
+            display: none;
+            color: green;
+            padding-left: 20px; }
+          .game-c .players-side-bar div p.username.active span {
+            display: inline-block; }
       .game-c .players-side-bar div.active {
         margin-left: 30px; }
         .game-c .players-side-bar div.active .username {
