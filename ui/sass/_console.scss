@@ -53,12 +53,13 @@
 
 	.build-row{
 		width:100%;
-		overflow: hidden;
+		//overflow: hidden;
+		height: 164px;
 		margin-bottom:$small-margin;
 
 		.build-body {
 			float:left;
-			overflow:hidden;
+			//overflow:hidden;
 
 			.body-col {
 				float:left;
@@ -114,8 +115,7 @@
 
 	.bag-row {
 		width:100%;
-		// overflow:hidden;
-
+		height:300px;
 		.box {
 			float:left;
 			margin-right:$box-margin;
