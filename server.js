@@ -57,9 +57,16 @@ server.on("connection", function(client) {
 	    	gamemaker.onSetup(message.gameId, username, client);
 	    });
 
+	    //attack monster
 	    client.on("attack", function(message) {
 	    	var game = gamemaker.findGame(message.gameId);
 	    	game.attack(username);
+	    });
+
+	    //player ready
+	    client.on("player_ready", function(message) {
+	    	var game = gamemaker.findGame(message.gameId);
+	    	game.setPlayerReady(username);
 	    });
 
 		//switch item

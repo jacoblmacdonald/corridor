@@ -233,6 +233,7 @@ function setIdleMode() {
 function setReadyMode() {
 	$(".main-button").data("mode", "ready");
 	$(".main-button p").html("waiting...");
+	setPlayerReady();
 }
 
 function updateLevel(i) {
@@ -512,6 +513,10 @@ function attack() {
 	socket.emit("attack", {"gameId" :getId()});
 }
 
+function setPlayerReady() {
+	socket.emit("player_ready", {"gameId": getId()});
+}
+
 function attemptDrop(i) {
 	socket.emit("drop_item", {"gameId" :getId(), "drop_item": i});
 }
@@ -607,6 +612,11 @@ socket.on("monster_attacked_with_item", function(message) {
 socket.on("monster_buffed_with_item", function(message) {
 	console.log(message);
 	showMonsterBuffedAnimation(message);
+});
+
+socket.on("cant_attack_yet", function(message) {
+	alert(message.error);
+	$(".main-button").removeClass("clicked");
 });
 
 // ////////////////////
