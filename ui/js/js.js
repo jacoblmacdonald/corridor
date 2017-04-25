@@ -330,22 +330,20 @@ function updateBox(b, item) {
 		if(item.type == "otu") {
 			if(CURRENT_CLASS != "Priest") {
 				if(item.rerolled && CURRENT_CLASS == "Wizard") {
-					$(".box-level p", b).html("?").addClass("Wizard");
+					$(".box-level p", b).addClass("Wizard");
 				}
-				else {
-					if (item.range = "low") {
-						$(".box-level p", b).html("L");
-						b.addClass("low");
-					} else if (item.range = "med") {
-						$(".box-level p", b).html("M");
-						b.addClass("med");
-					} else if (item.range = "high") {
-						$(".box-level p", b).html("H");
-						b.addClass("high");
-					} else if (item.range = "wild") {
-						$(".box-level p", b).html("W");
-						b.addClass("wild");
-					}
+				if (item.range == "low") {
+					$(".box-level p", b).html("L");
+					b.addClass("low");
+				} else if (item.range == "med") {
+					$(".box-level p", b).html("M");
+					b.addClass("med");
+				} else if (item.range == "high") {
+					$(".box-level p", b).html("H");
+					b.addClass("high");
+				} else if (item.range == "wild") {
+					$(".box-level p", b).html("W");
+					b.addClass("wild");
 				}
 			}
 			else {
