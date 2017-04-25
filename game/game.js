@@ -159,6 +159,7 @@ class Player {
 		this.items = [null, null, null, null, null, null, null, null, null ,null, null, null, null, null, null, null, null, null];
 		this.class = "none";
 		this.currentOTUAmt = 0;
+		this.ready = false;
 		// store a list of all OTUs used by player in current round.
 		// use this to sum up additional buff from these items
 		// clear this list and its buff after each round
@@ -485,57 +486,85 @@ class Game {
 	}
 
 	attack(player) {
-		var player = this.findPlayer(player);
-		var monster = this.monsters[this.currentMonster];
-		var success;
-		if(player.class == "Troll") {
-			monster.value -= 2;
-		}
-		if(player.getAttackPower() > monster.value) {
-			for(var i = 0; i < monster.item_reward; i++) {
-				for(var j = 4; j < player.items.length; j++) {
-					if(player.items[j] == null) {
-						if(player.class == "Wizard") {
-							player.items[j] = Factory.wizardRoll(this.draw(), this);
+		var game = this;
+		var numReady = 0;
+		this.players.forEach(function(player) {
+			if (player.ready == true) {
+				numReady++;
+			}
+		});
+		console.log("numReady: "+numReady);
+		console.log("numPlayers: "+this.players.length);
+
+		if (numReady == this.players.length - 1) {
+
+			var player = this.findPlayer(player);
+			var monster = this.monsters[this.currentMonster];
+			var success;
+			if(player.class == "Troll") {
+				monster.value -= 2;
+			}
+			if(player.getAttackPower() > monster.value) {
+				for(var i = 0; i < monster.item_reward; i++) {
+					for(var j = 4; j < player.items.length; j++) {
+						if(player.items[j] == null) {
+							if(player.class == "Wizard") {
+								player.items[j] = Factory.wizardRoll(this.draw(), this);
+							}
+							else {
+								player.items[j] = this.draw();
+							}
+							break;
 						}
-						else {
-							player.items[j] = this.draw();
-						}
-						break;
 					}
 				}
+				if(player.levelUp()) {
+					this.players.forEach(function(p) {
+						p.socket.emit("victory", { "winner" : player.name, "level" : MAX_LEVEL });
+					});
+					this.gamemaker.destroy(this.id);
+					return;
+				}
+				player.updateTotalPower();
+				this.nextMonster();
+				success = true;
 			}
-			if(player.levelUp()) {
-				this.players.forEach(function(p) {
-					p.socket.emit("victory", { "winner" : player.name, "level" : MAX_LEVEL });
+			else {
+				player.levelDown();
+				player.updateTotalPower();
+				success = false;
+			}
+			this.nextPlayer();var game = this;
+			this.players.forEach(function(player) {
+				player.ready = false;
+				player.socket.emit("attack_result", {
+					success : success,
+					items : player.items,
+					level : player.level,
+					totalPower : player.totalPower,
+					otuAmt : player.currentOTUAmt,
+					monster : game.monsters[game.currentMonster],
+					currentPlayer : game.currentPlayer
 				});
-				this.gamemaker.destroy(this.id);
-				return;
-			}
-			player.updateTotalPower();
-			this.nextMonster();
-			success = true;
-		}
-		else {
-			player.levelDown();
-			player.updateTotalPower();
-			success = false;
-		}
-		this.nextPlayer();
-		var game = this;
-		this.players.forEach(function(player) {
-			player.socket.emit("attack_result", {
-				success : success,
-				items : player.items,
-				level : player.level,
-				totalPower : player.totalPower,
-				otuAmt : player.currentOTUAmt,
-				monster : game.monsters[game.currentMonster],
-				currentPlayer : game.currentPlayer
 			});
-		});
 
-		this.sendPlayers();
+			this.sendPlayers();
+		} else {
+			//console log not every player is ready
+			var player = this.findPlayer(player);
+			player.socket.emit("cant_attack_yet", {error:"Waiting for all players to be ready!"});
+		}
+
+		
+	}
+
+	setPlayerReady(player) {
+		var game = this;
+		var foundPlayer = game.findPlayer(player);
+		foundPlayer.ready = true;
+		this.players.forEach(function(player) {
+			player.socket.emit("player_is_ready", {playerName:foundPlayer.name});
+		});
 	}
 
 	dropItem(player, item) {

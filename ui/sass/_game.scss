@@ -40,6 +40,20 @@ body.loaded #loader {
 
 				&.username {
 					color: white;
+
+					span {
+						display:none;
+						color:green;
+						padding-left:20px;
+					}
+
+					&.active {
+						//color:red;
+
+						span {
+							display:inline-block;
+						}
+					}
 				}
 			}
 

@@ -128,7 +128,7 @@ function populatePlayers(players, current_player) {
 	$(".players-side-bar").html("");
 	for (var i = 0; i < players.length; i++) {
 		var $player = $("<div class='p-" + i + "'></div>").appendTo($(".players-side-bar"));
-		$player.append("<p class='v-small username'>" + players[i].name + "</p>");
+		$player.append("<p class='v-small username'>" + players[i].name + "<span>ready!</span></p>");
 		$player.append("<p class='v-small'>level " + players[i].level + (players[i].class != "none" ? " <span class='" + players[i].class + "'>" + players[i].class + "</span>" : "") + "</p>");
 		$player.append("<p class='v-small'>" + players[i].totalPower + (players[i].currentOTUAmt != 0 ? " <span class='highlight'>(+" + players[i].currentOTUAmt + ")</span>" : "") + " power</p>");
 	}
@@ -139,11 +139,27 @@ function updateCurrentPlayer(p) {
 	$(".players-side-bar div").removeClass("active");
 	$(".p-" + p).addClass("active");
 
-	if ($(".p-" + p + " .username").html() == CURRENT_USER) {
+	if ($(".p-" + p + " .username").html() == CURRENT_USER+"<span>ready!</span>") {
 		setAttacKMode();
 	} else {
 		setIdleMode();
 	}
+}
+
+function updatePlayerReady(name) {
+	console.log(name);
+	$(".players-side-bar div").each(function() {
+		console.log($(".username", $(this)).html());
+		if ($(".username", $(this)).html() == name+"<span>ready!</span>") {
+			$(".username", $(this)).addClass("active");
+		}
+	});
+}
+
+function clearPlayerReady() {
+	$(".players-side-bar div").each(function() {
+		$(".username", $(this)).removeClass("active");
+	});
 }
 
 function initClicks() {
@@ -233,6 +249,7 @@ function setIdleMode() {
 function setReadyMode() {
 	$(".main-button").data("mode", "ready");
 	$(".main-button p").html("waiting...");
+	setPlayerReady();
 }
 
 function updateLevel(i) {
@@ -512,6 +529,11 @@ function attack() {
 	socket.emit("attack", {"gameId" :getId()});
 }
 
+function setPlayerReady() {
+	socket.emit("player_ready", {"gameId": getId()});
+
+}
+
 function attemptDrop(i) {
 	socket.emit("drop_item", {"gameId" :getId(), "drop_item": i});
 }
@@ -548,6 +570,7 @@ socket.on("attack_result", function(message) {
 	//updateBag(message.items);
 	//alert(message.success ? "Monster Defeated" : "Player Defeated");//TODO: add some UI for this
 	$(".main-button").removeClass("clicked");
+	clearPlayerReady();
 	if (message.success) {
 		showMonsterDefeatAnimation(message);
 	} else {
@@ -607,6 +630,16 @@ socket.on("monster_attacked_with_item", function(message) {
 socket.on("monster_buffed_with_item", function(message) {
 	console.log(message);
 	showMonsterBuffedAnimation(message);
+});
+
+socket.on("cant_attack_yet", function(message) {
+	alert(message.error);
+	$(".main-button").removeClass("clicked");
+});
+
+socket.on("player_is_ready", function(message) {
+	//alert(message.playerName+ "is ready");
+	updatePlayerReady(message.playerName);
 });
 
 // ////////////////////
