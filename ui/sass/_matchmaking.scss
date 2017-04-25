@@ -194,7 +194,9 @@
 			line-height: calc(#{$small-button-height} - 2px);
 		}
 	}
+}
 
+.matchmaking-c, body {
 	#ChatBox1 {
 		position:absolute;
 		width:400px;

@@ -255,45 +255,46 @@ a:link {
     .matchmaking-c .logout-button p {
       color: white;
       line-height: calc(40px - 2px); }
-  .matchmaking-c #ChatBox1 {
+
+.matchmaking-c #ChatBox1, body #ChatBox1 {
+  position: absolute;
+  width: 400px;
+  height: 500px;
+  bottom: 0;
+  right: 0;
+  border: 2px solid white;
+  overflow: scroll; }
+  .matchmaking-c #ChatBox1 .ChatBox1-Users, body #ChatBox1 .ChatBox1-Users {
+    display: none; }
+  .matchmaking-c #ChatBox1 .ChatBox1-Channels, body #ChatBox1 .ChatBox1-Channels {
+    display: none; }
+  .matchmaking-c #ChatBox1 .ChatBox1-History, body #ChatBox1 .ChatBox1-History {
+    height: 100%; }
+    .matchmaking-c #ChatBox1 .ChatBox1-History .ChatMessage, body #ChatBox1 .ChatBox1-History .ChatMessage {
+      font-family: v-small;
+      color: white; }
+  .matchmaking-c #ChatBox1 .ChatBox1-Chat, body #ChatBox1 .ChatBox1-Chat {
     position: absolute;
-    width: 400px;
-    height: 500px;
-    bottom: 0;
-    right: 0;
-    border: 2px solid white;
-    overflow: scroll; }
-    .matchmaking-c #ChatBox1 .ChatBox1-Users {
-      display: none; }
-    .matchmaking-c #ChatBox1 .ChatBox1-Channels {
-      display: none; }
-    .matchmaking-c #ChatBox1 .ChatBox1-History {
-      height: 100%; }
-      .matchmaking-c #ChatBox1 .ChatBox1-History .ChatMessage {
-        font-family: v-small;
-        color: white; }
-    .matchmaking-c #ChatBox1 .ChatBox1-Chat {
-      position: absolute;
-      left: 0;
-      bottom: 0; }
-      .matchmaking-c #ChatBox1 .ChatBox1-Chat .ChatBox1-InputBox button {
-        border: 2px solid white;
-        background: initial;
-        font-family: v-small;
-        font-size: 20px;
-        color: white;
-        padding: 0px;
-        height: 30px;
-        width: 60px; }
-      .matchmaking-c #ChatBox1 .ChatBox1-Chat .ChatBox1-InputBox input {
-        border: 2px solid white;
-        background: initial;
-        font-family: v-small;
-        font-size: 20px;
-        color: white;
-        padding: 0px;
-        height: 30px;
-        width: 320px; }
+    left: 0;
+    bottom: 0; }
+    .matchmaking-c #ChatBox1 .ChatBox1-Chat .ChatBox1-InputBox button, body #ChatBox1 .ChatBox1-Chat .ChatBox1-InputBox button {
+      border: 2px solid white;
+      background: initial;
+      font-family: v-small;
+      font-size: 20px;
+      color: white;
+      padding: 0px;
+      height: 30px;
+      width: 60px; }
+    .matchmaking-c #ChatBox1 .ChatBox1-Chat .ChatBox1-InputBox input, body #ChatBox1 .ChatBox1-Chat .ChatBox1-InputBox input {
+      border: 2px solid white;
+      background: initial;
+      font-family: v-small;
+      font-size: 20px;
+      color: white;
+      padding: 0px;
+      height: 30px;
+      width: 320px; }
 
 .creator-content-c {
   width: 100vw;
@@ -581,7 +582,7 @@ a:link {
       background-color: rgba(0, 0, 0, 0.8);
       overflow-y: scroll; }
       .creator-screen-c .buttons-c .load-window.active {
-        height: 606px; }
+        height: 500px; }
       .creator-screen-c .buttons-c .load-window .load-item {
         color: white; }
 

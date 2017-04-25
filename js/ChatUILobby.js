@@ -5,15 +5,13 @@
 
 var availableChannels = {};
 var channelUsers = [];
-
+var socket = io();
 
 $(document).ready(function(){
 // your code
-    //getChatChannels();
-    console.log(location.search);
-    connectToChatChannel(location.search);
-    //getChatUsers();
-
+    getChatChannels();
+    connectToChatChannel('Main');
+    getChatUsers();
 
     $("#chatBox1InputText").keyup(function(event){
         if(event.keyCode == 13){
@@ -25,14 +23,11 @@ $(document).ready(function(){
     // populateChannels(test);
 });
 
-
-
 socket.on("newChatUser", function(data) {
     console.log(channelUsers);
     newUserJoined(data);
 
 });
-
 socket.on("updateChatChannels", function(data){
     console.log(data);
     resetChatBox("ChatBox1", "channels");
@@ -40,7 +35,6 @@ socket.on("updateChatChannels", function(data){
     populateChannels(availableChannels);
 
 });
-
 socket.on("updateChannelUsers", function(data){
     resetChatBox("ChatBox1", "users");
     channelUsers = data['usernames'];
@@ -122,14 +116,9 @@ function getChatChannels(){
 function getChatUsers(){
     socket.emit("getChannelUsers");
 }
-
-
 function connectToChatChannel(channel){
     socket.emit("connectToChannel", channel);
 }
-
-
-
 
 function newUserJoined(username){
     // console.log(username['username'] + ' JOINED');
@@ -195,8 +184,6 @@ function clearChatUsers(id){
         users.removeChild(users.lastChild);
     }
 }
-
-
 /**
  * Created by MatiMaster on 4/19/2017.
  */
