@@ -1,3 +1,11 @@
+/**
+ * Created by MatiMaster on 4/19/2017.
+ */
+/**
+ * Created by MatiMaster on 4/12/2017.
+ */
+
+
 var chatChannels = {'Main':[], 'Channel-1':[]};
 var usersToChannels = {};
 const r = require('../api/rethinkdb');
@@ -12,6 +20,15 @@ function chatChannelToUserInfo(){
     return userInfo;
 }
 
+
+function clearEmptyChannels(){
+    for(key in chatChannels){
+        if(chatChannels[key].length <= 0){
+            delete chatChannels[key];
+        }
+    }
+}
+
 "use strict";
 function handleChat(client, io){
     //console.log("CLIENT: "  + client[0]);
@@ -22,6 +39,9 @@ function handleChat(client, io){
     if(loggedIn) {
         client.on("connectToChannel", function (data) {
                 console.log(username + " Requesting to Join Channel: " + data);
+                console.log(chatChannels);
+                console.log("TEST");
+
                 if (data in chatChannels) {
                     if(username in usersToChannels) {
                         //remove from last channel
@@ -29,6 +49,7 @@ function handleChat(client, io){
                         var ind = chatChannels[prevChannel].indexOf(username);
                         chatChannels[prevChannel].splice(ind, 1);
                     }
+
 
                     client.join(data);
 
@@ -40,6 +61,31 @@ function handleChat(client, io){
                     io.in(data).emit('newChatUser', {username: username});
                     io.emit("updateChatChannels", chatChannelToUserInfo());
                     client.emit("clearChatHistory");
+
+                    clearEmptyChannels();
+                }else{
+                    if(data.includes("?id=")){
+                        client.join(data);
+                        if(username in usersToChannels) {
+                            //remove from last channel
+                            var prevChannel = usersToChannels[username];
+                            var ind = chatChannels[prevChannel].indexOf(username);
+                            chatChannels[prevChannel].splice(ind, 1);
+                        }
+
+                        chatChannels[data] = [username];
+
+                        //update previous channel
+                        usersToChannels[username] = data;
+
+                        //Keep track of the user in the channel and let others know...
+                        io.in(data).emit('newChatUser', {username: username});
+                        io.emit("updateChatChannels", chatChannelToUserInfo());
+                        client.emit("clearChatHistory");
+
+                        clearEmptyChannels();
+
+                    }
                 }
             }
         );
@@ -50,14 +96,15 @@ function handleChat(client, io){
         client.on("getChannelUsers", function(){
             var channel = usersToChannels[username];
             var users = chatChannels[channel];
-            // var ind = users.indexOf(username);
-            //users = users.splice(ind,1);
+
             client.emit("updateChannelUsers", {usernames: users} );
         });
 
         client.on("sendMsgToRoom", function(data){
+            //console.log(data);
             var msg = data['message'];
             var channel = usersToChannels[username];
+            //console.log(channel);
             var packet = {username: username, msg: msg};
             io.in(channel).emit("newMessage",packet);
         })
@@ -67,5 +114,7 @@ function handleChat(client, io){
 
 
 }
+
+
 
 module.exports = handleChat;
